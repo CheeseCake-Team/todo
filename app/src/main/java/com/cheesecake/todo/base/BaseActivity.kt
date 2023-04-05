@@ -15,8 +15,8 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
     protected val binding: VB
         get() = _binding as VB
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         _binding = bindingInflater(layoutInflater)
         setContentView(binding.root)
     }
