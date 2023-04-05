@@ -8,4 +8,29 @@
         <item name="colorOnPrimaryContainer">@color/md_theme_light_onPrimary</item>
 
     </style>
+
+    <style name="SignUpDetailsText" parent="TextSubDetails">
+        <item name="android:textColor">@color/white_details</item>
+    </style>
+
+    <style name="HaveAnAccountText" parent="TextSubHint">
+        <item name="android:textColor">@color/white_hint</item>
+    </style>
+
+    <style name="CardTitle" parent="TextSubTitle">
+        <item name="android:textColor">@color/white_title</item>
+    </style>
+
+    <style name="CardDetails" parent="TextSubDetails">
+        <item name="android:textColor">@color/white_details</item>
+    </style>
+
+    <style name="CardDateAndTime" parent="TextHint">
+        <item name="android:textColor">@color/white_hint</item>
+    </style>
+
+    <style name="CardBackground">
+        <item name="cardBackgroundColor">#242228</item>
+    </style>
+
 </resources>

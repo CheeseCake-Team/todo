@@ -8,7 +8,7 @@
     <color name="md_theme_light_onPrimaryFixed">#21005D</color>
     <color name="md_theme_light_primaryFixedDim">#D0BCFF</color>
     <color name="md_theme_light_onPrimaryFixedVariant">#4F378B</color>
-    <color name="md_theme_light_secondary">#625B71</color>
+    <color name="md_theme_light_secondary">#EDEDED</color>
     <color name="md_theme_light_onSecondary">#FFFFFF</color>
     <color name="md_theme_light_secondaryContainer">#E8DEF8</color>
     <color name="md_theme_light_onSecondaryContainer">#1D192B</color>
@@ -53,5 +53,9 @@
     <color name="black_hint">#5C000000</color>
     <color name="black_details">#99000000</color>
     <color name="black_title">#DB000000</color>
+    <color name="white_hint">#5CFFFFFF</color>
+    <color name="white_details">#99FFFFFF</color>
+    <color name="white_title">#DBFFFFFF</color>
+
 
 </resources>

@@ -8,8 +8,8 @@
         <item name="colorOnPrimaryContainer">@color/md_theme_light_onPrimary</item>
         <item name="colorSecondary">@color/md_theme_light_secondary</item>
         <item name="colorOnSecondary">@color/md_theme_light_onSecondary</item>
-        <item name="colorSecondaryContainer">@color/md_theme_light_secondaryContainer</item>
-        <item name="colorOnSecondaryContainer">@color/md_theme_light_onSecondaryContainer</item>
+        <item name="colorSecondaryContainer">@color/md_theme_light_primary</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_light_onPrimary</item>
         <item name="colorTertiary">@color/md_theme_light_tertiary</item>
         <item name="colorOnTertiary">@color/md_theme_light_onTertiary</item>
         <item name="colorTertiaryContainer">@color/md_theme_light_tertiaryContainer</item>
@@ -25,6 +25,76 @@
         <item name="colorOnSurfaceInverse">@color/md_theme_light_inverseOnSurface</item>
         <item name="colorPrimaryInverse">@color/md_theme_light_inversePrimary</item>
 
+    </style>
+
+    <style name="TextTitle">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:textSize">@dimen/font_size_18</item>
+    </style>
+
+    <style name="TextSubTitle">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:textSize">@dimen/font_size_16</item>
+    </style>
+
+    <style name="TextDetails">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:textSize">@dimen/font_size_14</item>
+    </style>
+
+    <style name="TextSubDetails">
+        <item name="fontFamily">@font/roboto</item>
+        <item name="android:textSize">@dimen/font_size_14</item>
+    </style>
+
+    <style name="TextHint">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:textSize">@dimen/font_size_12</item>
+    </style>
+
+    <style name="TextSubHint">
+        <item name="fontFamily">@font/roboto</item>
+        <item name="android:textSize">@dimen/font_size_12</item>
+    </style>
+
+    <style name="WelcomeText" parent="TextTitle">
+        <item name="android:textColor">@color/md_theme_light_primary</item>
+    </style>
+
+    <style name="SignUpText" parent="TextSubHint">
+        <item name="android:textColor">@color/md_theme_light_primary</item>
+    </style>
+
+    <style name="HaveAnAccountText" parent="TextSubHint">
+        <item name="android:textColor">@color/black_hint</item>
+    </style>
+
+    <style name="SignUpDetailsText" parent="TextSubDetails">
+        <item name="android:textColor">@color/black_details</item>
+    </style>
+    
+    <style name="FixedCardTitleAndDetailsText" parent="TextTitle">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="FixedCardStatusText" parent="TextSubHint">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="CardTitle" parent="TextSubTitle">
+        <item name="android:textColor">@color/black_title</item>
+    </style>
+
+    <style name="CardDetails" parent="TextSubDetails">
+        <item name="android:textColor">@color/black_details</item>
+    </style>
+
+    <style name="CardDateAndTime" parent="TextHint">
+        <item name="android:textColor">@color/black_hint</item>
+    </style>
+
+    <style name="CardBackground">
+        <item name="cardBackgroundColor">@color/material_dynamic_primary95</item>
     </style>
 
 </resources>
