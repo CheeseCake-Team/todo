@@ -1,4 +1,4 @@
-package com.cheesecake.todo.base
+package com.cheesecake.todo.ui.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
