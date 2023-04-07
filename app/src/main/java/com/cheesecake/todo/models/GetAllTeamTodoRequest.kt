@@ -1,8 +1,10 @@
 package com.cheesecake.todo.models
 
-data class TodoItem(
+data class GetAllTeamTodoRequest(
     val id: String,
     val title: String,
     val description: String,
-    val status: Int
+    val assignee: String,
+    val status: Int,
+    val creationTime: Long,
 )
