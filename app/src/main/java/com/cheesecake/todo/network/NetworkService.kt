@@ -1,7 +1,5 @@
 package com.cheesecake.todo.network
 
-import okhttp3.MultipartBody
-
 class NetworkService private constructor(private val okHttpClient: MyHttpClient) {
 
     companion object {
@@ -16,8 +14,9 @@ class NetworkService private constructor(private val okHttpClient: MyHttpClient)
     }
 
 
-    fun getTeamTodos(callback: (List<TeamTodoItem>?, String?) -> Unit) {
-        okHttpClient.run("/todo/team", "GET") { response, error ->
+    fun getTodos(isPersonal: Boolean, callback: (List<Todo>?, String?) -> Unit) {
+        val path = if (isPersonal) "/todo/personal" else "/todo/team"
+        okHttpClient.run(path, "GET") { response, error ->
             if (error != null) {
                 callback(null, error)
             } else {
@@ -29,15 +28,17 @@ class NetworkService private constructor(private val okHttpClient: MyHttpClient)
         }
     }
 
-    fun createPersonalTodo(
-        title: String, description: String, assignee: String, callback: (String?) -> Unit
+    fun createTodo(
+        title: String,
+        description: String,
+        assignee: String?,
+        isPersonal: Boolean,
+        callback: (String?) -> Unit
     ) {
-        val requestBody =
-            MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart("title", title)
-                .addFormDataPart("description", description).addFormDataPart("assignee", assignee)
-                .build()
+        val endpoint = if (isPersonal) "/todo/personal" else "/todo/team"
+        val requestBody = createTodoRequestBody(title, description, assignee)
 
-        okHttpClient.run("/todo/personal", "POST", requestBody) { _, error ->
+        okHttpClient.run(endpoint, "POST", requestBody) { _, error ->
             if (error != null) {
                 callback(error)
             } else {
@@ -45,6 +46,5 @@ class NetworkService private constructor(private val okHttpClient: MyHttpClient)
             }
         }
     }
-
 
 }
