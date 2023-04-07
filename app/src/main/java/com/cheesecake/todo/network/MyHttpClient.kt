@@ -29,10 +29,6 @@ class MyHttpClient(private val token: String) {
             .build()
     }
 
-    /**
-     * A string that represents the base URL of the server.
-     */
-    private val baseUrl = "https://team-todo-62dmq.ondigitalocean.app"
 
     /**
      * Sends an HTTP request to the server.
