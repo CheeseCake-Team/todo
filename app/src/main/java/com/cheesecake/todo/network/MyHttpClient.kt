@@ -4,7 +4,18 @@ import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import java.io.IOException
 
+
+/**
+ * A class that helps send HTTP requests to a server using the OkHttp library.
+ *
+ * @property token A string that represents an authorization token for accessing the server.
+ */
 class MyHttpClient(private val token: String) {
+
+
+    /**
+    * An object of the `OkHttpClient` class that's used to make HTTP requests.
+    */
     private val client: OkHttpClient by lazy {
         val loggingInterceptor =
             HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
@@ -13,8 +24,28 @@ class MyHttpClient(private val token: String) {
             .addInterceptor(loggingInterceptor)
             .build()
     }
+
+    /**
+     * A string that represents the base URL of the server.
+     */
     private val baseUrl = "https://team-todo-62dmq.ondigitalocean.app"
 
+    /**
+     * Sends an HTTP request to the server.
+     *
+     * @param path A string that represents the path on the server that the request should be sent to (e.g. "/users").
+     * @param method A string that represents the HTTP method that should be used for the request (e.g. "GET", "POST", "PUT").
+     * It defaults to "GET" if not specified.
+     * @param requestBody An object of the `MultipartBody` class that represents the body of the request (e.g.
+     * the data that should be sent to the server). It's optional and only used for "POST" requests.
+     * @param callback A function that gets called when the server responds to the request. It takes two arguments:
+     * `body`: A string that represents the response body (e.g. the data that the server sends back). It's `null` if there's an error.
+     * `error`: A string that represents any error message that occurs during the request. It's `null` if there's no error.
+     *
+     * @throws [IOException] If there's an error during the request.
+     * @throws [IllegalArgumentException] If an invalid HTTP method is used or a request body is required for "POST" requests
+     * but not provided.
+     */
     @Throws(IOException::class)
     fun run(
         endpoint: String,
