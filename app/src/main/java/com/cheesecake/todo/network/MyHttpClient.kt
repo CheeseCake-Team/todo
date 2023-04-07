@@ -1,5 +1,9 @@
 package com.cheesecake.todo.network
 
+import com.cheesecake.todo.utils.Constants.BASE_URL
+import com.cheesecake.todo.utils.Constants.GET_METHOD
+import com.cheesecake.todo.utils.Constants.POST_METHOD
+import com.cheesecake.todo.utils.Constants.PUT_METHOD
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import java.io.IOException
@@ -54,14 +58,16 @@ class MyHttpClient(private val token: String) {
         callback: (String?, String?) -> Unit
     ) {
         val requestBuilder = Request.Builder()
-            .url(baseUrl + endpoint)
+            .url(BASE_URL + endpoint)
 
         when (method) {
-            "GET" -> requestBuilder.get()
-            "POST" -> requestBuilder.post(
+            GET_METHOD -> requestBuilder.get()
+            POST_METHOD -> requestBuilder.post(
                 requestBody ?: throw IllegalArgumentException("Request body required for POST")
             )
-            //put
+            PUT_METHOD -> requestBuilder.put(
+                requestBody ?: throw IllegalArgumentException("Request body required for POST")
+            )
             else -> throw IllegalArgumentException("Invalid HTTP method: $method")
         }
 

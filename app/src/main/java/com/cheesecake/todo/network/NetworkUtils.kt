@@ -51,3 +51,12 @@ fun createTodoRequestBody(
         }
     }.build()
 
+
+fun createTodoRequestBodyForPut(todoId: String, newStatus: Int) =
+    MultipartBody
+        .Builder()
+        .setType(MultipartBody.FORM)
+        .addFormDataPart("id", todoId)
+        .addFormDataPart("status", newStatus.toString())
+        .build()
+
