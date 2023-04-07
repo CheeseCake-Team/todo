@@ -4,6 +4,12 @@ import okhttp3.MultipartBody
 import org.json.JSONException
 import org.json.JSONObject
 
+
+/**
+ * Parses a JSON string into a list of Todo objects.
+ * @param json The JSON string to parse.
+ * @return A list of Todo objects.
+ */
 fun parseTodos(json: String): List<Todo> {
     val todos = mutableListOf<Todo>()
     try {
@@ -25,6 +31,14 @@ fun parseTodos(json: String): List<Todo> {
     return todos
 }
 
+
+/**
+ * Creates a multipart request body for creating a new Todo.
+ * @param title The title of the Todo.
+ * @param description The description of the Todo.
+ * @param assignee The assignee of the Todo, if any.
+ * @return A MultipartBody object representing the request body.
+ */
 fun createTodoRequestBody(
     title: String,
     description: String,
