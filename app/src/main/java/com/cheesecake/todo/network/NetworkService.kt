@@ -1,5 +1,6 @@
 package com.cheesecake.todo.network
 
+import com.cheesecake.todo.models.Todo
 import com.cheesecake.todo.utils.Constants.GET_METHOD
 import com.cheesecake.todo.utils.Constants.PERSONAL_ENDPOINT
 import com.cheesecake.todo.utils.Constants.POST_METHOD

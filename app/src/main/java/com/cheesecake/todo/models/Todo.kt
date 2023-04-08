@@ -1,4 +1,4 @@
-package com.cheesecake.todo.network
+package com.cheesecake.todo.models
 
 data class Todo(
     val id: String,
