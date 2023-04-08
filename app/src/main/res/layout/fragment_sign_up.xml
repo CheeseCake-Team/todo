@@ -112,11 +112,11 @@
 
     <TextView
         android:id="@+id/text_view_have_account"
+        style="@style/HaveAnAccountText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_large_24"
         android:text="@string/have_an_account"
-        style="@style/HaveAnAccountText"
         app:layout_constraintEnd_toStartOf="@+id/text_view_sign_up"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -125,10 +125,10 @@
 
     <TextView
         android:id="@+id/text_view_sign_up"
+        style="@style/SignUpText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login"
-        style="@style/SignUpText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/text_view_have_account"
