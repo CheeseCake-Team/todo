@@ -1,9 +1,9 @@
-package com.cheesecake.todo.datascource.identity
+package com.cheesecake.todo.data.repository.identity
 
-import com.cheesecake.todo.network.INetworkService
+import com.cheesecake.todo.data.network.NetworkService
 
 
-class AuthRepositoryImpl(private val networkService: INetworkService):AuthRepository {
+class AuthRepositoryImpl(private val networkService: NetworkService): AuthRepository {
 
     override fun login(username: String, password: String, callback: LoginCallback) {
         networkService.login(username, password) { pair, error ->

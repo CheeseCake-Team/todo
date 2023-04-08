@@ -1,4 +1,4 @@
-package com.cheesecake.todo.network
+package com.cheesecake.todo.data.network
 
 import okhttp3.MultipartBody
 import org.json.JSONException

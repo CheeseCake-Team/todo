@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.cheesecake.todo.R
-import com.cheesecake.todo.datascource.identity.AuthRepositoryImpl
-import com.cheesecake.todo.network.NetworkService
+import com.cheesecake.todo.data.repository.identity.AuthRepositoryImpl
+import com.cheesecake.todo.data.network.NetworkServiceImpl
 
 
 class LoginFragment : Fragment(), LoginView {
@@ -26,7 +26,7 @@ class LoginFragment : Fragment(), LoginView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter = LoginPresenter(AuthRepositoryImpl(NetworkService.getInstance()))
+        presenter = LoginPresenter(AuthRepositoryImpl(NetworkServiceImpl.getInstance()))
         presenter.attachView(this)
     }
 

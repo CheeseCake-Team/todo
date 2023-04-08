@@ -1,4 +1,4 @@
-package com.cheesecake.todo.network
+package com.cheesecake.todo.data.network
 
 object Constants {
     const val BASE_URL = "https://team-todo-62dmq.ondigitalocean.app"
@@ -12,5 +12,4 @@ object Constants {
     const val PUT_METHOD = "PUT"
 
     const val AUTHORIZATION_HEADER = "Authorization"
-
 }

@@ -1,4 +1,4 @@
-package com.cheesecake.todo.datascource.identity
+package com.cheesecake.todo.data.repository.identity
 
 interface AuthRepository {
     fun login(username: String, password: String, callback: LoginCallback)

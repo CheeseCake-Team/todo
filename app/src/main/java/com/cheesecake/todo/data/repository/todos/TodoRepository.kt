@@ -1,4 +1,4 @@
-package com.cheesecake.todo.datascource.todos
+package com.cheesecake.todo.data.repository.todos
 
 interface TodoRepository {
     fun getTodos(isPersonal: Boolean, token: String, callback: GetTodosCallback)

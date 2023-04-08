@@ -1,8 +1,8 @@
-package com.cheesecake.todo.datascource.todos
+package com.cheesecake.todo.data.repository.todos
 
-import com.cheesecake.todo.network.INetworkService
+import com.cheesecake.todo.data.network.NetworkService
 
-class TodoRepositoryImpl(private val networkDataSource: INetworkService) : TodoRepository {
+class TodoRepositoryImpl(private val networkDataSource: NetworkService) : TodoRepository {
 
     override fun getTodos(isPersonal: Boolean, token: String, callback: GetTodosCallback) {
         networkDataSource.getTodos(isPersonal, token) { todos, error ->

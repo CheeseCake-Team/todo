@@ -1,22 +1,22 @@
-package com.cheesecake.todo.network
+package com.cheesecake.todo.data.network
 
-import com.cheesecake.todo.network.Constants.AUTHORIZATION_HEADER
-import com.cheesecake.todo.network.Constants.GET_METHOD
-import com.cheesecake.todo.network.Constants.PERSONAL_ENDPOINT
-import com.cheesecake.todo.network.Constants.POST_METHOD
-import com.cheesecake.todo.network.Constants.PUT_METHOD
-import com.cheesecake.todo.network.Constants.TEAM_ENDPOINT
+import com.cheesecake.todo.data.network.Constants.AUTHORIZATION_HEADER
+import com.cheesecake.todo.data.network.Constants.GET_METHOD
+import com.cheesecake.todo.data.network.Constants.PERSONAL_ENDPOINT
+import com.cheesecake.todo.data.network.Constants.POST_METHOD
+import com.cheesecake.todo.data.network.Constants.PUT_METHOD
+import com.cheesecake.todo.data.network.Constants.TEAM_ENDPOINT
 import okhttp3.Credentials
 
 
-class NetworkService private constructor() : INetworkService {
+class NetworkServiceImpl private constructor() : NetworkService {
 
     companion object {
-        private var instance: NetworkService? = null
+        private var instance: NetworkServiceImpl? = null
 
-        fun getInstance(): NetworkService {
+        fun getInstance(): NetworkServiceImpl {
             if (instance == null) {
-                instance = NetworkService()
+                instance = NetworkServiceImpl()
             }
             return instance!!
         }

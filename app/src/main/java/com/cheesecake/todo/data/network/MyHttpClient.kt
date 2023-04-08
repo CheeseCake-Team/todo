@@ -1,9 +1,9 @@
-package com.cheesecake.todo.network
+package com.cheesecake.todo.data.network
 
-import com.cheesecake.todo.network.Constants.BASE_URL
-import com.cheesecake.todo.network.Constants.GET_METHOD
-import com.cheesecake.todo.network.Constants.POST_METHOD
-import com.cheesecake.todo.network.Constants.PUT_METHOD
+import com.cheesecake.todo.data.network.Constants.BASE_URL
+import com.cheesecake.todo.data.network.Constants.GET_METHOD
+import com.cheesecake.todo.data.network.Constants.POST_METHOD
+import com.cheesecake.todo.data.network.Constants.PUT_METHOD
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import java.io.IOException

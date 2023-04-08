@@ -1,4 +1,4 @@
-package com.cheesecake.todo.datascource.todos
+package com.cheesecake.todo.data.repository.todos
 
 interface ChangeTodoStatusCallback {
     fun onChangeTodoStatusSuccess()

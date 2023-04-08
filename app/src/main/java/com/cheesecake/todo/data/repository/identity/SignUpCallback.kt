@@ -1,4 +1,4 @@
-package com.cheesecake.todo.datascource.identity
+package com.cheesecake.todo.data.repository.identity
 
 interface SignUpCallback {
     fun onSignUpSuccess(pair: Pair<String,String>)

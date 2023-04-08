@@ -1,6 +1,6 @@
-package com.cheesecake.todo.network
+package com.cheesecake.todo.data.network
 
-interface INetworkService {
+interface NetworkService {
     fun getTodos(isPersonal: Boolean, token: String, callback: (List<Todo>?, String?) -> Unit)
 
     fun createTodo(
