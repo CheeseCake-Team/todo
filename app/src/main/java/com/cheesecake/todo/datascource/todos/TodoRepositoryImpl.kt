@@ -1,10 +1,10 @@
-package com.cheesecake.todo.datascource
+package com.cheesecake.todo.datascource.todos
 
 import com.cheesecake.todo.network.INetworkService
 
 class TodoRepositoryImpl(private val networkDataSource: INetworkService) : TodoRepository {
 
-    override fun getTodos(isPersonal: Boolean, token: String, callback: TodoRepositoryCallback) {
+    override fun getTodos(isPersonal: Boolean, token: String, callback: GetTodosCallback) {
         networkDataSource.getTodos(isPersonal, token) { todos, error ->
             if (error != null) {
                 callback.onGetTodosError(error)
@@ -20,7 +20,7 @@ class TodoRepositoryImpl(private val networkDataSource: INetworkService) : TodoR
         assignee: String?,
         isPersonal: Boolean,
         token: String,
-        callback: TodoRepositoryCallback
+        callback: CreateTodoCallback
     ) {
         networkDataSource.createTodo(title, description, assignee, isPersonal, token) { error ->
             if (error != null) {
@@ -36,7 +36,7 @@ class TodoRepositoryImpl(private val networkDataSource: INetworkService) : TodoR
         newStatus: Int,
         isPersonal: Boolean,
         token: String,
-        callback: TodoRepositoryCallback
+        callback: ChangeTodoStatusCallback
     ) {
         networkDataSource.changeTodoStatus(todoId, newStatus, isPersonal, token) { error ->
             if (error != null) {
@@ -47,28 +47,4 @@ class TodoRepositoryImpl(private val networkDataSource: INetworkService) : TodoR
         }
     }
 
-    override fun login(username: String, password: String, callback: TodoRepositoryCallback) {
-        networkDataSource.login(username, password) { pair, error ->
-            if (error != null) {
-                callback.onLoginError(error)
-            } else {
-                callback.onLoginSuccess(pair!!)
-            }
-        }
-    }
-
-    override fun signUp(
-        username: String,
-        password: String,
-        teamId: String,
-        callback: TodoRepositoryCallback
-    ) {
-        networkDataSource.signUp(username, password, teamId) { token, error ->
-            if (error != null) {
-                callback.onSignUpError(error)
-            } else {
-                callback.onSignUpSuccess(token!!)
-            }
-        }
-    }
 }
