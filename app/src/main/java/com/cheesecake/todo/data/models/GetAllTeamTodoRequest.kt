@@ -1,4 +1,4 @@
-package com.cheesecake.todo.models
+package com.cheesecake.todo.data.models
 
 data class GetAllTeamTodoRequest(
     val allTodoList: List<TodoItem>,

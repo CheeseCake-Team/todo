@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import com.cheesecake.todo.utils.Constants.EXPIRY
 import com.cheesecake.todo.utils.Constants.TOKEN
 
-class PreferencesServiceImpl(private val sharedPreferences: SharedPreferences) :
+class SharedPreferencesServiceImpl(private val sharedPreferences: SharedPreferences) :
     SharedPreferencesService {
     override fun saveToken(value: String) =
         sharedPreferences.edit().putString(TOKEN, value).apply()

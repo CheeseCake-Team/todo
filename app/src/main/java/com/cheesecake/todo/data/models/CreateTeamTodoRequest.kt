@@ -1,4 +1,4 @@
-package com.cheesecake.todo.models
+package com.cheesecake.todo.data.models
 
 data class CreateTeamTodoRequest(
     val title: String,

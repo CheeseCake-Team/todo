@@ -1,12 +1,13 @@
 package com.cheesecake.todo.data.network
 
+import com.cheesecake.todo.data.models.TodoItem
 import okhttp3.MultipartBody
 import org.json.JSONException
 import org.json.JSONObject
 
 
-fun parseTodos(json: String): List<Todo> {
-    val todos = mutableListOf<Todo>()
+fun parseTodos(json: String): List<TodoItem> {
+    val todoItems = mutableListOf<TodoItem>()
     try {
         val jsonArray = JSONObject(json).getJSONArray("value")
         for (i in 0 until jsonArray.length()) {
@@ -17,13 +18,13 @@ fun parseTodos(json: String): List<Todo> {
             val assignee = jsonObject.optString("assignee")
             val status = jsonObject.getInt("status")
             val creationTime = jsonObject.getString("creationTime")
-            val todo = Todo(id, title, description, assignee, status, creationTime)
-            todos.add(todo)
+            val todoItem = TodoItem(id, title, description, assignee, status, creationTime)
+            todoItems.add(todoItem)
         }
     } catch (e: JSONException) {
         e.printStackTrace()
     }
-    return todos
+    return todoItems
 }
 
 fun createMultipartBody(vararg fields: Pair<String, String?>) =

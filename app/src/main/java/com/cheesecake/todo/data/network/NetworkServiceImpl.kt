@@ -1,5 +1,6 @@
 package com.cheesecake.todo.data.network
 
+import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.data.network.Constants.AUTHORIZATION_HEADER
 import com.cheesecake.todo.data.network.Constants.GET_METHOD
 import com.cheesecake.todo.data.network.Constants.PERSONAL_ENDPOINT
@@ -27,7 +28,7 @@ class NetworkServiceImpl private constructor() : NetworkService {
     override fun getTodos(
         isPersonal: Boolean,
         token: String,
-        callback: (List<Todo>?, String?) -> Unit
+        callback: (List<TodoItem>?, String?) -> Unit
     ) {
         val endpoint = if (isPersonal) PERSONAL_ENDPOINT else TEAM_ENDPOINT
         val headers = mapOf(AUTHORIZATION_HEADER to "Bearer $token")

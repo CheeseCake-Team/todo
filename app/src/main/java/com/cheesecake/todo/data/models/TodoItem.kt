@@ -1,6 +1,6 @@
-package com.cheesecake.todo.data.network
+package com.cheesecake.todo.data.models
 
-data class Todo(
+data class TodoItem(
     val id: String,
     val title: String,
     val description: String,
@@ -8,3 +8,4 @@ data class Todo(
     val status: Int,
     val creationTime: String,
 )
+
