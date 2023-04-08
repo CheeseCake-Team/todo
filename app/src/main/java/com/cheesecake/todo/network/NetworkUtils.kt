@@ -1,6 +1,6 @@
 package com.cheesecake.todo.network
 
-import com.cheesecake.todo.models.Todo
+import com.cheesecake.todo.models.TodoItem
 import okhttp3.MultipartBody
 import org.json.JSONException
 import org.json.JSONObject
@@ -11,8 +11,8 @@ import org.json.JSONObject
  * @param json The JSON string to parse.
  * @return A list of Todo objects.
  */
-fun parseTodos(json: String): List<Todo> {
-    val todos = mutableListOf<Todo>()
+fun parseTodos(json: String): List<TodoItem> {
+    val todos = mutableListOf<TodoItem>()
     try {
         val jsonArray = JSONObject(json).getJSONArray("value")
         for (i in 0 until jsonArray.length()) {
@@ -23,7 +23,7 @@ fun parseTodos(json: String): List<Todo> {
             val assignee = jsonObject.optString("assignee")
             val status = jsonObject.getInt("status")
             val creationTime = jsonObject.getString("creationTime")
-            val todo = Todo(id, title, description, assignee, status, creationTime)
+            val todo = TodoItem(id, title, description, assignee, status, creationTime)
             todos.add(todo)
         }
     } catch (e: JSONException) {

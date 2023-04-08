@@ -1,6 +1,6 @@
 package com.cheesecake.todo.network
 
-import com.cheesecake.todo.models.Todo
+import com.cheesecake.todo.models.TodoItem
 import com.cheesecake.todo.utils.Constants.GET_METHOD
 import com.cheesecake.todo.utils.Constants.PERSONAL_ENDPOINT
 import com.cheesecake.todo.utils.Constants.POST_METHOD
@@ -21,7 +21,7 @@ class NetworkService private constructor(private val okHttpClient: MyHttpClient)
     }
 
 
-    fun getTodos(isPersonal: Boolean, callback: (List<Todo>?, String?) -> Unit) {
+    fun getTodos(isPersonal: Boolean, callback: (List<TodoItem>?, String?) -> Unit) {
         val endpoint = if (isPersonal) PERSONAL_ENDPOINT else TEAM_ENDPOINT
         okHttpClient.run(endpoint, GET_METHOD) { response, error ->
             if (error != null) {
