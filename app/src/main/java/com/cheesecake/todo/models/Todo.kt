@@ -6,7 +6,6 @@ data class Todo(
     val description: String,
     val assignee: String? = null,
     val status: Int,
-    val creationTime: Long,
+    val creationTime: String,
 )
-
 

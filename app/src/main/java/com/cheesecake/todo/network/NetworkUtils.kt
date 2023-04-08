@@ -1,5 +1,6 @@
 package com.cheesecake.todo.network
 
+import com.cheesecake.todo.models.Todo
 import okhttp3.MultipartBody
 import org.json.JSONException
 import org.json.JSONObject
