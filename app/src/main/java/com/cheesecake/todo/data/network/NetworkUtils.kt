@@ -71,3 +71,10 @@ fun parseSignupResponse(response: String?): Pair<String, String>? {
         return null
     }
 }
+fun parseErrorMessageResponse(response: String?): String? {
+    return try {
+        JSONObject(response!!).optString("message")
+    } catch (e: JSONException) {
+        null
+    }
+}

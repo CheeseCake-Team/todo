@@ -53,7 +53,7 @@ class MyHttpClient {
             override fun onResponse(call: Call, response: Response) {
                 val body = response.body?.string()
                 if (!response.isSuccessful) {
-                    callback(null, "Unexpected code ${response.code}: $body")
+                    callback(null, parseErrorMessageResponse(body))
                 } else {
                     callback(body, null)
                 }
