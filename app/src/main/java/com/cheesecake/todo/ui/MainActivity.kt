@@ -31,7 +31,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             .add(R.id.fragment_container_activity, baseFragment).commit()
     }
 
-    fun initializeHomeScreen() {
+    private fun initializeHomeScreen() {
         binding.bottomNavigationBar.visibility = View.GONE
         loadFragmentIntoContainer(SignUpFragment())
 
