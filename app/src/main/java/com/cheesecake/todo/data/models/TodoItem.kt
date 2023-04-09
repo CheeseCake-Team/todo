@@ -5,7 +5,7 @@ data class TodoItem(
     val title: String,
     val description: String,
     val assignee: String? = null,
-    val status: Int,
+    val status: TodoState,
     val creationTime: String,
 )
 

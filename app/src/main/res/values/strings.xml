@@ -32,6 +32,8 @@
     <string name="creation_time">02:17 AM</string>
     <string name="todo_description">An application that helps to choose personal clothes to make life more difficult!</string>
     <string name="assignee_name">Assignee Name</string>
-    <string name="invalid_credentials"><![CDATA[Invalid username or password<]]></string>
+    <string name="no_internet_connection_title">No Internet Connection</string>
+    <string name="no_internet_connection_message">Please check your internet connection and try again</string>
+    <string name="retry">Retry</string>
 
 </resources>

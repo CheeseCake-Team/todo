@@ -1,15 +1,16 @@
 package com.cheesecake.todo.data.repository.todos
 
+import com.cheesecake.todo.data.models.TodoState
 import com.cheesecake.todo.data.network.NetworkService
 
 class TodoRepositoryImpl(private val networkDataSource: NetworkService) : TodoRepository {
 
-    override fun getTodos(isPersonal: Boolean, token: String, callback: GetTodosCallback) {
+    override fun getTodos(isPersonal: Boolean, token: String, callback: TodoCallback) {
         networkDataSource.getTodos(isPersonal, token) { todos, error ->
             if (error != null) {
-                callback.onGetTodosError(error)
+                callback.onError(error)
             } else {
-                callback.onGetTodosSuccess(todos!!)
+                callback.onSuccess(todos!!)
             }
         }
     }
@@ -20,29 +21,29 @@ class TodoRepositoryImpl(private val networkDataSource: NetworkService) : TodoRe
         assignee: String?,
         isPersonal: Boolean,
         token: String,
-        callback: CreateTodoCallback
+        callback: TodoCallback
     ) {
         networkDataSource.createTodo(title, description, assignee, isPersonal, token) { error ->
             if (error != null) {
-                callback.onCreateTodoError(error)
+                callback.onError(error)
             } else {
-                callback.onCreateTodoSuccess()
+                callback.onSuccess()
             }
         }
     }
 
     override fun changeTodoStatus(
         todoId: String,
-        newStatus: Int,
+        newStatus: TodoState,
         isPersonal: Boolean,
         token: String,
-        callback: ChangeTodoStatusCallback
+        callback: TodoCallback
     ) {
         networkDataSource.changeTodoStatus(todoId, newStatus, isPersonal, token) { error ->
             if (error != null) {
-                callback.onChangeTodoStatusError(error)
+                callback.onError(error)
             } else {
-                callback.onChangeTodoStatusSuccess()
+                callback.onSuccess()
             }
         }
     }

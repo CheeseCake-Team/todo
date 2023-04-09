@@ -1,16 +1,11 @@
 package com.cheesecake.todo.data.network
 
-import com.cheesecake.todo.data.network.Constants.BASE_URL
-import com.cheesecake.todo.data.network.Constants.GET_METHOD
-import com.cheesecake.todo.data.network.Constants.POST_METHOD
-import com.cheesecake.todo.data.network.Constants.PUT_METHOD
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import java.io.IOException
 
 
-class MyHttpClient {
-
+object ApiClient {
 
     private val client: OkHttpClient by lazy {
         val loggingInterceptor =
@@ -19,6 +14,7 @@ class MyHttpClient {
         OkHttpClient.Builder().addInterceptor(loggingInterceptor).build()
     }
 
+    private const val baseUrl = "https://team-todo-62dmq.ondigitalocean.app"
 
     @Throws(IOException::class)
     fun run(
@@ -28,22 +24,18 @@ class MyHttpClient {
         headers: Map<String, String>? = null,
         callback: (String?, String?) -> Unit
     ) {
-        val request = Request
-            .Builder()
-            .url(BASE_URL + endpoint)
-            .apply {
+        val request = Request.Builder().url(baseUrl + endpoint).apply {
                 when (method) {
-                    GET_METHOD -> get()
-                    POST_METHOD -> post(requestBody!!)
-                    PUT_METHOD -> put(requestBody!!)
+                    "GET" -> get()
+                    "POST" -> post(requestBody!!)
+                    "PUT" -> put(requestBody!!)
                     else -> throw IllegalArgumentException("Invalid HTTP method: $method")
                 }
 
                 headers?.forEach { (key, value) ->
                     addHeader(key, value)
                 }
-            }
-            .build()
+            }.build()
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -53,7 +45,7 @@ class MyHttpClient {
             override fun onResponse(call: Call, response: Response) {
                 val body = response.body?.string()
                 if (!response.isSuccessful) {
-                    callback(null, "Unexpected code ${response.code}: $body")
+                    callback(null, parseErrorMessageResponse(body))
                 } else {
                     callback(body, null)
                 }

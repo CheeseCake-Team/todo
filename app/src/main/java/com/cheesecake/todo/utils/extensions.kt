@@ -1,5 +1,7 @@
 package com.cheesecake.todo.utils
 
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import com.cheesecake.todo.data.local.SharedPreferencesService
 import java.text.SimpleDateFormat
 import java.util.*
@@ -22,15 +24,13 @@ fun removeTokenAndExpiryIfTokenInvalid(sharedPreferencesService: SharedPreferenc
     }
 }
 
-fun isUserNameValid(username: String): Boolean {
-    return if (username.length >= 4) {
-        return true
-    } else {
-        username.isNotBlank()
-    }
+fun isNetworkAvailable(connectivityManager: ConnectivityManager): Boolean {
+    val network = connectivityManager.activeNetwork
+    val networkCapabilities = connectivityManager.getNetworkCapabilities(network)
+    return networkCapabilities != null && (
+            networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                    networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                    networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))
 }
 
-fun isPasswordValid(password: String): Boolean {
-    return password.length > 8
-}
 

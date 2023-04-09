@@ -1,39 +1,22 @@
 package com.cheesecake.todo.data.network
 
 import com.cheesecake.todo.data.models.TodoItem
-import com.cheesecake.todo.data.network.Constants.AUTHORIZATION_HEADER
-import com.cheesecake.todo.data.network.Constants.GET_METHOD
-import com.cheesecake.todo.data.network.Constants.PERSONAL_ENDPOINT
-import com.cheesecake.todo.data.network.Constants.POST_METHOD
-import com.cheesecake.todo.data.network.Constants.PUT_METHOD
-import com.cheesecake.todo.data.network.Constants.TEAM_ENDPOINT
+import com.cheesecake.todo.data.models.TodoState
 import okhttp3.Credentials
 
 
-class NetworkServiceImpl private constructor() : NetworkService {
+class NetworkServiceImpl : NetworkService {
 
-    companion object {
-        private var instance: NetworkServiceImpl? = null
-
-        fun getInstance(): NetworkServiceImpl {
-            if (instance == null) {
-                instance = NetworkServiceImpl()
-            }
-            return instance!!
-        }
-    }
-
-    private val okHttpClient = MyHttpClient()
 
     override fun getTodos(
         isPersonal: Boolean,
         token: String,
         callback: (List<TodoItem>?, String?) -> Unit
     ) {
-        val endpoint = if (isPersonal) PERSONAL_ENDPOINT else TEAM_ENDPOINT
-        val headers = mapOf(AUTHORIZATION_HEADER to "Bearer $token")
+        val endpoint = if (isPersonal) "/todo/personal" else "/todo/team"
+        val headers = mapOf("Authorization" to "Bearer $token")
 
-        okHttpClient.run(endpoint, GET_METHOD, headers = headers) { response, error ->
+        ApiClient.run(endpoint, "GET", headers = headers) { response, error ->
             if (error != null) {
                 callback(null, error)
             } else {
@@ -53,13 +36,13 @@ class NetworkServiceImpl private constructor() : NetworkService {
         token: String,
         callback: (String?) -> Unit
     ) {
-        val endpoint = if (isPersonal) PERSONAL_ENDPOINT else TEAM_ENDPOINT
+        val endpoint = if (isPersonal) "/todo/personal" else "/todo/team"
         val requestBody = createMultipartBody(
             "title" to title, "description" to description, "assignee" to assignee
         )
-        val headers = mapOf(AUTHORIZATION_HEADER to "Bearer $token")
+        val headers = mapOf("Authorization" to "Bearer $token")
 
-        okHttpClient.run(endpoint, POST_METHOD, requestBody, headers) { _, error ->
+        ApiClient.run(endpoint, "POST", requestBody, headers) { _, error ->
             if (error != null) {
                 callback(error)
             } else {
@@ -70,17 +53,17 @@ class NetworkServiceImpl private constructor() : NetworkService {
 
     override fun changeTodoStatus(
         todoId: String,
-        newStatus: Int,
+        newStatus: TodoState,
         isPersonal: Boolean,
         token: String,
         callback: (String?) -> Unit
     ) {
         val requestBody = createMultipartBody(
-            "id" to todoId, "status" to newStatus.toString()
+            "id" to todoId, "status" to newStatus.value.toString()
         )
-        val endpoint = if (isPersonal) PERSONAL_ENDPOINT else TEAM_ENDPOINT
-        val headers = mapOf(AUTHORIZATION_HEADER to "Bearer $token")
-        okHttpClient.run(endpoint, PUT_METHOD, requestBody, headers) { _, error ->
+        val endpoint = if (isPersonal) "/todo/personal" else "/todo/team"
+        val headers = mapOf("Authorization" to "Bearer $token")
+        ApiClient.run(endpoint, "PUT", requestBody, headers) { _, error ->
             if (error != null) {
                 callback(error)
             } else {
@@ -94,10 +77,10 @@ class NetworkServiceImpl private constructor() : NetworkService {
     ) {
         val credentials = Credentials.basic(username, password)
 
-        okHttpClient.run(
-            Constants.LOGIN_ENDPOINT,
-            GET_METHOD,
-            headers = mapOf(AUTHORIZATION_HEADER to credentials)
+        ApiClient.run(
+            "/login",
+            "GET",
+            headers = mapOf("Authorization" to credentials)
         ) { response, error ->
             if (error != null) {
                 callback(null, error)
@@ -119,7 +102,7 @@ class NetworkServiceImpl private constructor() : NetworkService {
         val requestBody = createMultipartBody(
             "username" to username, "password" to password, "teamId" to teamId
         )
-        okHttpClient.run(Constants.SIGNUP_ENDPOINT, POST_METHOD, requestBody) { response, error ->
+        ApiClient.run("/signup", "POST", requestBody) { response, error ->
             if (error != null) {
                 callback(null, error)
             } else {
