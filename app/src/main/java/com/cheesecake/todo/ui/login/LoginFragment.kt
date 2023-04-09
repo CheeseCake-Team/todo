@@ -52,10 +52,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
         }
     }
 
-    override fun onRetryClick() {
-        TODO("Not yet implemented")
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         presenter.detachView()

@@ -14,7 +14,7 @@ class SignUpPresenter(
     private var signUpView: SignUpView? = null
     private val callback = object : AuthCallback {
 
-        override fun onSuccess(pair: Pair<String, String>) {
+        override fun onSuccess(pair: Pair<String, String>,username: String?) {
             signUpView?.navigateToLoginScreen()
         }
 

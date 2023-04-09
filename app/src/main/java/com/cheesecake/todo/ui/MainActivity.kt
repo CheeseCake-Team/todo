@@ -8,7 +8,7 @@ import com.cheesecake.todo.R
 import com.cheesecake.todo.ui.base.BaseActivity
 import com.cheesecake.todo.databinding.ActivityMainBinding
 import com.cheesecake.todo.ui.base.BaseFragment
-import com.cheesecake.todo.ui.sign_up.SignUpFragment
+import com.cheesecake.todo.ui.signup.SignUpFragment
 
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
@@ -18,6 +18,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
     }
 
@@ -31,9 +32,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             .add(R.id.fragment_container_activity, baseFragment).commit()
     }
 
+
     private fun initializeHomeScreen() {
         binding.bottomNavigationBar.visibility = View.GONE
         loadFragmentIntoContainer(SignUpFragment())
-
     }
 }
