@@ -7,8 +7,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.cheesecake.todo.R
 
 abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
@@ -35,16 +37,12 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         }
     }
 
-    private fun showNoInternetScreen() {
-        TODO("Not yet implemented")
-    }
-
-    override fun onDestroy() {
+        override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
 
-    protected fun isNetworkAvailable(): Boolean {
+    private fun isNetworkAvailable(): Boolean {
         val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val network = connectivityManager.activeNetwork
         val networkCapabilities = connectivityManager.getNetworkCapabilities(network)
@@ -54,6 +52,20 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
                         networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))
     }
 
+    abstract fun onRetryClick()
 
+    protected fun showNoInternetScreen() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle(R.string.no_internet_connection_title)
+        builder.setMessage(R.string.no_internet_connection_message)
+        builder.setPositiveButton(R.string.retry) { _, _ ->
+            if (isNetworkAvailable()) {
+                onRetryClick()
+            } else {
+                showNoInternetScreen()
+            }
+        }
+        builder.show()
+    }
 
 }
