@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.cheesecake.todo.R
 import com.cheesecake.todo.databinding.ItemCardViewTodoBinding
-import com.cheesecake.todo.models.TodoItem
+import com.cheesecake.todo.data.models.TodoItem
 
 class VIewAllTodoAdapter(private var todos: List<TodoItem>) :
     RecyclerView.Adapter<VIewAllTodoAdapter.TodoViewHolder>() {
