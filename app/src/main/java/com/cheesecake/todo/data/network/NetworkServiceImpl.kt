@@ -1,6 +1,7 @@
 package com.cheesecake.todo.data.network
 
 import com.cheesecake.todo.data.models.TodoItem
+import com.cheesecake.todo.data.models.TodoState
 import com.cheesecake.todo.data.network.Constants.AUTHORIZATION_HEADER
 import com.cheesecake.todo.data.network.Constants.GET_METHOD
 import com.cheesecake.todo.data.network.Constants.PERSONAL_ENDPOINT
@@ -70,13 +71,13 @@ class NetworkServiceImpl private constructor() : NetworkService {
 
     override fun changeTodoStatus(
         todoId: String,
-        newStatus: Int,
+        newStatus: TodoState,
         isPersonal: Boolean,
         token: String,
         callback: (String?) -> Unit
     ) {
         val requestBody = createMultipartBody(
-            "id" to todoId, "status" to newStatus.toString()
+            "id" to todoId, "status" to newStatus.value.toString()
         )
         val endpoint = if (isPersonal) PERSONAL_ENDPOINT else TEAM_ENDPOINT
         val headers = mapOf(AUTHORIZATION_HEADER to "Bearer $token")

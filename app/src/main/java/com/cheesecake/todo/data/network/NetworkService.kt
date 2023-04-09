@@ -1,6 +1,7 @@
 package com.cheesecake.todo.data.network
 
 import com.cheesecake.todo.data.models.TodoItem
+import com.cheesecake.todo.data.models.TodoState
 
 interface NetworkService {
     fun getTodos(isPersonal: Boolean, token: String, callback: (List<TodoItem>?, String?) -> Unit)
@@ -16,7 +17,7 @@ interface NetworkService {
 
     fun changeTodoStatus(
         todoId: String,
-        newStatus: Int,
+        newStatus: TodoState,
         isPersonal: Boolean,
         token: String,
         callback: (String?) -> Unit

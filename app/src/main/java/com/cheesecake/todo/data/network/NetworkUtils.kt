@@ -1,6 +1,7 @@
 package com.cheesecake.todo.data.network
 
 import com.cheesecake.todo.data.models.TodoItem
+import com.cheesecake.todo.data.models.TodoState
 import okhttp3.MultipartBody
 import org.json.JSONException
 import org.json.JSONObject
@@ -16,7 +17,7 @@ fun parseTodos(json: String): List<TodoItem> {
             val title = jsonObject.getString("title")
             val description = jsonObject.getString("description")
             val assignee = jsonObject.optString("assignee")
-            val status = jsonObject.getInt("status")
+            val status = parseStatus(jsonObject.getInt("status"))
             val creationTime = jsonObject.getString("creationTime")
             val todoItem = TodoItem(id, title, description, assignee, status, creationTime)
             todoItems.add(todoItem)
@@ -25,6 +26,14 @@ fun parseTodos(json: String): List<TodoItem> {
         e.printStackTrace()
     }
     return todoItems
+}
+fun parseStatus(status: Int): TodoState {
+    return when (status) {
+        0 -> TodoState.TODO
+        1 -> TodoState.IN_PROGRESS
+        2 -> TodoState.DONE
+        else -> throw IllegalArgumentException("Invalid status value: $status")
+    }
 }
 
 fun createMultipartBody(vararg fields: Pair<String, String?>) =
