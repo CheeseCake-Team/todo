@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import com.cheesecake.todo.R
 import com.cheesecake.todo.data.local.SharedPreferencesService
 import com.cheesecake.todo.data.local.SharedPreferencesServiceImpl
@@ -47,17 +46,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
             sharedPreferencesService
         )
         presenter.attachView(this)
+
         binding.buttonLogin.setOnClickListener {
             val username = binding.editTextUserNameLogin.text.toString().trim()
             val password = binding.editTextPasswordLogin.text.toString().trim()
 
-            if (presenter.isUserNameValid(username) && presenter.isPasswordValid(password)) {
-                presenter.login(username, password)
-            } else {
-                Toast.makeText(requireContext(), R.string.invalid_credentials, Toast.LENGTH_SHORT)
-                    .show()
-            }
-
+            presenter.login(username, password)
         }
         binding.textViewSignUp.setOnClickListener {
 
@@ -75,7 +69,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
         // Navigate to home screen
     }
 
-    override fun showError(error: Int) {
+    override fun showError(error: String) {
         Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
     }
 }

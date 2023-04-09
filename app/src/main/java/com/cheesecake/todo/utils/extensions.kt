@@ -22,3 +22,15 @@ fun removeTokenAndExpiryIfTokenInvalid(sharedPreferencesService: SharedPreferenc
     }
 }
 
+fun isUserNameValid(username: String): Boolean {
+    return if (username.length >= 4) {
+        return true
+    } else {
+        username.isNotBlank()
+    }
+}
+
+fun isPasswordValid(password: String): Boolean {
+    return password.length > 8
+}
+

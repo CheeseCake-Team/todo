@@ -1,7 +1,5 @@
 package com.cheesecake.todo.ui.login
 
-import android.util.Patterns
-import com.cheesecake.todo.R
 import com.cheesecake.todo.data.local.SharedPreferencesService
 import com.cheesecake.todo.data.repository.identity.AuthRepository
 import com.cheesecake.todo.data.repository.identity.LoginCallback
@@ -21,7 +19,7 @@ class LoginPresenter(
         }
 
         override fun onLoginError(error: String) {
-            loginView?.showError(R.string.login_failed)
+            loginView?.showError(error)
         }
     }
 
@@ -34,19 +32,7 @@ class LoginPresenter(
     }
 
     fun login(username: String, password: String) {
-        // call isUserNameValid and isPasswordValid
         authRepository.login(username, password, callback)
     }
 
-     fun isUserNameValid(username: String): Boolean {
-        return if (username.length >= 4) {
-           return true
-        } else {
-            username.isNotBlank()
-        }
-    }
-
-     fun isPasswordValid(password: String): Boolean {
-        return password.length > 8
-    }
 }
