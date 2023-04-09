@@ -37,7 +37,7 @@ class LoginFragment : Fragment(), LoginView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter = LoginPresenter(
-            AuthRepositoryImpl(NetworkServiceImpl.getInstance()),
+            AuthRepositoryImpl(NetworkServiceImpl()),
             sharedPreferencesService
         )
         presenter.attachView(this)
