@@ -1,8 +1,8 @@
 package com.cheesecake.todo.ui.login
 
 import com.cheesecake.todo.data.local.SharedPreferencesService
+import com.cheesecake.todo.data.repository.identity.AuthCallback
 import com.cheesecake.todo.data.repository.identity.AuthRepository
-import com.cheesecake.todo.data.repository.identity.LoginCallback
 
 class LoginPresenter(
     private val authRepository: AuthRepository,
@@ -10,15 +10,15 @@ class LoginPresenter(
 ) {
 
     private var loginView: LoginView? = null
-    private val callback = object : LoginCallback {
+    private val callback = object : AuthCallback {
 
-        override fun onLoginSuccess(pair: Pair<String, String>) {
+        override fun onSuccess(pair: Pair<String, String>, username: String?) {
             preferencesService.saveToken(pair.first)
             preferencesService.saveExpireDate(pair.second)
-            loginView?.navigateToHomeScreen()
+            loginView?.navigateToHomeScreen(username!!)
         }
 
-        override fun onLoginError(error: String) {
+        override fun onError(error: String) {
             loginView?.showError(error)
         }
     }

@@ -1,7 +1,7 @@
 package com.cheesecake.todo.ui.login
 
 interface LoginView {
-    fun navigateToHomeScreen()
+    fun navigateToHomeScreen(username:String)
     fun showError(error: String)
 
 }
