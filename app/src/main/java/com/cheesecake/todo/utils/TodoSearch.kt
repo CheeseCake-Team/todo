@@ -2,10 +2,6 @@ package com.cheesecake.todo.utils
 
 import com.cheesecake.todo.data.models.TodoItem
 
-class TodoSearch {
-
-
-
 
     class TodoSearch(private val todoItem : List<TodoItem>){
 
@@ -18,6 +14,6 @@ class TodoSearch {
         }
 
         fun getSearchedTodos(): List<TodoItem> = searchedtodos
-    }
+
 
 }
