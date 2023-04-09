@@ -10,7 +10,7 @@ import com.cheesecake.todo.R
 import com.cheesecake.todo.databinding.ItemHomeHeaderBinding
 import com.cheesecake.todo.databinding.ItemHomeRecyclerBinding
 import com.cheesecake.todo.databinding.ItemTodoCardsBinding
-import com.cheesecake.todo.models.TodoItem
+import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.ui.viewall.VIewAllTodoAdapter
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
