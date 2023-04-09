@@ -37,16 +37,4 @@ class LoginPresenter(
         // call isUserNameValid and isPasswordValid
         authRepository.login(username, password, callback)
     }
-
-    private fun isUserNameValid(username: String): Boolean {
-        return if (username.contains("@")) {
-            Patterns.EMAIL_ADDRESS.matcher(username).matches()
-        } else {
-            username.isNotBlank()
-        }
-    }
-
-    private fun isPasswordValid(password: String): Boolean {
-        return password.length > 8
-    }
 }
