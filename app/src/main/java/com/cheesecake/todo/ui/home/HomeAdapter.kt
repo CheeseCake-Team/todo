@@ -3,18 +3,13 @@ package com.cheesecake.todo.ui.home
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.cheesecake.todo.R
+import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.databinding.ItemHomeHeaderBinding
 import com.cheesecake.todo.databinding.ItemHomeRecyclerBinding
 import com.cheesecake.todo.databinding.ItemTodoCardsBinding
-import com.cheesecake.todo.models.TodoItem
-import com.cheesecake.todo.ui.viewall.VIewAllTodoAdapter
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
+
 
 private const val ITEM_VIEW_TYPE_HEADER = 0
 private const val ITEM_VIEW_TYPE_TODO_CARDS = 1
@@ -58,7 +53,7 @@ private var context: Context
         when (holder) {
             is HeaderViewHolder -> {
                 val item = homeList[0] as TodoItem
-                holder.bind(item)
+                //holder.bind(item)
             }
             is CardsViewHolder -> {
                 val item = homeList[1] as TodoItem
@@ -86,29 +81,7 @@ private var context: Context
 
     inner class HeaderViewHolder(private val binding: ItemHomeHeaderBinding) :
         ItemViewHolderBase(binding) {
-        val entries = listOf(
-            BarEntry(1f, 4f),
-            BarEntry(2f, 2f),
-            BarEntry(3f, 6f),
 
-        )
-        val dataSet = BarDataSet(entries, "Todos").apply {
-            barBorderWidth = 0.5f
-        }
-        val data = BarData(dataSet)
-        fun bind(todoItem: TodoItem) {
-            dataSet.color = ContextCompat.getColor(context, R.color.md_theme_light_primary) // get the color from the color resource file
-
-            binding.apply{
-                barChart.data = data
-                barChart.xAxis.labelCount = 0
-                barChart.axisLeft.axisMinimum = 0f
-                barChart.axisRight.isEnabled = false
-
-                barChart.invalidate()
-
-            }
-        }
     }
     inner class CardsViewHolder(private val binding: ItemTodoCardsBinding) :
         ItemViewHolderBase(binding) {
@@ -123,7 +96,7 @@ private var context: Context
             } else {
                 binding.textRecently.text = "Recently Team"
             }
-            binding.recyclerView.adapter = VIewAllTodoAdapter(todoItem)
+            binding.recyclerView.adapter = SearchTodosAdapter(todoItem)
             //binding.textViewAll.setOnClickListener { listener }
         }
 
