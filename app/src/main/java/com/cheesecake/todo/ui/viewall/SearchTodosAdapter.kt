@@ -9,8 +9,8 @@ import com.cheesecake.todo.R
 import com.cheesecake.todo.databinding.ItemCardViewTodoBinding
 import com.cheesecake.todo.data.models.TodoItem
 
-class VIewAllTodoAdapter(private var todos: List<TodoItem>) :
-    RecyclerView.Adapter<VIewAllTodoAdapter.TodoViewHolder>() {
+class SearchTodosAdapter(private var todos: List<TodoItem>) :
+    RecyclerView.Adapter<SearchTodosAdapter.TodoViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
