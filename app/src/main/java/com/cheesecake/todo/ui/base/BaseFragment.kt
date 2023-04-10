@@ -54,14 +54,14 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
     }
 
     protected fun showNoInternetScreen() {
-        val builder = AlertDialog.Builder(requireContext())
+        /*val builder = AlertDialog.Builder(requireContext())
         builder.setTitle(R.string.no_internet_connection_title)
         builder.setMessage(R.string.no_internet_connection_message)
         builder.setCancelable(false)
         builder.setPositiveButton(R.string.retry) { _, _ ->
             if (!isNetworkAvailable()) showNoInternetScreen()
         }
-        builder.show()
+        builder.show()*/
     }
 
 
