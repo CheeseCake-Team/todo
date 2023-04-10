@@ -27,5 +27,10 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="task_name">Clothing App</string>
+    <string name="user_name">Maryam Hassan</string>
+    <string name="task_date">10April 2023</string>
+    <string name="task_time">03:17 AM</string>
+    <string name="task_content">As a developer you couldn\'t find enough time to pick what to wear everyday, so create a personal clothing helper app to make your life easier. Clothing Suggester App should check the weather in your city for you using any API you like (we provide some). then you should already enter a set of images of the clothes that you own into the drwable section in the app.</string>
 
 </resources>
