@@ -34,5 +34,6 @@
     <string name="assignee_name">Assignee Name</string>
     <string name="no_result_matches">No Result Matches</string>
     <string name="let_s_do_new_plans">Let’s do new plans</string>
+    <string name="search_bar_hint">Do homework</string>
 
 </resources>
