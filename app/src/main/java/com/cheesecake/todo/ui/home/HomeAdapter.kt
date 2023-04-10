@@ -57,7 +57,7 @@ private var context: Context
     override fun onBindViewHolder(holder: ItemViewHolderBase, position: Int) {
         when (holder) {
             is HeaderViewHolder -> {
-                val item = homeList[0] as TodoItem
+                val item = homeList[position] as List<TodoItem>
                 holder.bind(item)
             }
             is CardsViewHolder -> {
@@ -86,28 +86,9 @@ private var context: Context
 
     inner class HeaderViewHolder(private val binding: ItemHomeHeaderBinding) :
         ItemViewHolderBase(binding) {
-        val entries = listOf(
-            BarEntry(1f, 4f),
-            BarEntry(2f, 2f),
-            BarEntry(3f, 6f),
+        fun bind(todoItem: List<TodoItem>) {
+        binding.recyclerSearchResult.adapter=VIewAllTodoAdapter(todoItem)
 
-        )
-        val dataSet = BarDataSet(entries, "Todos").apply {
-            barBorderWidth = 0.5f
-        }
-        val data = BarData(dataSet)
-        fun bind(todoItem: TodoItem) {
-            dataSet.color = ContextCompat.getColor(context, R.color.md_theme_light_primary) // get the color from the color resource file
-
-            binding.apply{
-                barChart.data = data
-                barChart.xAxis.labelCount = 0
-                barChart.axisLeft.axisMinimum = 0f
-                barChart.axisRight.isEnabled = false
-
-                barChart.invalidate()
-
-            }
         }
     }
     inner class CardsViewHolder(private val binding: ItemTodoCardsBinding) :
