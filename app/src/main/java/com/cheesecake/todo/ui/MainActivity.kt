@@ -8,6 +8,7 @@ import com.cheesecake.todo.R
 import com.cheesecake.todo.databinding.ActivityMainBinding
 import com.cheesecake.todo.ui.base.BaseActivity
 import com.cheesecake.todo.ui.base.BaseFragment
+import com.cheesecake.todo.ui.home.HomeFragment
 import com.cheesecake.todo.ui.signup.SignUpFragment
 
 
@@ -31,6 +32,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private fun initializeHomeScreen() {
         binding.bottomNavigationBar.visibility = View.GONE
-        loadFragmentIntoContainer(SignUpFragment())
+        loadFragmentIntoContainer(HomeFragment())
     }
 }
