@@ -1,4 +1,4 @@
-package com.cheesecake.todo.ui.viewall
+package com.cheesecake.todo.ui.home
 
 import android.view.LayoutInflater
 import android.view.View
