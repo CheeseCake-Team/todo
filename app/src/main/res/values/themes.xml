@@ -102,7 +102,7 @@
     <style name="CardBackground">
         <item name="cardBackgroundColor">@color/material_dynamic_primary95</item>
     </style>
-
+    
     <style name="UsernameAndPasswordViewStyle">
         <item name="android:background">@drawable/shape_user_name_and_password_light_mode</item>
     </style>

@@ -3,14 +3,12 @@ package com.cheesecake.todo.ui.home
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.cheesecake.todo.R
+import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.databinding.ItemHomeHeaderBinding
 import com.cheesecake.todo.databinding.ItemHomeRecyclerBinding
 import com.cheesecake.todo.databinding.ItemTodoCardsBinding
-import com.cheesecake.todo.data.models.TodoItem
 
 
 private const val ITEM_VIEW_TYPE_HEADER = 0
@@ -54,8 +52,8 @@ private var context: Context
     override fun onBindViewHolder(holder: ItemViewHolderBase, position: Int) {
         when (holder) {
             is HeaderViewHolder -> {
-                val item = homeList[position] as List<TodoItem>
-                holder.bind(item)
+                val item = homeList[0] as TodoItem
+                //holder.bind(item)
             }
             is CardsViewHolder -> {
                 val item = homeList[1] as TodoItem
@@ -83,10 +81,7 @@ private var context: Context
 
     inner class HeaderViewHolder(private val binding: ItemHomeHeaderBinding) :
         ItemViewHolderBase(binding) {
-        fun bind(todoItem: List<TodoItem>) {
-        binding.recyclerSearchResult.adapter=SearchTodosAdapter(todoItem)
 
-        }
     }
     inner class CardsViewHolder(private val binding: ItemTodoCardsBinding) :
         ItemViewHolderBase(binding) {

@@ -45,7 +45,7 @@ class SearchTodosAdapter(private var todos: List<TodoItem>) :
             val creationTime = todoItem.creationTime.substring(11, 23)
 
             binding.textViewTeamTodoCreationDate.text = creationDate
-            binding.textViewTeamTodoCreationTime.text = creationTime
+
         }
 
     }
