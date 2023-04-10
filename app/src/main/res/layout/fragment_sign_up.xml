@@ -47,15 +47,14 @@
         android:layout_marginHorizontal="@dimen/margin_medium_16"
         android:layout_marginBottom="@dimen/margin_small_8"
         android:hint="@string/username"
-        android:textColorHint="@color/black_hint"
         app:layout_constraintBottom_toTopOf="@+id/text_input_password_sign_up"
         app:layout_constraintTop_toBottomOf="@+id/text_view_definition">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text_user_name_sign_up"
+            style="@style/UsernameAndPasswordViewStyle"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:background="@drawable/shape_user_name_and_password"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -66,16 +65,15 @@
         android:layout_marginHorizontal="@dimen/margin_medium_16"
         android:layout_marginBottom="@dimen/margin_small_8"
         android:hint="@string/password"
-        android:textColorHint="@color/black_hint"
         app:layout_constraintBottom_toTopOf="@+id/text_input_confirm_password_sign_up"
         app:layout_constraintTop_toBottomOf="@+id/text_input_user_name_sign_up"
         app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text_password_sign_up"
+            style="@style/UsernameAndPasswordViewStyle"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:background="@drawable/shape_user_name_and_password"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -86,16 +84,15 @@
         android:layout_marginHorizontal="@dimen/margin_medium_16"
         android:layout_marginBottom="@dimen/margin_small_8"
         android:hint="@string/confirm_password"
-        android:textColorHint="@color/black_hint"
         app:layout_constraintBottom_toTopOf="@+id/button_sign_up"
         app:layout_constraintTop_toBottomOf="@+id/text_input_password_sign_up"
         app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text_confirm_password_sign_up"
+            style="@style/UsernameAndPasswordViewStyle"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:background="@drawable/shape_user_name_and_password"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 

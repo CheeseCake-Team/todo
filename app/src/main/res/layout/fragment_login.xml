@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
@@ -31,18 +30,17 @@
         android:id="@+id/text_input_user_name_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_marginHorizontal="@dimen/margin_medium_16"
         android:layout_marginTop="@dimen/margin_large_24"
         android:hint="@string/username"
-        android:textColorHint="#7A000000"
+
         app:layout_constraintTop_toBottomOf="@+id/text_view_welcome_login">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text_user_name_login"
+            style="@style/UsernameAndPasswordViewStyle"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:background="@drawable/shape_user_name_and_password"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -54,7 +52,6 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:hint="@string/password"
-        android:textColorHint="#7A000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/text_input_user_name_login"
         app:layout_constraintTop_toBottomOf="@id/text_input_user_name_login"
@@ -62,10 +59,9 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text_password_login"
+            style="@style/UsernameAndPasswordViewStyle"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:background="@drawable/shape_user_name_and_password"
-
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -94,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
             android:text="@string/do_not_have_an_account"
-            android:textColor="#99000000"
+            style="@style/HaveAnAccountText"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="595dp" />
 
@@ -103,7 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sign_up"
-            android:textColor="#6750A4"
+            style="@style/SignUpText"
             app:layout_constraintTop_toTopOf="@+id/textView2"
             tools:layout_editor_absoluteX="349dp" />
     </LinearLayout>
