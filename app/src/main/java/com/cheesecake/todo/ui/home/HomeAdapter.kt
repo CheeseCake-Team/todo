@@ -11,10 +11,7 @@ import com.cheesecake.todo.databinding.ItemHomeHeaderBinding
 import com.cheesecake.todo.databinding.ItemHomeRecyclerBinding
 import com.cheesecake.todo.databinding.ItemTodoCardsBinding
 import com.cheesecake.todo.data.models.TodoItem
-import com.cheesecake.todo.ui.viewall.VIewAllTodoAdapter
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
+
 
 private const val ITEM_VIEW_TYPE_HEADER = 0
 private const val ITEM_VIEW_TYPE_TODO_CARDS = 1
@@ -87,7 +84,7 @@ private var context: Context
     inner class HeaderViewHolder(private val binding: ItemHomeHeaderBinding) :
         ItemViewHolderBase(binding) {
         fun bind(todoItem: List<TodoItem>) {
-        binding.recyclerSearchResult.adapter=VIewAllTodoAdapter(todoItem)
+        binding.recyclerSearchResult.adapter=SearchTodosAdapter(todoItem)
 
         }
     }
@@ -104,7 +101,7 @@ private var context: Context
             } else {
                 binding.textRecently.text = "Recently Team"
             }
-            binding.recyclerView.adapter = VIewAllTodoAdapter(todoItem)
+            binding.recyclerView.adapter = SearchTodosAdapter(todoItem)
             //binding.textViewAll.setOnClickListener { listener }
         }
 

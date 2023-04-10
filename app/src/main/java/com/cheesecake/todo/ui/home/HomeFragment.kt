@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import com.cheesecake.todo.databinding.FragmentHomeBinding
 import com.cheesecake.todo.data.models.TodoItem
+import com.cheesecake.todo.data.models.TodoState
 import com.cheesecake.todo.ui.base.BaseFragment
 
 class HomeFragment() : BaseFragment<FragmentHomeBinding>() {
@@ -15,16 +16,20 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val todosList =
-            listOf<Any>(
-                TodoItem(",", "", "", "", 3, ""),
-                TodoItem(",", "", "", "", 3, ""),
-                listOf<TodoItem>(
-                    TodoItem(",", "", "", "", 3, ""),
-                    TodoItem(",", "", "", "", 3, "")
-                )
-            )
+//        val todosList =
+//            listOf<Any>(
+//                TodoItem(",", "", "", "", TodoState.TODO, ""),
+//                TodoItem(",", "", "", "",  TodoState.TODO, ""),
+//                listOf<TodoItem>(
+//                    TodoItem(",", "", "", "",  TodoState.TODO, ""),
+//                    TodoItem(",", "", "", "",  TodoState.TODO, "")
+//                )
+//            )
         //binding.recyclerViewHome.adapter = HomeAdapter(todosList,::loadViewAllFragment)
+    }
+
+    override fun onRetryClick() {
+        TODO("Not yet implemented")
     }
 
 //    private fun loadViewAllFragment() {
