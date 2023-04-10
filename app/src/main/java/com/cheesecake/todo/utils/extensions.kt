@@ -33,4 +33,11 @@ fun isNetworkAvailable(connectivityManager: ConnectivityManager): Boolean {
                     networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))
 }
 
+fun isUsernameValid(username: String) =
+    username.length > 3 && username.isNotBlank()
 
+fun isPasswordValid(password: String) =
+    password.length > 8
+
+fun arePasswordsTheSame(password : String, confirmationPassword: String) =
+    password == confirmationPassword
