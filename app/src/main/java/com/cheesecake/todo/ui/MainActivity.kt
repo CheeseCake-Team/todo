@@ -2,6 +2,14 @@ package com.cheesecake.todo.ui
 
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import com.cheesecake.todo.R
+import com.cheesecake.todo.databinding.ActivityMainBinding
+import com.cheesecake.todo.ui.base.BaseActivity
+import com.cheesecake.todo.ui.base.BaseFragment
+import com.cheesecake.todo.ui.signup.SignUpFragment
+
 import androidx.appcompat.app.AppCompatActivity
 import com.cheesecake.todo.databinding.FragmentHomeBinding
 import com.cheesecake.todo.models.TodoItem
@@ -27,9 +35,20 @@ class MainActivity : AppCompatActivity() {
                 )
             )
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
         binding.recyclerViewHome.adapter = HomeAdapter(todosList,this)
 
+    override fun onStart() {
+        super.onStart()
+        initializeHomeScreen()
+    }
 
+    private fun loadFragmentIntoContainer(baseFragment: BaseFragment<*>) {
+        supportFragmentManager.beginTransaction()
+            .add(R.id.fragment_container_activity, baseFragment).commit()
+    }
 
     }
 
@@ -41,4 +60,8 @@ class MainActivity : AppCompatActivity() {
 //        }
 //    }
 
+    private fun initializeHomeScreen() {
+        binding.bottomNavigationBar.visibility = View.GONE
+        loadFragmentIntoContainer(SignUpFragment())
+    }
 }
