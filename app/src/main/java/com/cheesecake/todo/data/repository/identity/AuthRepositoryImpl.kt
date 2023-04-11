@@ -16,18 +16,5 @@ class AuthRepositoryImpl(private val networkService: NetworkService) : AuthRepos
         }
     }
 
-    override fun signUp(
-        username: String,
-        password: String,
-        teamId: String,
-        callback: AuthCallback
-    ) {
-        networkService.signUp(username, password, teamId) { pair, error ->
-            if (error != null) {
-                callback.onError(error)
-            } else {
-                callback.onSuccess(pair!!)
-            }
-        }
-    }
+
 }

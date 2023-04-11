@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import com.cheesecake.todo.R
+import com.cheesecake.todo.data.network.NetworkService
 import com.cheesecake.todo.data.network.NetworkServiceImpl
+import com.cheesecake.todo.data.repository.identity.AuthCallback
 import com.cheesecake.todo.data.repository.identity.AuthRepositoryImpl
 import com.cheesecake.todo.databinding.FragmentSignUpBinding
 import com.cheesecake.todo.ui.base.BaseFragment
@@ -20,9 +22,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter = SignUpPresenter(
-            AuthRepositoryImpl(NetworkServiceImpl()),
-        )
+        presenter = SignUpPresenter(NetworkServiceImpl())
+
         presenter.attachView(this)
         addCallBacks()
 
@@ -63,6 +64,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView {
         }
 
     }
+
 
     private fun loadLoginFragment() {
         requireActivity().supportFragmentManager.beginTransaction().apply {

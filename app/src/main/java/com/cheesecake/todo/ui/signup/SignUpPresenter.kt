@@ -1,6 +1,7 @@
 package com.cheesecake.todo.ui.signup
 
 import com.cheesecake.todo.BuildConfig
+import com.cheesecake.todo.data.network.NetworkService
 import com.cheesecake.todo.data.repository.identity.AuthCallback
 import com.cheesecake.todo.data.repository.identity.AuthRepository
 import com.cheesecake.todo.utils.arePasswordsTheSame
@@ -8,7 +9,7 @@ import com.cheesecake.todo.utils.isPasswordValid
 import com.cheesecake.todo.utils.isUsernameValid
 
 class SignUpPresenter(
-    private val authRepository: AuthRepository,
+    private val networkService: NetworkService,
 ) {
 
     private var signUpView: SignUpView? = null
@@ -35,7 +36,7 @@ class SignUpPresenter(
                 signUpView?.showError("Invalid password!")
             !arePasswordsTheSame(password, confirmationPassword) ->
                 signUpView?.showError("Passwords are not matched!")
-            else -> authRepository.signUp(username, password, BuildConfig.teamId, callback)
+            else -> signUpDone(username, password, BuildConfig.teamId, callback)
         }
     }
 
@@ -45,6 +46,21 @@ class SignUpPresenter(
 
     fun detachView() {
         signUpView = null
+    }
+
+    private fun signUpDone(
+        username: String,
+        password: String,
+        teamId: String,
+        callback: AuthCallback,
+    ) {
+        networkService.signUp(username, password, teamId) { pair, error ->
+            if (error != null) {
+                callback.onError(error)
+            } else {
+                callback.onSuccess(pair!!)
+            }
+        }
     }
 
 }
