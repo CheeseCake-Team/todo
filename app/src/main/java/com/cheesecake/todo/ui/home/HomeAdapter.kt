@@ -4,11 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
 import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.databinding.ItemHomeHeaderBinding
 import com.cheesecake.todo.databinding.ItemHomeRecyclerBinding
 import com.cheesecake.todo.databinding.ItemTodoCardsBinding
+import com.cheesecake.todo.ui.base.BaseItemViewHolder
 
 
 private const val ITEM_VIEW_TYPE_HEADER = 0
@@ -18,12 +18,12 @@ private const val ITEM_VIEW_TYPE_TODO_recycler = 2
 class HomeAdapter(
     private var homeList: List<*>,
 //    private val listener: () -> Unit
-private var context: Context
+    private var context: Context
 
-) : RecyclerView.Adapter<HomeAdapter.ItemViewHolderBase>() {
+) : RecyclerView.Adapter<BaseItemViewHolder>() {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolderBase {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseItemViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             ITEM_VIEW_TYPE_HEADER -> HeaderViewHolder(
@@ -49,7 +49,7 @@ private var context: Context
     }
 
 
-    override fun onBindViewHolder(holder: ItemViewHolderBase, position: Int) {
+    override fun onBindViewHolder(holder: BaseItemViewHolder, position: Int) {
         when (holder) {
             is HeaderViewHolder -> {
                 val item = homeList[0] as TodoItem
@@ -77,21 +77,21 @@ private var context: Context
 
     override fun getItemCount() = homeList.size
 
-    abstract class ItemViewHolderBase(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root)
-
     inner class HeaderViewHolder(private val binding: ItemHomeHeaderBinding) :
-        ItemViewHolderBase(binding) {
+        BaseItemViewHolder(binding) {
 
     }
+
     inner class CardsViewHolder(private val binding: ItemTodoCardsBinding) :
-        ItemViewHolderBase(binding) {
+        BaseItemViewHolder(binding) {
         fun bind(todoItem: TodoItem) {
         }
     }
+
     inner class TodoRecyclerViewHolder(private val binding: ItemHomeRecyclerBinding) :
-        ItemViewHolderBase(binding) {
+        BaseItemViewHolder(binding) {
         fun bind(todoItem: List<TodoItem>) {
-            if (todoItem[0].assignee == null){
+            if (todoItem[0].assignee == null) {
                 binding.textRecently.text = "Recently Personal"
             } else {
                 binding.textRecently.text = "Recently Team"
@@ -101,7 +101,6 @@ private var context: Context
         }
 
     }
-
 
 
 }

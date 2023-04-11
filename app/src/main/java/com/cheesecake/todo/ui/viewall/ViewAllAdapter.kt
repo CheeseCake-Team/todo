@@ -30,15 +30,12 @@ class ViewAllAdapter (val todoItems: List<TodoItem>): RecyclerView.Adapter<Recyc
         RecyclerView.ViewHolder(itemCard) {
         private val binding = ItemCardViewTodoBinding.bind(itemCard)
         fun bind(todoItem: TodoItem) {
-            binding.textViewTeamTodoTitle.text = todoItem.title
-            binding.textViewTeamTodoDescription.text = todoItem.description
-            binding.textViewTeamTodoAssignee.text = todoItem.assignee
-
-            val creationDate = todoItem.creationTime.substring(0, 10)
-            val creationTime = todoItem.creationTime.substring(11, 23)
-
-            binding.textViewTeamTodoCreationDate.text = creationDate
-
+            binding.apply {
+                textViewTeamTodoTitle.text = todoItem.title
+                textViewTeamTodoDescription.text = todoItem.description
+                textViewTeamTodoAssignee.text = todoItem.assignee
+                textViewTeamTodoCreationDate.text = todoItem.creationTime
+            }
         }
 
     }

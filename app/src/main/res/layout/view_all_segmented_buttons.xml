@@ -8,15 +8,16 @@
         android:id="@+id/toggle_button_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_medium_16"
         android:layout_marginStart="@dimen/margin_medium_16"
+        android:layout_marginTop="@dimen/margin_medium_16"
         android:layout_marginEnd="@dimen/margin_medium_16"
         android:layout_marginBottom="@dimen/margin_medium_8"
         android:weightSum="3"
+        
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:singleSelection="true">
 
         <Button
