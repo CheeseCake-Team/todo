@@ -90,15 +90,27 @@
                 app:layout_constraintStart_toEndOf="@+id/text_view_fixed_progress"
                 app:layout_constraintTop_toTopOf="@+id/text_view_fixed_progress" />
 
-            <com.github.mikephil.charting.charts.PieChart
+            <com.hookedonplay.decoviewlib.DecoView
                 android:id="@+id/pie_chart"
                 android:layout_width="92dp"
                 android:layout_height="92dp"
+                android:textAlignment="center"
                 android:layout_marginTop="@dimen/margin_medium_16"
                 android:layout_marginEnd="@dimen/margin_medium_16"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_view_done_percentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="60%"
+                style="@style/FixedCardTitleAndDetailsText"
+                app:layout_constraintBottom_toBottomOf="@+id/pie_chart"
+                app:layout_constraintEnd_toEndOf="@+id/pie_chart"
+                app:layout_constraintStart_toStartOf="@+id/pie_chart"
+                app:layout_constraintTop_toTopOf="@+id/pie_chart" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -179,16 +191,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_view_fixed_progress_text"
                 app:layout_constraintVertical_bias="0.0"
-                app:rcBackgroundColor="@color/white"
-                app:rcMax="100.0"
-                app:rcProgress="40.0"
-                app:rcSecondaryProgress="60.0"
-                app:rcSecondaryProgressColor="#40EF5350"
-                app:rcProgressColor="@color/md_theme_light_primary"
-                app:rcRadius="2dp" />
+                app:rcBackgroundColor="#0A000000"
+                app:rcProgress="90"
+                app:rcRadius="2dp"
+                app:rcProgressColor="@color/md_theme_light_primary" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     </com.google.android.material.card.MaterialCardView>
 
@@ -198,7 +206,7 @@
         android:layout_height="142dp"
         android:layout_marginStart="@dimen/margin_medium_16"
         android:layout_marginEnd="8dp"
-        android:backgroundTint="#E7E2F3"
+        app:cardBackgroundColor="#E7E2F3"
         app:cardCornerRadius="@dimen/margin_medium_16"
         style="@style/Widget.Material3.CardView.Filled"
         app:layout_constraintEnd_toStartOf="@+id/card_team"
@@ -230,9 +238,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_view_fixed_person_progress_text"
-                app:rcBackgroundColor="@color/white"
+                app:rcBackgroundColor="#0A000000"
                 app:rcRadius="2dp"
-                app:rcProgressColor="@color/md_theme_light_primary" />
+                app:rcProgressColor="@color/md_theme_light_primary"
+                />
 
             <TextView
                 android:id="@+id/text_view_fixed_person_todo"
