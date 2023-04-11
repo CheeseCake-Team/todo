@@ -1,6 +1,6 @@
 package com.cheesecake.todo.ui.home
 
-import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cheesecake.todo.data.models.Tag
 import com.cheesecake.todo.databinding.ItemHomeHeaderBinding
 import com.cheesecake.todo.databinding.ItemTagBinding
+import com.hookedonplay.decoviewlib.charts.SeriesItem
+import com.hookedonplay.decoviewlib.charts.SeriesLabel
 
 private const val ITEM_VIEW_TYPE_HEADER = 0
 private const val ITEM_VIEW_TYPE_TAG = 2
@@ -60,24 +62,38 @@ class HomeAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(header: DataItem.Header) {
+            setupPieChart()
             binding.personTodoProgressBar.max = (header.doneNumber + header.progressNumber
                     + header.todoNumber).toFloat()
             binding.personTodoProgressBar.progress = header.doneNumber.toFloat()
+        }
+
+        private fun setupPieChart() {
+            val todo = SeriesItem.Builder(Color.argb(92, 225, 225, 225))
+                .setRange(0f, 100f, 100f)
+                .setInitialVisibility(true)
+                .setLineWidth(12f)
+                .build()
+
+            val progress = SeriesItem.Builder(Color.argb(153, 225, 225, 225))
+                .setRange(0f, 100f, 80f)
+                .setLineWidth(12f)
+                .build()
+
+            val done = SeriesItem.Builder(Color.argb(255, 225, 225, 225))
+                .setRange(0f, 100f, 60f)
+                .setLineWidth(12f)
+                .build()
+
+            binding.pieChart.addSeries(todo)
+            binding.pieChart.addSeries(progress)
+            binding.pieChart.addSeries(done)
         }
 
     }
 
     inner class TagViewHolder(private val binding: ItemTagBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        /*fun bind(todoItem: List<TodoItem>) {
-            if (todoItem[0].assignee == null){
-                binding.textRecently.text = "Recently Personal"
-            } else {
-                binding.textRecently.text = "Recently Team"
-            }
-            binding.recyclerView.adapter = SearchTodosAdapter(todoItem)
-            //binding.textViewAll.setOnClickListener { listener }
-        }*/
         fun bind(tag: Tag) {
             binding.textRecently.text = tag.title
             val adapter = TodoItemAdapter(listener)
