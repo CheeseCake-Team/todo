@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".ui.createtodo.ToDoFragment">
+ <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <EditText
+        android:id="@+id/titleField"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginHorizontal="16dp"
+        android:textSize="14sp"
+        style="@style/Widget.Material3.CardView.Filled"
+        android:background="@drawable/title"
+        android:padding="16dp"
+        android:hint="@string/title"
+        android:layout_marginTop="24dp"
+        android:textStyle="bold"
+        android:textColor="@color/black_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="" />
+
+    <EditText
+        android:id="@+id/descriptionField"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/fileduserna"
+        android:padding="16dp"
+        android:hint="@string/description"
+        android:gravity="top"
+        android:textColor="@color/black_details"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleField" />
+
+    <TextView
+        android:id="@+id/textViewType"
+        style="@style/create_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="29dp"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center_horizontal|center_vertical"
+        android:lineSpacingExtra="-1sp"
+        android:text="@string/category"
+        android:textAppearance="@style/category"
+        app:layout_constraintStart_toStartOf="@id/descriptionField"
+        app:layout_constraintTop_toBottomOf="@id/descriptionField" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroupType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="21dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/textViewType"
+        app:layout_constraintTop_toBottomOf="@id/textViewType"
+        app:singleSelection="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipPersonalTodo"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:layout_height="64dp"
+            android:background="@drawable/rectangle"
+            android:text="@string/personal_todo"
+            android:gravity="center"
+            android:layout_marginEnd="12dp"
+            app:chipIcon="@drawable/personicon"
+            android:textColor="@color/black_details" />
+<!--        style="@style/Widget.MaterialComponents.Chip.Entry"-->
+
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipTeamTodo"
+            android:layout_width="0dp"
+            android:textAlignment="center"
+            android:layout_weight="1"
+            android:layout_height="64dp"
+            android:text="@string/team_todo"
+            app:chipIcon="@drawable/teamicon"
+            android:textColor="@color/black_details" />
+        </LinearLayout>
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/create"
+        style="@style/create_button"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="54dp"
+        android:background="@drawable/button"
+        android:fontFamily="@font/roboto_medium"
+        android:text="@string/create"
+        android:elevation="5dp"
+        android:clickable="true"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chipGroupType" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>

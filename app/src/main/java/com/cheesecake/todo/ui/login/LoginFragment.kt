@@ -32,6 +32,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
                 PREFS_NAME,
                 Context.MODE_PRIVATE
             )
+        ,requireContext()
         )
 
         presenter = LoginPresenter(
@@ -51,6 +52,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
 
         }
     }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -23,7 +23,8 @@ class TodoRepositoryImpl(private val networkDataSource: NetworkService) : TodoRe
         token: String,
         callback: TodoCallback
     ) {
-        networkDataSource.createTodo(title, description, assignee, isPersonal, token) { error ->
+        networkDataSource.createTodo(title, description, assignee, isPersonal, token)
+        { error ->
             if (error != null) {
                 callback.onError(error)
             } else {

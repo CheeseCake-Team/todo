@@ -23,7 +23,7 @@
         <item name="android:textColor">@color/white_hint</item>
     </style>
 
-    <style name="CardTitle" parent="TextSubTitle">
+    <style name="CardTitle" parent="create_button">
         <item name="android:textColor">@color/white_title</item>
     </style>
 
