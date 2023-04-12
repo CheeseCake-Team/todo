@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.SearchView
+
 import com.cheesecake.todo.R
 import com.cheesecake.todo.data.models.Tag
 import com.cheesecake.todo.databinding.FragmentHomeBinding
@@ -60,8 +61,8 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(), SearchView.OnQueryTe
             searchAdapter.submitList(resultOfSearch)
             binding.recyclerViewHome.adapter = searchAdapter
         } else {
-            searchAdapter.submitList(emptyList())
-            binding.recyclerViewHome.adapter = searchAdapter
+
+            binding.recyclerViewHome.adapter = homeAdapter
         }
 
     }
