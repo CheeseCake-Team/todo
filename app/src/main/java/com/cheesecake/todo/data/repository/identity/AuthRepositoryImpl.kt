@@ -1,9 +1,13 @@
 package com.cheesecake.todo.data.repository.identity
 
+import com.cheesecake.todo.data.local.SharedPreferencesService
 import com.cheesecake.todo.data.network.NetworkService
 
 
-class AuthRepositoryImpl(private val networkService: NetworkService) : AuthRepository {
+class AuthRepositoryImpl(
+    private val networkService: NetworkService,
+    private val sharedPreferencesService: SharedPreferencesService
+) : AuthRepository {
 
     override fun login(username: String, password: String, callback: AuthCallback) {
 
@@ -29,5 +33,10 @@ class AuthRepositoryImpl(private val networkService: NetworkService) : AuthRepos
                 callback.onSuccess(pair!!)
             }
         }
+    }
+
+    override fun saveTokenAndExpireDate(token: String, expireDate: String) {
+        sharedPreferencesService.saveToken(token)
+        sharedPreferencesService.saveExpireDate(expireDate)
     }
 }
