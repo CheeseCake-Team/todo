@@ -2,55 +2,54 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/confirmationDialog"
+    android:id="@+id/constraint_confirmation_dialog"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="300dp"
     android:layout_gravity="center_vertical|center_horizontal"
     android:layout_marginHorizontal="24dp"
-    android:background="@drawable/basic_dialo"
+    android:background="@drawable/courner_dialog"
     android:elevation="5dp">
 
     <ImageView
-        android:id="@+id/confirmationImage"
+        android:id="@+id/image_view_confirmation_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:src="@drawable/confirmationmage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
 
     <TextView
-        android:id="@+id/confirmation"
+        android:id="@+id/text_view_confirmation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:fontFamily="@font/roboto_black"
-        android:gravity="center_horizontal|center_vertical"
+        android:fontFamily="@font/roboto_medium"
         android:lineSpacingExtra="7sp"
         android:text="@string/confirmation"
         android:textAppearance="@style/headline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirmationImage" />
+        app:layout_constraintTop_toBottomOf="@+id/image_view_confirmation_image" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/text_view_detailes_confirmation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="8dp"
-        android:gravity="center_horizontal|center_vertical"
         android:lineSpacingExtra="7sp"
         android:text="@string/newtask"
         android:textAppearance="@style/headline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirmation" />
+        app:layout_constraintTop_toBottomOf="@+id/text_view_confirmation" />
 
     <TextView
-        android:id="@+id/cancel"
+        android:id="@+id/text_view_cancel_text_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal|center_vertical"

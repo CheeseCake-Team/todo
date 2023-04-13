@@ -15,12 +15,7 @@ class CreateTodoPresenter(var context: Context) {
     private val endPointPersonal = "personal"
     private val endPointTeam = "team"
     private lateinit var sharedPreferencesServiceImpl: SharedPreferencesServiceImpl
-
     private val client = OkHttpClient()
-
-
-
-
 
     private fun requestBody(title: String, description: String) =
         FormBody.Builder().apply {
@@ -34,11 +29,8 @@ class CreateTodoPresenter(var context: Context) {
         description: String,
         token: String,
         callback: StatusResponse
-
-
     ) {
         request(endPointPersonal, requestBody(title, description), token, callback)
-
     }
 
     fun toDoForTeam(
@@ -46,12 +38,8 @@ class CreateTodoPresenter(var context: Context) {
         description: String,
         token: String,
         callback: StatusResponse
-
     ) {
-
         request(endPointTeam, requestBody(title, description), token, callback)
-
-
     }
 
     private fun request(
@@ -72,8 +60,6 @@ class CreateTodoPresenter(var context: Context) {
             }
 
             override fun onResponse(call: Call, response: Response) {
-
-
                 if (response.isSuccessful) {
                     val body = response.body?.string()
                     val jason = Gson().fromJson(body, CreateToDoModel::class.java)
@@ -81,9 +67,7 @@ class CreateTodoPresenter(var context: Context) {
                 } else {
                     callback.onError("Lost NetWork")
                 }
-
             }
-
         })
     }
      fun checkToken() : String?{

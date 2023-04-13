@@ -11,9 +11,7 @@ import com.cheesecake.todo.R
 abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
     protected abstract val bindingInflater: (LayoutInflater) -> VB
-
     private var _binding: VB? = null
-
     protected val binding: VB
         get() = _binding as VB
 

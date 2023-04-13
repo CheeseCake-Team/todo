@@ -2,8 +2,6 @@ package com.cheesecake.todo.ui.createtodo
 
 import android.app.Dialog
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -38,13 +36,11 @@ class ToDoFragment : BaseFragment<FragmentCreateToDoBinding>() {
         hasBackButtonOrNot()
         setActionBarTitle()
         createToDo()
-
-
     }
 
     private fun getData() {
-        title = binding.titleField.text.toString()
-        description = binding.descriptionField.text.toString()
+        title = binding.editTextTitle.text.toString()
+        description = binding.editTextDescription.text.toString()
     }
 
 
@@ -61,12 +57,8 @@ class ToDoFragment : BaseFragment<FragmentCreateToDoBinding>() {
                         makeRequest(token)
 
                     }
-
-
                 }
             }
-
-
         }
     }
 
@@ -94,9 +86,7 @@ class ToDoFragment : BaseFragment<FragmentCreateToDoBinding>() {
                             Log.d("TAG", "onSuccess: ${toDoModel.value}")
                            requireActivity().runOnUiThread {
                                showDialog()
-
                            }
-
                         }
                         override fun onError(error: String) {
                         }
@@ -110,13 +100,11 @@ class ToDoFragment : BaseFragment<FragmentCreateToDoBinding>() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-
         }
     }
 
     private fun hasBackButtonOrNot() {
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
     }
 
     private fun setActionBarTitle() {
@@ -140,16 +128,14 @@ class ToDoFragment : BaseFragment<FragmentCreateToDoBinding>() {
                     .show()
                 return false
             }
-
         }
         return true
-
     }
 
     private fun checkChip(
         checkPersonal: Boolean, checkTeam: Boolean,
         colorPersonal: Int, colorTeam: Int, status: String
-    ): String {
+        ): String {
         binding.apply {
             chipPersonalTodo.apply {
                 isCheckable = checkPersonal
@@ -182,8 +168,6 @@ class ToDoFragment : BaseFragment<FragmentCreateToDoBinding>() {
                         colorTeam = R.color.white,
                         status = person
                     )
-
-
                 }
             }
             chipTeamTodo.setOnClickListener {
@@ -203,11 +187,9 @@ class ToDoFragment : BaseFragment<FragmentCreateToDoBinding>() {
                             colorTeam = R.color.blue,
                             status = team
                         )
-
                 }
             }
         }
-
         return status
     }
 
@@ -218,18 +200,13 @@ class ToDoFragment : BaseFragment<FragmentCreateToDoBinding>() {
         dialog.setCancelable(false)
         dialog.window?.attributes?.windowAnimations = R.style.animationDialog;
 
-       val cancel = dialog.findViewById<TextView>(R.id.cancel);
+       val cancel = dialog.findViewById<TextView>(R.id.text_view_cancel_text_button);
 
         cancel.setOnClickListener{
                 dialog.dismiss();
         }
-
         dialog.show();
-
     }
-
-
-
 
 
 }
