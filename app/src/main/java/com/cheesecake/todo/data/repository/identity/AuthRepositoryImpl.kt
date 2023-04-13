@@ -9,13 +9,13 @@ class AuthRepositoryImpl(
     private val sharedPreferencesService: SharedPreferencesService
 ) : AuthRepository {
 
-    override fun login(username: String, password: String, callback: AuthCallback) {
+    override fun login(username: String, password: String, callback: LoginCallback) {
 
         networkService.login(username, password) { pair, error ->
             if (error != null) {
-                callback.onError(error)
+                callback.onLoginFail(error)
             } else {
-                callback.onSuccess(pair!!, username)
+                callback.onLoginComplete(pair!!, username)
             }
         }
     }
@@ -24,13 +24,13 @@ class AuthRepositoryImpl(
         username: String,
         password: String,
         teamId: String,
-        callback: AuthCallback
+        callback: LoginCallback
     ) {
         networkService.signUp(username, password, teamId) { pair, error ->
             if (error != null) {
-                callback.onError(error)
+                callback.onLoginFail(error)
             } else {
-                callback.onSuccess(pair!!)
+                callback.onLoginComplete(pair!!)
             }
         }
     }

@@ -1,26 +1,22 @@
 package com.cheesecake.todo.ui.signup
 
 import com.cheesecake.todo.BuildConfig
-import com.cheesecake.todo.data.repository.identity.AuthCallback
 import com.cheesecake.todo.data.repository.identity.AuthRepository
+import com.cheesecake.todo.data.repository.identity.SignUpCallback
 import com.cheesecake.todo.utils.arePasswordsTheSame
 import com.cheesecake.todo.utils.isPasswordValid
 import com.cheesecake.todo.utils.isUsernameValid
 
-class SignUpPresenter(
-    private val authRepository: AuthRepository,
-) {
+class SignUpPresenter(private val authRepository: AuthRepository) : SignUpCallback {
 
     private var signUpView: SignUpView? = null
-    private val callback = object : AuthCallback {
 
-        override fun onSuccess(pair: Pair<String, String>,username: String?) {
-            signUpView?.navigateToLoginScreen()
-        }
+    override fun onSignUpComplete() {
+        signUpView?.navigateToLoginScreen()
+    }
 
-        override fun onError(error: String) {
-            signUpView?.showError("Sign up failed!")
-        }
+    override fun onSignUpFail(error: String) {
+        signUpView?.showError(error)
     }
 
     fun signUp(
@@ -35,7 +31,7 @@ class SignUpPresenter(
                 signUpView?.showError("Invalid password!")
             !arePasswordsTheSame(password, confirmationPassword) ->
                 signUpView?.showError("Passwords are not matched!")
-            else -> authRepository.signUp(username, password, BuildConfig.teamId, callback)
+            else -> authRepository.signUp(username, password, BuildConfig.teamId, this)
         }
     }
 
