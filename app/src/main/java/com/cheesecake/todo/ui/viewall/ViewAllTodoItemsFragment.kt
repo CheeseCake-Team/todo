@@ -10,6 +10,9 @@ import com.cheesecake.todo.R
 import com.cheesecake.todo.data.local.SharedPreferencesService
 import com.cheesecake.todo.data.local.SharedPreferencesServiceImpl
 import com.cheesecake.todo.data.models.TodoItem
+import com.cheesecake.todo.data.network.NetworkServiceImpl
+import com.cheesecake.todo.data.repository.todos.TodoRepository
+import com.cheesecake.todo.data.repository.todos.TodoRepositoryImpl
 import com.cheesecake.todo.databinding.FragmentViewAllTodoItemsBinding
 import com.cheesecake.todo.ui.base.BaseFragment
 import com.cheesecake.todo.ui.login.LoginFragment
@@ -24,6 +27,7 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding>()
 
     private lateinit var presenter: ViewAllContract.IPresenter
     private lateinit var sharedPreferencesService: SharedPreferencesService
+    private lateinit var todoRepository: TodoRepository
     private var _isPersonalStatus: Boolean? = null
 
 
@@ -33,12 +37,7 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding>()
         arguments?.let {
             _isPersonalStatus = it.getBoolean(IS_PERSONAL_KEY)
         }
-        sharedPreferencesService = SharedPreferencesServiceImpl(
-            requireActivity().getSharedPreferences(
-                Constants.PREFS_NAME,
-                Context.MODE_PRIVATE
-            )
-        )
+        todoRepositoryInit()
     }
 
     override fun onCreateView(
@@ -47,6 +46,7 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding>()
         savedInstanceState: Bundle?
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
+        presenter = ViewAllPresenter(todoRepository)
         presenter.attachView(this)
         return view
     }
@@ -79,5 +79,15 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding>()
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container_activity,LoginFragment())
             .commit()
+    }
+
+    private fun todoRepositoryInit(){
+        sharedPreferencesService = SharedPreferencesServiceImpl(
+            requireActivity().getSharedPreferences(
+                Constants.PREFS_NAME,
+                Context.MODE_PRIVATE
+            )
+        )
+        todoRepository = TodoRepositoryImpl(NetworkServiceImpl(),sharedPreferencesService)
     }
 }
