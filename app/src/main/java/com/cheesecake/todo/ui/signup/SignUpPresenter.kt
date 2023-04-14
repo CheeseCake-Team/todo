@@ -1,6 +1,7 @@
 package com.cheesecake.todo.ui.signup
 
-import androidx.viewbinding.BuildConfig
+
+import com.cheesecake.todo.BuildConfig
 import com.cheesecake.todo.data.repository.identity.AuthRepository
 import com.cheesecake.todo.data.repository.identity.SignUpCallback
 import com.cheesecake.todo.utils.arePasswordsTheSame
