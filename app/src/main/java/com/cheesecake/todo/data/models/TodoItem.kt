@@ -9,7 +9,7 @@ data class TodoItem(
     val title: String,
     val description: String,
     val assignee: String? = null,
-    val status: TodoState,
+    val status: Int,
     val creationTime: String,
 ): Parcelable
 

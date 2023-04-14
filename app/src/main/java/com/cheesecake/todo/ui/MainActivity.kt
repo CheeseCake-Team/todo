@@ -2,25 +2,23 @@ package com.cheesecake.todo.ui
 
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.LayoutInflater
 import android.view.View
 import com.cheesecake.todo.R
+import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.databinding.ActivityMainBinding
 import com.cheesecake.todo.ui.base.BaseActivity
 import com.cheesecake.todo.ui.base.BaseFragment
 import com.cheesecake.todo.ui.signup.SignUpFragment
 
-import androidx.appcompat.app.AppCompatActivity
-import com.cheesecake.todo.databinding.FragmentHomeBinding
-import com.cheesecake.todo.models.TodoItem
-import com.cheesecake.todo.ui.home.HomeAdapter
+class MainActivity : BaseActivity<ActivityMainBinding>() {
+    override val bindingInflater: (LayoutInflater) -> ActivityMainBinding =
+        ActivityMainBinding::inflate
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var binding: FragmentHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = FragmentHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val todosList =
             listOf(
@@ -34,11 +32,11 @@ class MainActivity : AppCompatActivity() {
                     TodoItem(",rfwea", "far", "arf", "afr", 3, "far"),
                 )
             )
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
-        binding.recyclerViewHome.adapter = HomeAdapter(todosList,this)
+
+    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onCreate(savedInstanceState, persistentState)
+    }
 
     override fun onStart() {
         super.onStart()
@@ -50,15 +48,6 @@ class MainActivity : AppCompatActivity() {
             .add(R.id.fragment_container_activity, baseFragment).commit()
     }
 
-    }
-
-//    private fun loadViewAllFragment() {
-//        this.supportFragmentManager.beginTransaction().apply {
-//            replace(R.id.fragment_container, ViewAllFragment())
-//            addToBackStack(null)
-//            commit()
-//        }
-//    }
 
     private fun initializeHomeScreen() {
         binding.bottomNavigationBar.visibility = View.GONE

@@ -14,7 +14,7 @@ import com.cheesecake.todo.ui.home.SearchTodosAdapter
 private const val ITEM_VIEW_TYPE_SEGMENTED = 0
 private const val ITEM_VIEW_TYPE_TODO_CARDS = 1
 
-class ViewAllAdapter(val todoItems: List<TodoItem>) : RecyclerView.Adapter<BaseItemViewHolder>() {
+class ViewAllAdapter(private val todoItems: List<TodoItem>) : RecyclerView.Adapter<BaseItemViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseItemViewHolder {
