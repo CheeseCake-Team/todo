@@ -3,13 +3,12 @@ package com.cheesecake.todo.data.repository.todos
 import com.cheesecake.todo.data.models.TodoState
 
 interface TodoRepository {
-    fun getTodos(isPersonal: Boolean, token: String, callback: TodoCallback)
+    fun getTodos(isPersonal: Boolean, callback: TodoCallback)
     fun createTodo(
         title: String,
         description: String,
         assignee: String?,
         isPersonal: Boolean,
-        token: String,
         callback: TodoCallback
     )
 
@@ -17,7 +16,6 @@ interface TodoRepository {
         todoId: String,
         newStatus: TodoState,
         isPersonal: Boolean,
-        token: String,
         callback: TodoCallback
     )
 

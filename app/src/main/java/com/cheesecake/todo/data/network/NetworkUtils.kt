@@ -60,21 +60,4 @@ fun parseLoginResponse(response: String?): Pair<String, String>? {
     }
 }
 
-fun parseSignupResponse(response: String?): Pair<String, String>? {
-    try {
-        val json = JSONObject(response!!)
-        val valueJson = json.optJSONObject("value")
-        val token = valueJson?.optString("userId")
-        val expireAt = valueJson?.optString("username")
-        return Pair(token ?: return null, expireAt ?: return null)
-    } catch (e: JSONException) {
-        return null
-    }
-}
-fun parseErrorMessageResponse(response: String?): String? {
-    return try {
-        JSONObject(response!!).optString("message")
-    } catch (e: JSONException) {
-        null
-    }
-}
+fun parseErrorMessageResponse(response: String): String = JSONObject(response).optString("message")

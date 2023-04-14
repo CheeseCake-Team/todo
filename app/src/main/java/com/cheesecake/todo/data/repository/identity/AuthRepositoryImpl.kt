@@ -1,17 +1,25 @@
 package com.cheesecake.todo.data.repository.identity
 
+import com.cheesecake.todo.data.local.SharedPreferencesService
 import com.cheesecake.todo.data.network.NetworkService
 
 
-class AuthRepositoryImpl(private val networkService: NetworkService) : AuthRepository {
+class AuthRepositoryImpl(
+    private val networkService: NetworkService,
+    private val sharedPreferencesService: SharedPreferencesService
+) : AuthRepository {
 
-    override fun login(username: String, password: String, callback: AuthCallback) {
+    override fun login(username: String, password: String, loginCallback: LoginCallback) {
 
         networkService.login(username, password) { pair, error ->
             if (error != null) {
-                callback.onError(error)
+                loginCallback.onLoginFail(error)
             } else {
-                callback.onSuccess(pair!!, username)
+                val token = pair?.first
+                val expirationDate = pair?.second
+                if (token != null && expirationDate != null) {
+                    loginCallback.onLoginComplete(token, expirationDate, username)
+                }
             }
         }
     }
@@ -20,14 +28,19 @@ class AuthRepositoryImpl(private val networkService: NetworkService) : AuthRepos
         username: String,
         password: String,
         teamId: String,
-        callback: AuthCallback
+        signUpCallback: SignUpCallback
     ) {
-        networkService.signUp(username, password, teamId) { pair, error ->
+        networkService.signUp(username, password, teamId) { error ->
             if (error != null) {
-                callback.onError(error)
+                signUpCallback.onSignUpFail(error)
             } else {
-                callback.onSuccess(pair!!)
+                signUpCallback.onSignUpComplete()
             }
         }
+    }
+
+    override fun saveTokenAndExpireDate(token: String, expireDate: String) {
+        sharedPreferencesService.saveToken(token)
+        sharedPreferencesService.saveExpireDate(expireDate)
     }
 }
