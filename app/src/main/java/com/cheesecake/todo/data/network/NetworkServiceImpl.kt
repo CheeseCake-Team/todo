@@ -7,7 +7,6 @@ import okhttp3.Credentials
 
 class NetworkServiceImpl : NetworkService {
 
-
     override fun getTodos(
         isPersonal: Boolean,
         token: String,
@@ -16,7 +15,7 @@ class NetworkServiceImpl : NetworkService {
         val endpoint = if (isPersonal) "/todo/personal" else "/todo/team"
         val headers = mapOf("Authorization" to "Bearer $token")
 
-        ApiClient.run(endpoint, "GET", headers = headers) { response, error ->
+        ApiClient.makeCall(endpoint, "GET", headers = headers) { response, error ->
             if (error != null) {
                 callback(null, error)
             } else {
@@ -42,7 +41,7 @@ class NetworkServiceImpl : NetworkService {
         )
         val headers = mapOf("Authorization" to "Bearer $token")
 
-        ApiClient.run(endpoint, "POST", requestBody, headers) { _, error ->
+        ApiClient.makeCall(endpoint, "POST", requestBody, headers) { _, error ->
             if (error != null) {
                 callback(error)
             } else {
@@ -63,7 +62,7 @@ class NetworkServiceImpl : NetworkService {
         )
         val endpoint = if (isPersonal) "/todo/personal" else "/todo/team"
         val headers = mapOf("Authorization" to "Bearer $token")
-        ApiClient.run(endpoint, "PUT", requestBody, headers) { _, error ->
+        ApiClient.makeCall(endpoint, "PUT", requestBody, headers) { _, error ->
             if (error != null) {
                 callback(error)
             } else {
@@ -77,7 +76,7 @@ class NetworkServiceImpl : NetworkService {
     ) {
         val credentials = Credentials.basic(username, password)
 
-        ApiClient.run(
+        ApiClient.makeCall(
             "/login",
             "GET",
             headers = mapOf("Authorization" to credentials)
@@ -97,21 +96,20 @@ class NetworkServiceImpl : NetworkService {
         username: String,
         password: String,
         teamId: String,
-        callback: (Pair<String, String>?, String?) -> Unit
+        signUpCallback: (String?) -> Unit
     ) {
         val requestBody = createMultipartBody(
             "username" to username, "password" to password, "teamId" to teamId
         )
-        ApiClient.run("/signup", "POST", requestBody) { response, error ->
-            if (error != null) {
-                callback(null, error)
-            } else {
-                val responseBody = response?.let { json ->
-                    parseSignupResponse(json)
+        ApiClient.makeCall("/signup", "POST", requestBody) { apiResult ->
+            when (apiResult) {
+                is ApiResult.Failure -> {
+                    signUpCallback(apiResult.errorMessage)
                 }
-                callback(responseBody, null)
+                is ApiResult.Success -> {
+                    signUpCallback(null)
+                }
             }
         }
     }
-
 }
