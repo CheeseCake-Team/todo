@@ -9,13 +9,17 @@ class AuthRepositoryImpl(
     private val sharedPreferencesService: SharedPreferencesService
 ) : AuthRepository {
 
-    override fun login(username: String, password: String, callback: LoginCallback) {
+    override fun login(username: String, password: String, loginCallback: LoginCallback) {
 
         networkService.login(username, password) { pair, error ->
             if (error != null) {
-                callback.onLoginFail(error)
+                loginCallback.onLoginFail(error)
             } else {
-                callback.onLoginComplete(pair!!, username)
+                val token = pair?.first
+                val expirationDate = pair?.second
+                if (token != null && expirationDate != null) {
+                    loginCallback.onLoginComplete(token, expirationDate, username)
+                }
             }
         }
     }
@@ -24,13 +28,13 @@ class AuthRepositoryImpl(
         username: String,
         password: String,
         teamId: String,
-        callback: LoginCallback
+        signUpCallback: SignUpCallback
     ) {
-        networkService.signUp(username, password, teamId) { pair, error ->
+        networkService.signUp(username, password, teamId) { error ->
             if (error != null) {
-                callback.onLoginFail(error)
+                signUpCallback.onSignUpFail(error)
             } else {
-                callback.onLoginComplete(pair!!)
+                signUpCallback.onSignUpComplete()
             }
         }
     }
