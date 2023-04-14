@@ -60,4 +60,4 @@ fun parseLoginResponse(response: String?): Pair<String, String>? {
     }
 }
 
-fun parseErrorMessageResponse(response: String) = JSONObject(response).optString("message")
+fun parseErrorMessageResponse(response: String): String = JSONObject(response).optString("message")

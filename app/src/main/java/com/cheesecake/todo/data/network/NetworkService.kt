@@ -31,6 +31,6 @@ interface NetworkService {
         username: String,
         password: String,
         teamId: String,
-        callback: (Pair<String, String>?, String?) -> Unit
+        signUpCallback: (String?) -> Unit
     )
 }
