@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:clipToPadding="false"
+    android:paddingTop="@dimen/margin_large_24">
+
+    <TextView
+        android:id="@+id/text_recently"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recently Personal"
+        style="@style/CardTitle"
+        android:layout_marginStart="@dimen/margin_medium_16"
+        app:layout_constraintStart_toStartOf="@id/recycler_view"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_view_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View all"
+        style="@style/TextHint"
+        android:layout_marginEnd="@dimen/margin_medium_16"
+        android:drawablePadding="@dimen/margin_small_4"
+        app:drawableEndCompat="@drawable/ic_baseline_arrow_forward_24"
+        app:layout_constraintEnd_toEndOf="@+id/recycler_view"
+        app:layout_constraintTop_toTopOf="@id/text_recently" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/margin_medium_12"
+        android:layout_marginTop="@dimen/margin_small_8"
+        tools:listitem="@layout/item_todo"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@+id/text_recently" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

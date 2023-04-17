@@ -1,17 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Todo" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.Todo" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
         <item name="colorPrimary">@color/md_theme_light_primary</item>
         <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_light_primary</item>
         <item name="colorOnPrimaryContainer">@color/md_theme_light_onPrimary</item>
-
+        <item name="colorOnSurfaceVariant">@color/md_theme_light_surfaceVariant</item>
     </style>
 
-    <style name="Theme.App.SplashScreen" parent="Theme.SplashScreen">
+    <style name="Theme.App.Todo.SplashScreen" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground" >#141218</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/darktheamlogo</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_dark_theme</item>
         <item name="postSplashScreenTheme">@style/Theme.Todo</item>
     </style>
 
@@ -37,6 +37,10 @@
 
     <style name="CardBackground">
         <item name="cardBackgroundColor">#242228</item>
+    </style>
+
+    <style name="UsernameAndPasswordViewStyle">
+        <item name="android:background">@drawable/shape_user_name_and_password_dark_mode</item>
     </style>
 
 </resources>
