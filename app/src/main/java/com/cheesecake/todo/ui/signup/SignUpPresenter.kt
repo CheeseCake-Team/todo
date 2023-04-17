@@ -32,7 +32,7 @@ class SignUpPresenter(private val authRepository: AuthRepository) : SignUpCallba
                 signUpView?.showError("Invalid password!")
             !arePasswordsTheSame(password, confirmationPassword) ->
                 signUpView?.showError("Passwords are not matched!")
-            else -> authRepository.signUp(username, password, BuildConfig.teamId, this)
+            else -> authRepository.signUp(username, password, "BuildConfig.teamId", this)
         }
     }
 

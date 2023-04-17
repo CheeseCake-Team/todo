@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.cheesecake.todo.data.local.SharedPreferencesService
 import com.cheesecake.todo.data.local.SharedPreferencesServiceImpl
 import com.cheesecake.todo.data.network.NetworkServiceImpl
+import com.cheesecake.todo.data.repository.identity.AuthRepositoryFactory
 import com.cheesecake.todo.data.repository.identity.AuthRepositoryImpl
 import com.cheesecake.todo.databinding.FragmentLoginBinding
 import com.cheesecake.todo.ui.base.BaseFragment
@@ -27,16 +28,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPreferencesService = SharedPreferencesServiceImpl(
-            requireActivity().getSharedPreferences(
-                PREFS_NAME,
-                Context.MODE_PRIVATE
-            )
-        )
+        val application = requireActivity().application as AuthRepositoryFactory
+        val authRepository = application.createAuthRepository()
 
-        val repository = AuthRepositoryImpl(NetworkServiceImpl(), sharedPreferencesService)
-        presenter = LoginPresenter(repository)
-        presenter.attachView(this)
+        presenter = LoginPresenter(authRepository)
 
         binding.buttonLogin.setOnClickListener {
             val username = binding.editTextUserNameLogin.text.toString().trim()
