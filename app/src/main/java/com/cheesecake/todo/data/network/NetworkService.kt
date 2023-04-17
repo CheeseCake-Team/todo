@@ -4,9 +4,19 @@ import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.data.models.TodoState
 
 interface NetworkService {
-    fun getTodos(isPersonal: Boolean, token: String, callback: (List<TodoItem>?, String?) -> Unit)
+    fun getPersonalTodos(callback: (List<TodoItem>?, String?) -> Unit)
+    fun getTeamTodos(callback: (List<TodoItem>?, String?) -> Unit)
 
-    fun createTodo(
+    fun createPersonalTodo(
+        title: String,
+        description: String,
+        assignee: String?,
+        isPersonal: Boolean,
+        token: String,
+        callback: (String?) -> Unit
+    )
+
+    fun createTeamTodo(
         title: String,
         description: String,
         assignee: String?,
@@ -28,9 +38,6 @@ interface NetworkService {
     )
 
     fun signUp(
-        username: String,
-        password: String,
-        teamId: String,
-        signUpCallback: (String?) -> Unit
+        username: String, password: String, teamId: String, signUpCallback: (String?) -> Unit
     )
 }

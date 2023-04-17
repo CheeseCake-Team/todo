@@ -2,25 +2,48 @@ package com.cheesecake.todo.data.network
 
 import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.data.models.TodoState
+import com.cheesecake.todo.utils.Constants.BASE_URL
+import com.cheesecake.todo.utils.makeCall
 import okhttp3.Credentials
+import okhttp3.OkHttpClient
+import okhttp3.Request
 
 
-class NetworkServiceImpl : NetworkService {
+class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkService {
 
-    override fun getTodos(
-        isPersonal: Boolean,
-        token: String,
+    override fun getPersonalTodos(
         callback: (List<TodoItem>?, String?) -> Unit
     ) {
-        val endpoint = if (isPersonal) "/todo/personal" else "/todo/team"
-        val headers = mapOf("Authorization" to "Bearer $token")
+        val request = Request.Builder()
+            .url("$BASE_URL/todo/personal")
+            .build()
 
-        ApiClient.makeCall(endpoint, "GET", headers = headers) { apiResult ->
+        okHttpClient.makeCall(request) { apiResult ->
             when (apiResult) {
                 is ApiResult.Failure -> {
                     callback(null, apiResult.errorMessage)
                 }
-                is ApiResult.Success -> {
+                is ApiResult.Success<> -> {
+                    val todos = parseTodos(apiResult.responseBody)
+                    callback(todos, null)
+                }
+            }
+        }
+    }
+
+    override fun getTeamTodos(
+        callback: (List<TodoItem>?, String?) -> Unit
+    ) {
+        val request = Request.Builder()
+            .url("$BASE_URL/todo/team")
+            .build()
+
+        okHttpClient.makeCall(request) { apiResult ->
+            when (apiResult) {
+                is ApiResult.Failure -> {
+                    callback(null, apiResult.errorMessage)
+                }
+                is ApiResult.Success<> -> {
                     val todos = parseTodos(apiResult.responseBody)
                     callback(todos, null)
                 }
@@ -42,7 +65,7 @@ class NetworkServiceImpl : NetworkService {
         )
         val headers = mapOf("Authorization" to "Bearer $token")
 
-        ApiClient.makeCall(endpoint, "POST", requestBody, headers) { apiResult ->
+        okHttpClient.makeCall(endpoint, "POST", requestBody, headers) { apiResult ->
             when (apiResult) {
                 is ApiResult.Failure -> {
                     callback(apiResult.errorMessage)
@@ -66,7 +89,7 @@ class NetworkServiceImpl : NetworkService {
         )
         val endpoint = if (isPersonal) "/todo/personal" else "/todo/team"
         val headers = mapOf("Authorization" to "Bearer $token")
-        ApiClient.makeCall(endpoint, "PUT", requestBody, headers) { apiResult ->
+        okHttpClient.makeCall(endpoint, "PUT", requestBody, headers) { apiResult ->
             when (apiResult) {
                 is ApiResult.Failure -> {
                     callback(apiResult.errorMessage)
@@ -85,7 +108,7 @@ class NetworkServiceImpl : NetworkService {
     ) {
         val credentials = Credentials.basic(username, password)
 
-        ApiClient.makeCall(
+        okHttpClient.makeCall(
             "/login",
             "GET",
             headers = mapOf("Authorization" to credentials)
@@ -111,7 +134,7 @@ class NetworkServiceImpl : NetworkService {
         val requestBody = createMultipartBody(
             "username" to username, "password" to password, "teamId" to teamId
         )
-        ApiClient.makeCall("/signup", "POST", requestBody) { apiResult ->
+        okHttpClient.makeCall("/signup", "POST", requestBody) { apiResult ->
             when (apiResult) {
                 is ApiResult.Failure -> {
                     signUpCallback(apiResult.errorMessage)
@@ -123,7 +146,7 @@ class NetworkServiceImpl : NetworkService {
         }
     }
 
-    companion object{
+    companion object {
         //TODO
         // constant keys
     }

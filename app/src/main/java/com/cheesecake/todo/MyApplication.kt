@@ -17,6 +17,7 @@ import java.io.IOException
 class MyApplication : Application(), AuthRepositoryFactory {
 
     private lateinit var authRepository: AuthRepository
+
     private val sharedPreferencesService: SharedPreferencesService by lazy {
         SharedPreferencesServiceImpl(
             getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -34,7 +35,7 @@ class MyApplication : Application(), AuthRepositoryFactory {
 //                }
 //                chain.proceed(chain.request())
 //            }
-            .addInterceptor(AuthorizationInterceptor(sharedPreferencesService))
+            .addInterceptor(AuthorizationInterceptor(sharedPreferencesService.getToken()!!))
             .build()
     }
 
