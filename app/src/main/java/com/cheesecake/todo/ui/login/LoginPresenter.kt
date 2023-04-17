@@ -15,6 +15,7 @@ class LoginPresenter(private val identityRepository: IdentityRepository) : Login
     }
 
     fun login(username: String, password: String) {
+
         identityRepository.login(username, password, this)
     }
 

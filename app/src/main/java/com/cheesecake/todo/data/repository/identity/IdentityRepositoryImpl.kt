@@ -19,17 +19,10 @@ class IdentityRepositoryImpl(
         teamId: String,
         signUpCallback: SignUpCallback
     ) {
-        networkService.signUp(username, password, teamId) { error ->
-            if (error != null) {
-                signUpCallback.onSignUpFail(error)
-            } else {
-                signUpCallback.onSignUpComplete()
-            }
-        }
+        networkService.signUp(username, password, teamId, signUpCallback)
     }
 
     override fun saveTokenAndExpireDate(token: String, expireDate: String) {
-        sharedPreferencesService.saveToken(token)
-        sharedPreferencesService.saveExpireDate(expireDate)
+        sharedPreferencesService.saveTokenAndExpireDate(token, expireDate)
     }
 }
