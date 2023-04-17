@@ -24,7 +24,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = bindingInflater(layoutInflater)
         return binding.root
@@ -37,13 +37,14 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         }
     }
 
-        override fun onDestroy() {
+    override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
 
-    private fun isNetworkAvailable(): Boolean {
-        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    fun isNetworkAvailable(): Boolean {
+        val connectivityManager =
+            requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val network = connectivityManager.activeNetwork
         val networkCapabilities = connectivityManager.getNetworkCapabilities(network)
         return networkCapabilities != null && (
@@ -52,20 +53,18 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
                         networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))
     }
 
-    abstract fun onRetryClick()
 
     protected fun showNoInternetScreen() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle(R.string.no_internet_connection_title)
         builder.setMessage(R.string.no_internet_connection_message)
+        builder.setCancelable(false)
         builder.setPositiveButton(R.string.retry) { _, _ ->
-            if (isNetworkAvailable()) {
-                onRetryClick()
-            } else {
-                showNoInternetScreen()
-            }
+            if (!isNetworkAvailable()) showNoInternetScreen()
         }
         builder.show()
     }
+
+
 
 }

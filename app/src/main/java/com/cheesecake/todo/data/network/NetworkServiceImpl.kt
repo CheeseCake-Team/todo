@@ -1,117 +1,192 @@
 package com.cheesecake.todo.data.network
 
-import com.cheesecake.todo.data.models.TodoItem
-import com.cheesecake.todo.data.models.TodoState
+import com.cheesecake.todo.data.models.request.TodoPersonalRequest
+import com.cheesecake.todo.data.models.request.TodoStatus
+import com.cheesecake.todo.data.models.request.TodoTeamRequest
+import com.cheesecake.todo.data.repository.identity.LoginCallback
+import com.cheesecake.todo.data.repository.identity.SignUpCallback
+import com.cheesecake.todo.data.repository.todos.TodoCallback
+import com.cheesecake.todo.utils.Constants.AUTHORIZATION_HEADER
+import com.cheesecake.todo.utils.Constants.LOGIN_ENDPOINT
+import com.cheesecake.todo.utils.Constants.PERSONAL_ENDPOINT
+import com.cheesecake.todo.utils.Constants.SIGNUP_ENDPOINT
+import com.cheesecake.todo.utils.Constants.TEAM_ENDPOINT
+import com.cheesecake.todo.utils.makeCall
 import okhttp3.Credentials
+import okhttp3.OkHttpClient
+import okhttp3.Request
 
 
-class NetworkServiceImpl : NetworkService {
+class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkService {
 
+    override fun getPersonalTodos(todoCallback: TodoCallback) {
+        val request = Request.Builder()
+            .url(PERSONAL_ENDPOINT)
+            .build()
 
-    override fun getTodos(
-        isPersonal: Boolean,
-        token: String,
-        callback: (List<TodoItem>?, String?) -> Unit
-    ) {
-        val endpoint = if (isPersonal) "/todo/personal" else "/todo/team"
-        val headers = mapOf("Authorization" to "Bearer $token")
-
-        ApiClient.run(endpoint, "GET", headers = headers) { response, error ->
-            if (error != null) {
-                callback(null, error)
-            } else {
-                val todos = response?.let { json ->
-                    parseTodos(json)
+        okHttpClient.makeCall(request) { apiResult ->
+            when (apiResult) {
+                is ApiResult.Failure -> todoCallback.onError(apiResult.errorMessage)
+                is ApiResult.Success<*> -> {
+                    val todos = parseTodos(apiResult.responseBody)
+                    todoCallback.onSuccess(todos)
                 }
-                callback(todos, null)
             }
         }
     }
 
-    override fun createTodo(
-        title: String,
-        description: String,
-        assignee: String?,
-        isPersonal: Boolean,
-        token: String,
-        callback: (String?) -> Unit
-    ) {
-        val endpoint = if (isPersonal) "/todo/personal" else "/todo/team"
-        val requestBody = createMultipartBody(
-            "title" to title, "description" to description, "assignee" to assignee
-        )
-        val headers = mapOf("Authorization" to "Bearer $token")
+    override fun getTeamTodos(todoCallback: TodoCallback) {
+        val request = Request.Builder()
+            .url(TEAM_ENDPOINT)
+            .build()
 
-        ApiClient.run(endpoint, "POST", requestBody, headers) { _, error ->
-            if (error != null) {
-                callback(error)
-            } else {
-                callback(null)
+        okHttpClient.makeCall(request) { apiResult ->
+            when (apiResult) {
+                is ApiResult.Failure -> todoCallback.onError(apiResult.errorMessage)
+                is ApiResult.Success<*> -> {
+                    val todos = parseTodos(apiResult.responseBody)
+                    todoCallback.onSuccess(todos)
+                }
             }
         }
     }
 
-    override fun changeTodoStatus(
-        todoId: String,
-        newStatus: TodoState,
-        isPersonal: Boolean,
-        token: String,
-        callback: (String?) -> Unit
+    override fun createPersonalTodo(
+        todoPersonalRequest: TodoPersonalRequest, todoCallback: TodoCallback
     ) {
         val requestBody = createMultipartBody(
-            "id" to todoId, "status" to newStatus.value.toString()
+            "title" to todoPersonalRequest.title, "description" to todoPersonalRequest.description
         )
-        val endpoint = if (isPersonal) "/todo/personal" else "/todo/team"
-        val headers = mapOf("Authorization" to "Bearer $token")
-        ApiClient.run(endpoint, "PUT", requestBody, headers) { _, error ->
-            if (error != null) {
-                callback(error)
-            } else {
-                callback(null)
+        val request = Request.Builder()
+            .url(PERSONAL_ENDPOINT)
+            .post(requestBody)
+            .build()
+
+        okHttpClient.makeCall(request) { apiResult ->
+            when (apiResult) {
+                is ApiResult.Failure -> todoCallback.onError(apiResult.errorMessage)
+
+                is ApiResult.Success<*> -> todoCallback.onSuccess(null)
+
+            }
+        }
+    }
+
+    override fun createTeamTodo(
+        todoPersonalRequest: TodoTeamRequest,
+        todoCallback: TodoCallback
+    ) {
+        val requestBody = createMultipartBody(
+            "title" to todoPersonalRequest.title,
+            "description" to todoPersonalRequest.description,
+            "assignee" to todoPersonalRequest.assignee
+        )
+
+        val request = Request.Builder()
+            .url(TEAM_ENDPOINT)
+            .post(requestBody)
+            .build()
+
+        okHttpClient.makeCall(request) { apiResult ->
+            when (apiResult) {
+                is ApiResult.Failure -> todoCallback.onError(apiResult.errorMessage)
+
+                is ApiResult.Success<*> -> todoCallback.onSuccess(null)
+            }
+        }
+    }
+
+    override fun changePersonalTodoStatus(
+        todoStatus: TodoStatus,
+        todoCallback: TodoCallback
+    ) {
+        val requestBody = createMultipartBody(
+            "id" to todoStatus.todoId, "status" to todoStatus.newStatus.value.toString()
+        )
+
+        val request = Request.Builder()
+            .url(PERSONAL_ENDPOINT)
+            .put(requestBody)
+            .build()
+
+        okHttpClient.makeCall(request) { apiResult ->
+            when (apiResult) {
+                is ApiResult.Failure -> todoCallback.onError(apiResult.errorMessage)
+
+                is ApiResult.Success<*> -> todoCallback.onSuccess(null)
+            }
+        }
+    }
+
+    override fun changeTeamTodoStatus(
+        todoStatus: TodoStatus,
+        todoCallback: TodoCallback
+    ) {
+        val requestBody = createMultipartBody(
+            "id" to todoStatus.todoId, "status" to todoStatus.newStatus.value.toString()
+        )
+
+        val request = Request.Builder()
+            .url(TEAM_ENDPOINT)
+            .put(requestBody)
+            .build()
+
+        okHttpClient.makeCall(request) { apiResult ->
+            when (apiResult) {
+                is ApiResult.Failure -> todoCallback.onError(apiResult.errorMessage)
+
+                is ApiResult.Success<*> -> todoCallback.onSuccess(null)
             }
         }
     }
 
     override fun login(
-        username: String, password: String, callback: (Pair<String, String>?, String?) -> Unit
+        username: String, password: String,
+        loginCallback: LoginCallback
     ) {
         val credentials = Credentials.basic(username, password)
 
-        ApiClient.run(
-            "/login",
-            "GET",
-            headers = mapOf("Authorization" to credentials)
-        ) { response, error ->
-            if (error != null) {
-                callback(null, error)
-            } else {
-                val token = response?.let { json ->
-                    parseLoginResponse(json)
+        val request = Request.Builder()
+            .url(LOGIN_ENDPOINT)
+            .addHeader(AUTHORIZATION_HEADER, credentials)
+            .build()
+
+        okHttpClient.makeCall(request) { apiResult ->
+            when (apiResult) {
+                is ApiResult.Failure -> {
+                    loginCallback.onLoginFail(apiResult.errorMessage)
                 }
-                callback(token, null)
+                is ApiResult.Success<*> -> {
+                    val token = parseLoginResponse(apiResult.responseBody)
+                    loginCallback.onLoginComplete(token)
+                }
             }
         }
     }
 
+
     override fun signUp(
-        username: String,
-        password: String,
-        teamId: String,
-        callback: (Pair<String, String>?, String?) -> Unit
+        username: String, password: String, teamId: String,
+        signUpCallback: SignUpCallback
     ) {
         val requestBody = createMultipartBody(
             "username" to username, "password" to password, "teamId" to teamId
         )
-        ApiClient.run("/signup", "POST", requestBody) { response, error ->
-            if (error != null) {
-                callback(null, error)
-            } else {
-                val responseBody = response?.let { json ->
-                    parseSignupResponse(json)
+
+        val request = Request.Builder()
+            .url(SIGNUP_ENDPOINT)
+            .post(requestBody)
+            .build()
+
+        okHttpClient.makeCall(request) { apiResult ->
+            when (apiResult) {
+                is ApiResult.Failure -> {
+                    signUpCallback.onSignUpFail(apiResult.errorMessage)
                 }
-                callback(responseBody, null)
+                is ApiResult.Success<*> -> {
+                    signUpCallback.onSignUpComplete()
+                }
             }
         }
     }
-
 }

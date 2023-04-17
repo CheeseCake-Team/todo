@@ -35,5 +35,10 @@
     <string name="no_internet_connection_title">No Internet Connection</string>
     <string name="no_internet_connection_message">Please check your internet connection and try again</string>
     <string name="retry">Retry</string>
+    <string name="task_name">Clothing App</string>
+    <string name="user_name">Maryam Hassan</string>
+    <string name="task_date">10April 2023</string>
+    <string name="task_time">03:17 AM</string>
+    <string name="task_content">As a developer you couldn\'t find enough time to pick what to wear everyday, so create a personal clothing helper app to make your life easier. Clothing Suggester App should check the weather in your city for you using any API you like (we provide some). then you should already enter a set of images of the clothes that you own into the drwable section in the app.</string>
 
 </resources>
