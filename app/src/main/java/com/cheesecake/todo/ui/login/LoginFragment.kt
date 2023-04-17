@@ -12,6 +12,7 @@ import com.cheesecake.todo.data.network.NetworkServiceImpl
 import com.cheesecake.todo.data.repository.identity.IdentityRepositoryFactory
 import com.cheesecake.todo.databinding.FragmentLoginBinding
 import com.cheesecake.todo.ui.base.BaseFragment
+import com.cheesecake.todo.ui.signup.SignUpFragment
 import com.cheesecake.todo.utils.Constants.PREFS_NAME
 
 
@@ -62,6 +63,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
             presenter.login(username, password)
         }
         binding.textViewSignUp.setOnClickListener {
+            navigateToSignup()
             
         }
     }
@@ -78,6 +80,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
                 requireContext(),username,
                 Toast.LENGTH_SHORT
             ).show()
+        }
+    }
+
+    private fun navigateToSignup(){
+        requireActivity().supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment_container_activity,SignUpFragment())
+            commit()
         }
     }
 
