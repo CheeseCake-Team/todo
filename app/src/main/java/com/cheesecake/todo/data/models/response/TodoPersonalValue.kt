@@ -1,9 +1,9 @@
 package com.cheesecake.todo.data.models.response
 
-data class TodoPersonalValue(
-    val id: String,
-    val title: String,
-    val description: String,
-    val status: Int,
-    val creationTime: String
-)
+import com.cheesecake.todo.data.models.TodoItem
+
+data class TodoPersonalResponse(
+    override val value: List<TodoItem>,
+    override val message: String?,
+    override val isSuccess: Boolean
+) : BaseResponse<List<TodoItem>>(value, message, isSuccess)

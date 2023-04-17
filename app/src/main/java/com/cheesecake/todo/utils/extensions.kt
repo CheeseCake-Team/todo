@@ -5,7 +5,6 @@ import android.net.NetworkCapabilities
 import android.util.Log
 import com.cheesecake.todo.data.local.SharedPreferencesService
 import com.cheesecake.todo.data.network.ApiResult
-import com.cheesecake.todo.data.network.parseErrorMessageResponse
 import okhttp3.*
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -46,7 +45,6 @@ fun isPasswordValid(password: String) =
 fun arePasswordsTheSame(password: String, confirmationPassword: String) =
     password == confirmationPassword
 
-
 fun OkHttpClient.makeCall(
     request: Request,
     callback: (ApiResult) -> Unit
@@ -54,7 +52,7 @@ fun OkHttpClient.makeCall(
 
     this.newCall(request).enqueue(object : Callback {
         override fun onFailure(call: Call, e: IOException) {
-            callback(ApiResult.Failure(e.message ?: "Unknown error"))
+            ApiResult.Failure(e.message ?: "Unknown error")
         }
 
         override fun onResponse(call: Call, response: Response) {
@@ -62,7 +60,7 @@ fun OkHttpClient.makeCall(
             if (response.isSuccessful) {
                 callback(ApiResult.Success(body ?: ""))
             } else {
-                callback(ApiResult.Failure(parseErrorMessageResponse(body ?: "")))
+                callback(ApiResult.Failure(body ?: ""))
 
             }
         }
