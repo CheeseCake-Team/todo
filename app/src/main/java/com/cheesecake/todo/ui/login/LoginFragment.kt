@@ -23,19 +23,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPreferencesService = SharedPreferencesServiceImpl(
-            requireActivity().getSharedPreferences(
-                PREFS_NAME,
-                Context.MODE_PRIVATE
-            )
-        ,requireContext()
-        )
-
-        presenter = LoginPresenter(
-            AuthRepositoryImpl(NetworkServiceImpl()),
-            sharedPreferencesService
-        )
-        presenter.attachView(this)
         val application = requireActivity().application as IdentityRepositoryFactory
         val identityRepository = application.createAuthRepository()
 
@@ -50,11 +37,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
         }
         binding.textViewSignUp.setOnClickListener {
 
-
         }
     }
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()
