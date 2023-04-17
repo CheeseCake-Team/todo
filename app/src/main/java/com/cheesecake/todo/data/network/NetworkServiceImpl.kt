@@ -16,7 +16,6 @@ import okhttp3.Credentials
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
-
 class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkService {
 
     override fun getPersonalTodos(todoCallback: TodoCallback) {
@@ -26,10 +25,15 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
 
         okHttpClient.makeCall(request) { apiResult ->
             when (apiResult) {
-                is ApiResult.Failure -> todoCallback.onError(apiResult.errorMessage)
-                is ApiResult.Success<*> -> {
-                    val todos = parseTodos(apiResult.responseBody)
-                    todoCallback.onSuccess(todos)
+                is ApiResult.Failure -> {
+                    todoCallback.onError(apiResult.errorMessage)
+                }
+                is ApiResult.Success -> {
+                    val todos = parsePersonalTodos(apiResult.responseBody)
+                    if (todos.isSuccess)
+                        todoCallback.onSuccess(todos.value)
+                    else
+                        todoCallback.onError(todos.message!!)
                 }
             }
         }
@@ -42,10 +46,15 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
 
         okHttpClient.makeCall(request) { apiResult ->
             when (apiResult) {
-                is ApiResult.Failure -> todoCallback.onError(apiResult.errorMessage)
-                is ApiResult.Success<*> -> {
-                    val todos = parseTodos(apiResult.responseBody)
-                    todoCallback.onSuccess(todos)
+                is ApiResult.Failure -> {
+                    todoCallback.onError(apiResult.errorMessage)
+                }
+                is ApiResult.Success -> {
+                    val todos = parseTeamTodos(apiResult.responseBody)
+                    if (todos.isSuccess)
+                        todoCallback.onSuccess(todos.value)
+                    else
+                        todoCallback.onError(todos.message!!)
                 }
             }
         }
@@ -64,10 +73,16 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
 
         okHttpClient.makeCall(request) { apiResult ->
             when (apiResult) {
-                is ApiResult.Failure -> todoCallback.onError(apiResult.errorMessage)
-
-                is ApiResult.Success<*> -> todoCallback.onSuccess(null)
-
+                is ApiResult.Failure -> {
+                    todoCallback.onError(apiResult.errorMessage)
+                }
+                is ApiResult.Success -> {
+                    val createTodoPersonalResponse = parsePersonalTodos(apiResult.responseBody)
+                    if (createTodoPersonalResponse.isSuccess)
+                        todoCallback.onSuccess()
+                    else
+                        todoCallback.onError(createTodoPersonalResponse.message!!)
+                }
             }
         }
     }
@@ -89,9 +104,16 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
 
         okHttpClient.makeCall(request) { apiResult ->
             when (apiResult) {
-                is ApiResult.Failure -> todoCallback.onError(apiResult.errorMessage)
-
-                is ApiResult.Success<*> -> todoCallback.onSuccess(null)
+                is ApiResult.Failure -> {
+                    todoCallback.onError(apiResult.errorMessage)
+                }
+                is ApiResult.Success -> {
+                    val response = parseTodoStatus(apiResult.responseBody)
+                    if (response.isSuccess)
+                        todoCallback.onSuccess(null)
+                    else
+                        todoCallback.onError(response.message!!)
+                }
             }
         }
     }
@@ -111,9 +133,16 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
 
         okHttpClient.makeCall(request) { apiResult ->
             when (apiResult) {
-                is ApiResult.Failure -> todoCallback.onError(apiResult.errorMessage)
-
-                is ApiResult.Success<*> -> todoCallback.onSuccess(null)
+                is ApiResult.Failure -> {
+                    todoCallback.onError(apiResult.errorMessage)
+                }
+                is ApiResult.Success -> {
+                    val response = parseTodoStatus(apiResult.responseBody)
+                    if (response.isSuccess)
+                        todoCallback.onSuccess(null)
+                    else
+                        todoCallback.onError(response.message!!)
+                }
             }
         }
     }
@@ -135,7 +164,7 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
             when (apiResult) {
                 is ApiResult.Failure -> todoCallback.onError(apiResult.errorMessage)
 
-                is ApiResult.Success<*> -> todoCallback.onSuccess(null)
+                is ApiResult.Success -> todoCallback.onSuccess(null)
             }
         }
     }
@@ -156,14 +185,16 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
                 is ApiResult.Failure -> {
                     loginCallback.onLoginFail(apiResult.errorMessage)
                 }
-                is ApiResult.Success<*> -> {
-                    val token = parseLoginResponse(apiResult.responseBody)
-                    loginCallback.onLoginComplete(token)
+                is ApiResult.Success -> {
+                    val loginResponse = parseLoginResponse(apiResult.responseBody)
+                    if (loginResponse.isSuccess)
+                        loginCallback.onLoginComplete(loginResponse.value!!)
+                    else
+                        loginCallback.onLoginFail(loginResponse.message!!)
                 }
             }
         }
     }
-
 
     override fun signUp(
         username: String, password: String, teamId: String,
@@ -183,8 +214,12 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
                 is ApiResult.Failure -> {
                     signUpCallback.onSignUpFail(apiResult.errorMessage)
                 }
-                is ApiResult.Success<*> -> {
-                    signUpCallback.onSignUpComplete()
+                is ApiResult.Success -> {
+                    val signUpResponse = parseSignUpResponse(apiResult.responseBody)
+                    if (signUpResponse.isSuccess)
+                        signUpCallback.onSignUpComplete()
+                    else
+                        signUpCallback.onSignUpFail(signUpResponse.message!!)
                 }
             }
         }
