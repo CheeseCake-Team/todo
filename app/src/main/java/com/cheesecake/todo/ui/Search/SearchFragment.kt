@@ -1,5 +1,9 @@
+import com.cheesecake.todo.data.models.Tag
+import com.cheesecake.todo.data.models.TodoItem
+import com.cheesecake.todo.data.models.TodoState
 import com.cheesecake.todo.databinding.FragmentSearchBinding
 import com.cheesecake.todo.ui.base.BaseFragment
+import com.cheesecake.todo.ui.home.DataItem
 import com.cheesecake.todo.ui.home.TodoItemAdapter
 import com.cheesecake.todo.ui.home.TodoItemClickListener
 import com.google.android.material.search.SearchView
