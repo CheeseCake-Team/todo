@@ -12,6 +12,8 @@ import com.cheesecake.todo.ui.base.BaseActivity
 import com.cheesecake.todo.ui.base.BaseFragment
 import com.cheesecake.todo.ui.signup.SignUpFragment
 
+import com.cheesecake.todo.ui.createtodo.ToDoFragment
+
 class MainActivity : BaseActivity<ActivityMainBinding>() {
     override val bindingInflater: (LayoutInflater) -> ActivityMainBinding =
         ActivityMainBinding::inflate
@@ -19,6 +21,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setSupportActionBar(binding.toolbar)
+        this.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportFragmentManager.beginTransaction().add(R.id.fragment_container,
+            ToDoFragment())
+            .commit()
         setContentView(binding.root)
         val todosList =
             listOf(
@@ -50,7 +57,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
 
     private fun initializeHomeScreen() {
-        binding.bottomNavigationBar.visibility = View.GONE
-        loadFragmentIntoContainer(SignUpFragment())
+//        binding.bottomNavigationBar.visibility = View.GONE
+//        loadFragmentIntoContainer(SignUpFragment())
     }
 }

@@ -10,8 +10,8 @@
     <string name="welcome">Welcome!</string>
     <string name="sign_up_details">Let Do Fast be your daily assistant to help you achieve more and increase your productivity</string>
     <string name="have_an_account">Have an account?</string>
-    <string name="personal_todo">Personal Todo</string>
-    <string name="team_todo">Team Todo</string>
+    <string name="personal_todo">Personal</string>
+    <string name="team_todo">Team</string>
     <string name="keep_it_up">Keep it up!</string>
     <string name="your_daily_goals_almost_done">Your daily goals almost done</string>
     <string name="todo">Todo</string>
@@ -35,6 +35,18 @@
     <string name="no_internet_connection_title">No Internet Connection</string>
     <string name="no_internet_connection_message">Please check your internet connection and try again</string>
     <string name="retry">Retry</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="type">Type</string>
+    <string name="create">Create</string>
+    <string name="create_task">Create Task</string>
+    <string name="home">Home</string>
+    <string name="category">Category</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="newtask">A new task has been added successfully</string>
+    <string name="label_text" >Cancel</string>
+
+
     <string name="task_name">Clothing App</string>
     <string name="user_name">Maryam Hassan</string>
     <string name="task_date">10April 2023</string>

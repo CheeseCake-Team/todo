@@ -33,6 +33,10 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView {
 
     }
 
+
+
+
+
     private fun addCallBacks() {
         binding.buttonSignUp.setOnClickListener {
 

@@ -65,6 +65,12 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         builder.show()
     }
 
-
+    fun loadFragment(fragment: Fragment) {
+        requireActivity().supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment_container,fragment)
+            addToBackStack(null)
+            commit()
+        }
+    }
 
 }
