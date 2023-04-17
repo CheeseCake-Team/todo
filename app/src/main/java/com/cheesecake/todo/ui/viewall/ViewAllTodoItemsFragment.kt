@@ -18,18 +18,19 @@ import com.cheesecake.todo.ui.base.BaseFragment
 import com.cheesecake.todo.ui.login.LoginFragment
 import com.cheesecake.todo.utils.Constants
 
-private const val IS_PERSONAL_KEY = "is_personal_key"
+
 
 class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding>(),ViewAllContract.IView {
 
     override val bindingInflater: (LayoutInflater) -> FragmentViewAllTodoItemsBinding =
         FragmentViewAllTodoItemsBinding::inflate
 
+
     private lateinit var presenter: ViewAllContract.IPresenter
     private lateinit var sharedPreferencesService: SharedPreferencesService
     private lateinit var todoRepository: TodoRepository
+    private lateinit var adapter: ViewAllAdapter
     private var _isPersonalStatus: Boolean? = null
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +48,8 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding>()
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         presenter = ViewAllPresenter(todoRepository)
-        presenter.attachView(this)
+        presenter.attachView(this,_isPersonalStatus)
+        presenter.requestAllTodos()
         return view
     }
 
@@ -56,6 +58,8 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding>()
         presenter.detachView()
     }
     companion object {
+        private const val IS_PERSONAL_KEY = "is_personal_key"
+
         fun newInstance(isPersonal: Boolean) =
             ViewAllTodoItemsFragment().apply {
                 arguments = Bundle().apply {
@@ -64,9 +68,8 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding>()
             }
     }
     override fun showTodos(todos: List<TodoItem>) {
-        val adapter = ViewAllAdapter(todos)
+        adapter = ViewAllAdapter(todos)
         binding.recyclerViewAllTodos.adapter = adapter
-        adapter.notifyDataSetChanged()
        }
 
 
@@ -79,6 +82,10 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding>()
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container_activity,LoginFragment())
             .commit()
+    }
+
+    override fun toggleSelected(position: Int) {
+        presenter.onToggleSelected(position)
     }
 
     private fun todoRepositoryInit(){

@@ -2,25 +2,27 @@ package com.cheesecake.todo.ui.viewall
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.cheesecake.todo.data.models.TodoItem
-import com.cheesecake.todo.databinding.ItemCardViewTodoBinding
 import com.cheesecake.todo.databinding.ItemHomeRecyclerBinding
 import com.cheesecake.todo.databinding.ViewAllSegmentedButtonsBinding
 import com.cheesecake.todo.ui.base.BaseItemViewHolder
+import com.cheesecake.todo.ui.base.TodoDiffUtil
 import com.cheesecake.todo.ui.home.SearchTodosAdapter
 
 private const val ITEM_VIEW_TYPE_SEGMENTED = 0
 private const val ITEM_VIEW_TYPE_TODO_CARDS = 1
 
-class ViewAllAdapter(private val todoItems: List<TodoItem>) : RecyclerView.Adapter<BaseItemViewHolder>() {
+class ViewAllAdapter(private var todoItems: List<TodoItem>) :
+    RecyclerView.Adapter<BaseItemViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseItemViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            ITEM_VIEW_TYPE_SEGMENTED -> SegmentedButtonsViewHolder(
+            ITEM_VIEW_TYPE_SEGMENTED -> ToggleButtonViewHolder(
                 ViewAllSegmentedButtonsBinding.inflate(
                     layoutInflater, parent, false
                 )
@@ -40,13 +42,15 @@ class ViewAllAdapter(private val todoItems: List<TodoItem>) : RecyclerView.Adapt
     }
 
     override fun onBindViewHolder(holder: BaseItemViewHolder, position: Int) {
-        when (holder){
-            is SegmentedButtonsViewHolder -> {
+        when (holder) {
+            is ToggleButtonViewHolder -> {
 
             }
+
             is TodoViewHolder -> {
                 holder.bind(todoItems)
             }
+
             else -> throw IllegalStateException("Unknown view type")
         }
     }
@@ -59,14 +63,19 @@ class ViewAllAdapter(private val todoItems: List<TodoItem>) : RecyclerView.Adapt
         }
     }
 
-
-
-    inner class SegmentedButtonsViewHolder(itemView: ViewBinding) : BaseItemViewHolder(itemView) {
-
+    fun updateTodos(newTodos: List<TodoItem>) {
+        val diffResult = DiffUtil.calculateDiff(TodoDiffUtil(todoItems, newTodos))
+        todoItems = newTodos
+        diffResult.dispatchUpdatesTo(this)
     }
 
-    inner class TodoViewHolder(private val binding: ItemHomeRecyclerBinding) : BaseItemViewHolder(binding) {
-        fun bind(todosList: List<TodoItem>){
+    inner class ToggleButtonViewHolder(itemView: ViewBinding) : BaseItemViewHolder(itemView) {
+        // TODO
+    }
+
+    inner class TodoViewHolder(private val binding: ItemHomeRecyclerBinding) :
+        BaseItemViewHolder(binding) {
+        fun bind(todosList: List<TodoItem>) {
             binding.recyclerView.adapter = SearchTodosAdapter(todosList)
         }
     }

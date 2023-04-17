@@ -7,11 +7,13 @@ interface ViewAllContract {
         fun showTodos(todos: List<TodoItem>)
         fun showError(message: String)
         fun navigateToLoginScreen()
+        fun toggleSelected(position: Int)
     }
 
     interface IPresenter {
-        fun attachView(view: IView)
+        fun attachView(view: IView,isPersonal: Boolean?)
         fun detachView()
-        fun getTodos(isPersonal: Boolean)
+        fun requestAllTodos()
+        fun onToggleSelected(position: Int)
     }
 }
