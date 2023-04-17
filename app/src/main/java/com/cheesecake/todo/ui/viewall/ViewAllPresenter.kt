@@ -27,8 +27,10 @@ class ViewAllPresenter(private val todoRepository: TodoRepository) :
     }
 
     override fun requestAllTodos() {
-        if (_isPersonal != null) {
-            todoRepository.getTodos(_isPersonal!!, this)
+        when (_isPersonal) {
+            true -> todoRepository.getPersonalTodos(this)
+            false -> todoRepository.getTeamTodos(this)
+            else -> throw IllegalArgumentException("Cannot determine type of todos. _isPersonal cannot be null.")
         }
     }
 
@@ -46,7 +48,7 @@ class ViewAllPresenter(private val todoRepository: TodoRepository) :
 
     private fun filterAndUpdateList(type: Int) {
         val todos = currentList!!.filter { todo ->
-            todo.status == type
+            todo.status.value == type
         }
         _view!!.showTodos(todos)
     }
