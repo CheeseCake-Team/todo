@@ -75,11 +75,12 @@ class CreateTodoPresenter(var context: Context) {
             context.getSharedPreferences(
                 Constants.PREFS_NAME,
                 Context.MODE_PRIVATE
-            ), context
+            )
         )
-       sharedPreferencesServiceImpl.saveToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJodHRwczovL3RoZS1jaGFuY2Uub3JnLyIsInN1YiI6ImFhY2M3MTc4LTU3YWQtNDcxOS04MGExLWFhMzAzZDIxM2ViMiIsInRlYW1JZCI6IjUwNDczNjllLTVkMTQtNGUyZi04ZmUxLWY2MjA4N2VjMjhkOCIsImlzcyI6Imh0dHBzOi8vdGhlLWNoYW5jZS5vcmcvIiwiZXhwIjoxNjgxMzMzMDg1fQ.xK_YE0JeQY6X0OcUi8er-Cg-AbgQ0f3jmsDkySUTxDU")
-        //   removeTokenAndExpiryIfTokenInvalid(sharedPreferencesServiceImpl)
-        return  sharedPreferencesServiceImpl.getToken()
+       /*sharedPreferencesServiceImpl.saveTokenAndExpireDate("")
+         removeTokenAndExpiryIfTokenInvalid(sharedPreferencesServiceImpl)
+        return  sharedPreferencesServiceImpl.getToken()*/
+         return ""
     }
 
 

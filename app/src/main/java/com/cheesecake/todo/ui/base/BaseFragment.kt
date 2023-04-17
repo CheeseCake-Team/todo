@@ -64,13 +64,13 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         }
         builder.show()
     }
-
+/*
     fun loadFragment(fragment: Fragment) {
         requireActivity().supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragment_container,fragment)
+            replace(R.id.fragment_container_activity,fragment)
             addToBackStack(null)
             commit()
         }
-    }
+    }*/
 
 }

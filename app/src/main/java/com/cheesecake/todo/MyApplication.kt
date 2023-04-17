@@ -9,13 +9,17 @@ import com.cheesecake.todo.data.network.NetworkServiceImpl
 import com.cheesecake.todo.data.repository.identity.IdentityRepository
 import com.cheesecake.todo.data.repository.identity.IdentityRepositoryFactory
 import com.cheesecake.todo.data.repository.identity.IdentityRepositoryImpl
+import com.cheesecake.todo.data.repository.todos.TodoRepository
+import com.cheesecake.todo.data.repository.todos.TodoRepositoryFactory
+import com.cheesecake.todo.data.repository.todos.TodoRepositoryImpl
 import com.cheesecake.todo.utils.Constants.PREFS_NAME
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
-class MyApplication : Application(), IdentityRepositoryFactory {
+class MyApplication : Application(), IdentityRepositoryFactory,TodoRepositoryFactory {
 
     private lateinit var identityRepository: IdentityRepository
+    private lateinit var todoRepository: TodoRepository
 
     private val sharedPreferencesService: SharedPreferencesService by lazy {
         SharedPreferencesServiceImpl(
@@ -40,12 +44,16 @@ class MyApplication : Application(), IdentityRepositoryFactory {
 
     override fun onCreate() {
         super.onCreate()
-
         val networkService = NetworkServiceImpl(okHttpClient)
         identityRepository = IdentityRepositoryImpl(networkService, sharedPreferencesService)
+        todoRepository = TodoRepositoryImpl(networkService,sharedPreferencesService)
     }
 
     override fun createAuthRepository(): IdentityRepository {
         return identityRepository
+    }
+
+    override fun createTodoRepository(): TodoRepository {
+        return todoRepository
     }
 }

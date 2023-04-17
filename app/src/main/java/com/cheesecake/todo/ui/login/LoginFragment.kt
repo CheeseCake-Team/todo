@@ -13,7 +13,6 @@ import com.cheesecake.todo.ui.base.BaseFragment
 class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
 
     private lateinit var presenter: LoginPresenter
-    private lateinit var sharedPreferencesService: SharedPreferencesService
 
 
     override val bindingInflater: (LayoutInflater) -> FragmentLoginBinding =
@@ -49,8 +48,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
     override fun navigateToHomeScreen(username: String) {
         requireActivity().runOnUiThread {
             Toast.makeText(
-                requireContext(),
-                sharedPreferencesService.getToken(),
+                requireContext(),username,
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -58,7 +56,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
 
     override fun showError(error: String) {
         requireActivity().runOnUiThread {
-            sharedPreferencesService.getToken()
             Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
         }
     }

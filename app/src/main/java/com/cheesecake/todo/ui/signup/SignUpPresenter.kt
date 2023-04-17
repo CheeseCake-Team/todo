@@ -1,6 +1,7 @@
 package com.cheesecake.todo.ui.signup
 
 
+import com.cheesecake.todo.BuildConfig
 import com.cheesecake.todo.data.repository.identity.IdentityRepository
 import com.cheesecake.todo.data.repository.identity.SignUpCallback
 import com.cheesecake.todo.utils.arePasswordsTheSame
@@ -29,7 +30,7 @@ class SignUpPresenter(private val identityRepository: IdentityRepository) : Sign
                 password,
                 confirmationPassword
             ) -> signUpView?.showError("Passwords are not matched!")
-            else -> identityRepository.signUp(username, password, "BuildConfig.teamId", this)
+            else -> identityRepository.signUp(username, password, BuildConfig.teamId, this)
         }
     }
 
