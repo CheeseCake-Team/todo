@@ -34,10 +34,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
             )
         )
 
-        presenter = LoginPresenter(
-            AuthRepositoryImpl(NetworkServiceImpl()),
-            sharedPreferencesService
-        )
+        val repository = AuthRepositoryImpl(NetworkServiceImpl(), sharedPreferencesService)
+        presenter = LoginPresenter(repository)
         presenter.attachView(this)
 
         binding.buttonLogin.setOnClickListener {

@@ -10,7 +10,6 @@ import java.util.*
 fun isTokenValid(token: String, expiry: String) =
     token.isNotEmpty() && System.currentTimeMillis() / 1000 < formattedTime(expiry)
 
-
 fun formattedTime(expiry: String) =
     SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US).apply {
         timeZone = TimeZone.getTimeZone("UTC")

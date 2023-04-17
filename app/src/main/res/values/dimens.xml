@@ -16,4 +16,8 @@
     <dimen name="fragment_horizontal_margin">16dp</dimen>
     <dimen name="fragment_vertical_margin">16dp</dimen>
     <dimen name="margin_medium_8">8dp</dimen>
+
+    <dimen name="margin_large_84">84dp</dimen>
+    <dimen name="margin_medium_18">18dp</dimen>
+    <dimen name="margin_small_6">6dp</dimen>
 </resources>
