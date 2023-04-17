@@ -122,4 +122,9 @@ class NetworkServiceImpl : NetworkService {
             }
         }
     }
+
+    companion object{
+        //TODO
+        // constant keys
+    }
 }
