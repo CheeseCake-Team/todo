@@ -10,8 +10,7 @@ import com.cheesecake.todo.utils.Constants.TOKEN
 
 
 class SharedPreferencesServiceImpl(
-    var sharedPreferences: SharedPreferences,
-                                   context: Context) :
+    private var sharedPreferences: SharedPreferences) :
     SharedPreferencesService {
     override fun saveTokenAndExpireDate(token: String, expireDate: String) {
         sharedPreferences.edit().apply {

@@ -39,14 +39,6 @@ class TodoRepositoryImpl(
     override fun changeTeamTodoStatus(
         todoId: String, newStatus: TodoState, todoCallback: TodoCallback
     ) {
-        networkDataSource.createTodo(title, description, assignee, isPersonal, token)
-        { error ->
-            if (error != null) {
-                callback.onError(error)
-            } else {
-                callback.onSuccess()
-            }
-        }
         val todoStatus = TodoStatus(todoId, newStatus)
         networkDataSource.changeTeamTodoStatus(todoStatus, todoCallback)
     }

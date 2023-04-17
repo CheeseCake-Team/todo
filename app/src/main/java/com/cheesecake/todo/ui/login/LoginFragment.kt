@@ -36,7 +36,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
             presenter.login(username, password)
         }
         binding.textViewSignUp.setOnClickListener {
-
+            
         }
     }
 
