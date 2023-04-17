@@ -9,6 +9,7 @@ import com.cheesecake.todo.data.network.NetworkServiceImpl
 import com.cheesecake.todo.data.repository.identity.AuthRepository
 import com.cheesecake.todo.data.repository.identity.AuthRepositoryFactory
 import com.cheesecake.todo.data.repository.identity.AuthRepositoryImpl
+import com.cheesecake.todo.data.repository.todos.TodoRepositoryImpl
 import com.cheesecake.todo.utils.Constants.PREFS_NAME
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
