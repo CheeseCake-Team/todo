@@ -68,7 +68,7 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding>()
             }
     }
     override fun showTodos(todos: List<TodoItem>) {
-        adapter = ViewAllAdapter(todos)
+        adapter = ViewAllAdapter(todos,::toggleSelected)
         binding.recyclerViewAllTodos.adapter = adapter
        }
 

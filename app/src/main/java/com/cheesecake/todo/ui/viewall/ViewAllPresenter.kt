@@ -16,6 +16,8 @@ class ViewAllPresenter(private val todoRepository: TodoRepository) :
         this._isPersonal = isPersonal
     }
 
+
+
     override fun detachView() {
         this.apply {
             _view = null

@@ -13,7 +13,6 @@
         android:layout_marginEnd="@dimen/margin_medium_16"
         android:layout_marginBottom="@dimen/margin_medium_8"
         android:weightSum="3"
-        
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
