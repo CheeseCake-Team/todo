@@ -1,13 +1,18 @@
 package com.cheesecake.todo.ui.login
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
+import com.cheesecake.todo.R
 import com.cheesecake.todo.data.local.SharedPreferencesService
+import com.cheesecake.todo.data.local.SharedPreferencesServiceImpl
+import com.cheesecake.todo.data.network.NetworkServiceImpl
 import com.cheesecake.todo.data.repository.identity.IdentityRepositoryFactory
 import com.cheesecake.todo.databinding.FragmentLoginBinding
 import com.cheesecake.todo.ui.base.BaseFragment
+import com.cheesecake.todo.utils.Constants.PREFS_NAME
 
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
@@ -27,6 +32,28 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
 
         presenter = LoginPresenter(identityRepository)
         presenter.attachView(this)
+
+        val usernameLayout = binding.textInputUserNameLogin
+        val passwordLayout = binding.textInputPasswordLogin
+
+        usernameLayout.setHintAnimationEnabled(false)
+        passwordLayout.setHintAnimationEnabled(false)
+
+        binding.editTextUserNameLogin.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                usernameLayout.hint = ""
+            } else if (binding.editTextUserNameLogin.text.toString().isEmpty()) {
+                usernameLayout.setHint(getString(R.string.username))
+            }
+        }
+
+        binding.editTextPasswordLogin.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                passwordLayout.hint = ""
+            } else if (binding.editTextPasswordLogin.text.toString().isEmpty()) {
+                passwordLayout.setHint(getString(R.string.password))
+            }
+        }
 
         binding.buttonLogin.setOnClickListener {
             val username = binding.editTextUserNameLogin.text.toString().trim()
