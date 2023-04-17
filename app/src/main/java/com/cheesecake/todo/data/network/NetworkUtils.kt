@@ -2,31 +2,23 @@ package com.cheesecake.todo.data.network
 
 import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.data.models.TodoState
+import com.cheesecake.todo.data.models.response.BaseResponse
+import com.cheesecake.todo.data.models.response.LoginResponse
+import com.cheesecake.todo.data.models.response.SignUpResponse
+import com.cheesecake.todo.data.models.response.TodoPersonalResponse
+import com.cheesecake.todo.data.models.response.TodoTeamResponse
+import com.google.gson.Gson
 import okhttp3.MultipartBody
 import org.json.JSONException
 import org.json.JSONObject
 
+private val gson = Gson()
+fun parseTeamTodos(response: String) = gson.fromJson(response,
+    TodoTeamResponse::class.java)
 
-fun parseTodos(json: String): List<TodoItem> {
-    val todoItems = mutableListOf<TodoItem>()
-    try {
-        val jsonArray = JSONObject(json).getJSONArray("value")
-        for (i in 0 until jsonArray.length()) {
-            val jsonObject = jsonArray.getJSONObject(i)
-            val id = jsonObject.getString("id")
-            val title = jsonObject.getString("title")
-            val description = jsonObject.getString("description")
-            val assignee = jsonObject.optString("assignee")
-            val status = parseStatus(jsonObject.getInt("status"))
-            val creationTime = jsonObject.getString("creationTime")
-            val todoItem = TodoItem(id, title, description, assignee, status, creationTime)
-            todoItems.add(todoItem)
-        }
-    } catch (e: JSONException) {
-        e.printStackTrace()
-    }
-    return todoItems
-}
+fun parsePersonalTodos(response: String) = gson.fromJson(response,
+    TodoPersonalResponse::class.java)
+
 fun parseStatus(status: Int): TodoState {
     return when (status) {
         0 -> TodoState.TODO
@@ -35,6 +27,8 @@ fun parseStatus(status: Int): TodoState {
         else -> throw IllegalArgumentException("Invalid status value: $status")
     }
 }
+
+fun parseTodoStatus(response: String?): BaseResponse<*> = gson.fromJson(response, BaseResponse::class.java)
 
 fun createMultipartBody(vararg fields: Pair<String, String?>) =
     MultipartBody.Builder()
@@ -48,16 +42,7 @@ fun createMultipartBody(vararg fields: Pair<String, String?>) =
         }
         .build()
 
-fun parseLoginResponse(response: String?): Pair<String, String>? {
-    try {
-        val json = JSONObject(response!!)
-        val valueJson = json.optJSONObject("value")
-        val token = valueJson?.optString("token")
-        val expireAt = valueJson?.optString("expireAt")
-        return Pair(token ?: return null, expireAt ?: return null)
-    } catch (e: JSONException) {
-        return null
-    }
-}
+fun parseLoginResponse(response: String?): LoginResponse = gson.fromJson(response, LoginResponse::class.java)
 
-fun parseErrorMessageResponse(response: String): String = JSONObject(response).optString("message")
+fun parseSignUpResponse(response: String?): SignUpResponse = gson.fromJson(response,
+    SignUpResponse::class.java)
