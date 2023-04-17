@@ -1,5 +1,6 @@
 package com.cheesecake.todo.data.network
 
+import android.util.Log
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import java.io.IOException
@@ -46,8 +47,10 @@ object ApiClient {
                 val body = response.body?.string()
                 if (!response.isSuccessful) {
                     callback(ApiResult.Failure(parseErrorMessageResponse(body ?: "")))
+                    Log.d("TAG", "onResponse:Failure ")
                 } else {
                     callback(ApiResult.Success(body ?: ""))
+                    Log.d("TAG", "onResponse:Success ")
                 }
             }
         })

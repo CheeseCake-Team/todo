@@ -2,6 +2,9 @@ package com.cheesecake.todo.data.repository.todos
 
 import com.cheesecake.todo.data.local.SharedPreferencesService
 import com.cheesecake.todo.data.models.TodoState
+import com.cheesecake.todo.data.models.request.TodoPersonalRequest
+import com.cheesecake.todo.data.models.request.TodoStatus
+import com.cheesecake.todo.data.models.request.TodoTeamRequest
 import com.cheesecake.todo.data.network.NetworkService
 
 class TodoRepositoryImpl(
@@ -9,48 +12,42 @@ class TodoRepositoryImpl(
     private val sharedPreferencesService: SharedPreferencesService
 ) : TodoRepository {
 
-    override fun getTodos(isPersonal: Boolean, callback: TodoCallback) {
+    override fun getTeamTodos(todoCallback: TodoCallback) {
         val token = sharedPreferencesService.getToken()!!
-        networkDataSource.getTodos(isPersonal, token) { todos, error ->
-            if (error != null) {
-                callback.onError(error)
-            } else {
-                callback.onSuccess(todos!!)
-            }
-        }
+        networkDataSource.getTeamTodos(todoCallback)
     }
 
-    override fun createTodo(
-        title: String,
-        description: String,
-        assignee: String?,
-        isPersonal: Boolean,
-        callback: TodoCallback
-    ) {
+    override fun getPersonalTodos(todoCallback: TodoCallback) {
         val token = sharedPreferencesService.getToken()!!
-        networkDataSource.createTodo(title, description, assignee, isPersonal, token) { error ->
-            if (error != null) {
-                callback.onError(error)
-            } else {
-                callback.onSuccess()
-            }
-        }
+        networkDataSource.getPersonalTodos(todoCallback)
     }
 
-    override fun changeTodoStatus(
-        todoId: String,
-        newStatus: TodoState,
-        isPersonal: Boolean,
-        callback: TodoCallback
+    override fun createTeamTodo(
+        title: String, description: String, assignee: String, todoCallback: TodoCallback
     ) {
-        val token = sharedPreferencesService.getToken()!!
-        networkDataSource.changeTodoStatus(todoId, newStatus, isPersonal, token) { error ->
-            if (error != null) {
-                callback.onError(error)
-            } else {
-                callback.onSuccess()
-            }
-        }
+        val todoTeamRequest = TodoTeamRequest(title, description, assignee)
+        networkDataSource.createTeamTodo(todoTeamRequest, todoCallback)
+    }
+
+    override fun createPersonalTodo(
+        title: String, description: String, todoCallback: TodoCallback
+    ) {
+        val todoPersonalRequest = TodoPersonalRequest(title, description)
+        networkDataSource.createPersonalTodo(todoPersonalRequest, todoCallback)
+    }
+
+    override fun changeTeamTodoStatus(
+        todoId: String, newStatus: TodoState, todoCallback: TodoCallback
+    ) {
+        val todoStatus = TodoStatus(todoId, newStatus)
+        networkDataSource.changeTeamTodoStatus(todoStatus, todoCallback)
+    }
+
+    override fun changePersonalTodoStatus(
+        todoId: String, newStatus: TodoState, todoCallback: TodoCallback
+    ) {
+        val todoStatus = TodoStatus(todoId, newStatus)
+        networkDataSource.changePersonalTodoStatus(todoStatus, todoCallback)
     }
 
 }

@@ -1,9 +1,10 @@
 package com.cheesecake.todo.ui.login
 
+import com.cheesecake.todo.data.models.response.LoginValue
+import com.cheesecake.todo.data.repository.identity.IdentityRepository
 import com.cheesecake.todo.data.repository.identity.LoginCallback
-import com.cheesecake.todo.data.repository.identity.AuthRepository
 
-class LoginPresenter(private val authRepository: AuthRepository) : LoginCallback {
+class LoginPresenter(private val identityRepository: IdentityRepository) : LoginCallback {
     private var loginView: LoginView? = null
     fun attachView(view: LoginView) {
         loginView = view
@@ -14,11 +15,11 @@ class LoginPresenter(private val authRepository: AuthRepository) : LoginCallback
     }
 
     fun login(username: String, password: String) {
-        authRepository.login(username, password, this)
+        identityRepository.login(username, password, this)
     }
 
-    override fun onLoginComplete(token: String, expirationDate: String, username: String?) {
-        authRepository.saveTokenAndExpireDate(token, expirationDate)
+    override fun onLoginComplete(loginValue: LoginValue, username: String?) {
+        identityRepository.saveTokenAndExpireDate(loginValue.token, loginValue.expireAt)
         loginView?.navigateToHomeScreen(username!!)
     }
 
