@@ -1,18 +1,13 @@
 package com.cheesecake.todo.ui.login
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import com.cheesecake.todo.data.local.SharedPreferencesService
-import com.cheesecake.todo.data.local.SharedPreferencesServiceImpl
-import com.cheesecake.todo.data.network.NetworkServiceImpl
-import com.cheesecake.todo.data.repository.identity.AuthRepositoryFactory
-import com.cheesecake.todo.data.repository.identity.AuthRepositoryImpl
+import com.cheesecake.todo.data.repository.identity.IdentityRepositoryFactory
 import com.cheesecake.todo.databinding.FragmentLoginBinding
 import com.cheesecake.todo.ui.base.BaseFragment
-import com.cheesecake.todo.utils.Constants.PREFS_NAME
 
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
@@ -28,10 +23,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val application = requireActivity().application as AuthRepositoryFactory
-        val authRepository = application.createAuthRepository()
+        val application = requireActivity().application as IdentityRepositoryFactory
+        val identityRepository = application.createAuthRepository()
 
-        presenter = LoginPresenter(authRepository)
+        presenter = LoginPresenter(identityRepository)
 
         binding.buttonLogin.setOnClickListener {
             val username = binding.editTextUserNameLogin.text.toString().trim()

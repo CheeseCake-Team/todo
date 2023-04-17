@@ -8,7 +8,8 @@ import android.widget.Toast
 import com.cheesecake.todo.R
 import com.cheesecake.todo.data.local.SharedPreferencesServiceImpl
 import com.cheesecake.todo.data.network.NetworkServiceImpl
-import com.cheesecake.todo.data.repository.identity.AuthRepositoryImpl
+import com.cheesecake.todo.data.repository.identity.IdentityRepositoryFactory
+import com.cheesecake.todo.data.repository.identity.IdentityRepositoryImpl
 import com.cheesecake.todo.databinding.FragmentSignUpBinding
 import com.cheesecake.todo.ui.base.BaseFragment
 import com.cheesecake.todo.ui.login.LoginFragment
@@ -23,13 +24,10 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sharedPreferences = requireActivity().getSharedPreferences(
-            Constants.PREFS_NAME, Context.MODE_PRIVATE
-        )
-        val sharedPreferencesService = SharedPreferencesServiceImpl(sharedPreferences)
-        val repository = AuthRepositoryImpl(NetworkServiceImpl(), sharedPreferencesService)
+        val application = requireActivity().application as IdentityRepositoryFactory
+        val identityRepository = application.createAuthRepository()
 
-        presenter = SignUpPresenter(repository)
+        presenter = SignUpPresenter(identityRepository)
         presenter.attachView(this)
         addCallBacks()
 

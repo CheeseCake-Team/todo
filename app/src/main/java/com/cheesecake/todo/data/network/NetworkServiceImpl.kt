@@ -1,9 +1,11 @@
 package com.cheesecake.todo.data.network
 
-import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.data.models.request.TodoPersonalRequest
 import com.cheesecake.todo.data.models.request.TodoStatus
 import com.cheesecake.todo.data.models.request.TodoTeamRequest
+import com.cheesecake.todo.data.repository.identity.LoginCallback
+import com.cheesecake.todo.data.repository.identity.SignUpCallback
+import com.cheesecake.todo.data.repository.todos.TodoCallback
 import com.cheesecake.todo.utils.Constants.AUTHORIZATION_HEADER
 import com.cheesecake.todo.utils.Constants.LOGIN_ENDPOINT
 import com.cheesecake.todo.utils.Constants.PERSONAL_ENDPOINT
@@ -17,44 +19,40 @@ import okhttp3.Request
 
 class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkService {
 
-    override fun getPersonalTodos(callback: (List<TodoItem>?, String?) -> Unit) {
+    override fun getPersonalTodos(todoCallback: TodoCallback) {
         val request = Request.Builder()
             .url(PERSONAL_ENDPOINT)
             .build()
 
         okHttpClient.makeCall(request) { apiResult ->
             when (apiResult) {
-                is ApiResult.Failure -> {
-                    callback(null, apiResult.errorMessage)
-                }
+                is ApiResult.Failure -> todoCallback.onError(apiResult.errorMessage)
                 is ApiResult.Success<*> -> {
                     val todos = parseTodos(apiResult.responseBody)
-                    callback(todos, null)
+                    todoCallback.onSuccess(todos)
                 }
             }
         }
     }
 
-    override fun getTeamTodos(callback: (List<TodoItem>?, String?) -> Unit) {
+    override fun getTeamTodos(todoCallback: TodoCallback) {
         val request = Request.Builder()
             .url(TEAM_ENDPOINT)
             .build()
 
         okHttpClient.makeCall(request) { apiResult ->
             when (apiResult) {
-                is ApiResult.Failure -> {
-                    callback(null, apiResult.errorMessage)
-                }
+                is ApiResult.Failure -> todoCallback.onError(apiResult.errorMessage)
                 is ApiResult.Success<*> -> {
                     val todos = parseTodos(apiResult.responseBody)
-                    callback(todos, null)
+                    todoCallback.onSuccess(todos)
                 }
             }
         }
     }
 
     override fun createPersonalTodo(
-        todoPersonalRequest: TodoPersonalRequest, callback: (String?) -> Unit
+        todoPersonalRequest: TodoPersonalRequest, todoCallback: TodoCallback
     ) {
         val requestBody = createMultipartBody(
             "title" to todoPersonalRequest.title, "description" to todoPersonalRequest.description
@@ -66,19 +64,17 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
 
         okHttpClient.makeCall(request) { apiResult ->
             when (apiResult) {
-                is ApiResult.Failure -> {
-                    callback(apiResult.errorMessage)
-                }
-                is ApiResult.Success<*> -> {
-                    callback(null)
-                }
+                is ApiResult.Failure -> todoCallback.onError(apiResult.errorMessage)
+
+                is ApiResult.Success<*> -> todoCallback.onSuccess(null)
+
             }
         }
     }
 
     override fun createTeamTodo(
         todoPersonalRequest: TodoTeamRequest,
-        callback: (String?) -> Unit
+        todoCallback: TodoCallback
     ) {
         val requestBody = createMultipartBody(
             "title" to todoPersonalRequest.title,
@@ -93,19 +89,16 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
 
         okHttpClient.makeCall(request) { apiResult ->
             when (apiResult) {
-                is ApiResult.Failure -> {
-                    callback(apiResult.errorMessage)
-                }
-                is ApiResult.Success<*> -> {
-                    callback(null)
-                }
+                is ApiResult.Failure -> todoCallback.onError(apiResult.errorMessage)
+
+                is ApiResult.Success<*> -> todoCallback.onSuccess(null)
             }
         }
     }
 
     override fun changePersonalTodoStatus(
         todoStatus: TodoStatus,
-        callback: (String?) -> Unit
+        todoCallback: TodoCallback
     ) {
         val requestBody = createMultipartBody(
             "id" to todoStatus.todoId, "status" to todoStatus.newStatus.value.toString()
@@ -118,19 +111,16 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
 
         okHttpClient.makeCall(request) { apiResult ->
             when (apiResult) {
-                is ApiResult.Failure -> {
-                    callback(apiResult.errorMessage)
-                }
-                is ApiResult.Success<*> -> {
-                    callback(null)
-                }
+                is ApiResult.Failure -> todoCallback.onError(apiResult.errorMessage)
+
+                is ApiResult.Success<*> -> todoCallback.onSuccess(null)
             }
         }
     }
 
     override fun changeTeamTodoStatus(
         todoStatus: TodoStatus,
-        callback: (String?) -> Unit
+        todoCallback: TodoCallback
     ) {
         val requestBody = createMultipartBody(
             "id" to todoStatus.todoId, "status" to todoStatus.newStatus.value.toString()
@@ -143,19 +133,16 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
 
         okHttpClient.makeCall(request) { apiResult ->
             when (apiResult) {
-                is ApiResult.Failure -> {
-                    callback(apiResult.errorMessage)
-                }
-                is ApiResult.Success<*> -> {
-                    callback(null)
-                }
+                is ApiResult.Failure -> todoCallback.onError(apiResult.errorMessage)
+
+                is ApiResult.Success<*> -> todoCallback.onSuccess(null)
             }
         }
     }
 
     override fun login(
         username: String, password: String,
-        callback: (Pair<String, String>?, String?) -> Unit
+        loginCallback: LoginCallback
     ) {
         val credentials = Credentials.basic(username, password)
 
@@ -167,19 +154,20 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
         okHttpClient.makeCall(request) { apiResult ->
             when (apiResult) {
                 is ApiResult.Failure -> {
-                    callback(null, apiResult.errorMessage)
+                    loginCallback.onLoginFail(apiResult.errorMessage)
                 }
                 is ApiResult.Success<*> -> {
                     val token = parseLoginResponse(apiResult.responseBody)
-                    callback(token, null)
+                    loginCallback.onLoginComplete(token)
                 }
             }
         }
     }
 
+
     override fun signUp(
         username: String, password: String, teamId: String,
-        signUpCallback: (String?) -> Unit
+        signUpCallback: SignUpCallback
     ) {
         val requestBody = createMultipartBody(
             "username" to username, "password" to password, "teamId" to teamId
@@ -193,10 +181,10 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
         okHttpClient.makeCall(request) { apiResult ->
             when (apiResult) {
                 is ApiResult.Failure -> {
-                    signUpCallback(apiResult.errorMessage)
+                    signUpCallback.onSignUpFail(apiResult.errorMessage)
                 }
                 is ApiResult.Success<*> -> {
-                    signUpCallback(null)
+                    signUpCallback.onSignUpComplete()
                 }
             }
         }

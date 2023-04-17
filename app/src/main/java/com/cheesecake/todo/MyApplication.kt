@@ -6,18 +6,16 @@ import com.cheesecake.todo.data.local.SharedPreferencesService
 import com.cheesecake.todo.data.local.SharedPreferencesServiceImpl
 import com.cheesecake.todo.data.network.AuthorizationInterceptor
 import com.cheesecake.todo.data.network.NetworkServiceImpl
-import com.cheesecake.todo.data.repository.identity.AuthRepository
-import com.cheesecake.todo.data.repository.identity.AuthRepositoryFactory
-import com.cheesecake.todo.data.repository.identity.AuthRepositoryImpl
-import com.cheesecake.todo.data.repository.todos.TodoRepositoryImpl
+import com.cheesecake.todo.data.repository.identity.IdentityRepository
+import com.cheesecake.todo.data.repository.identity.IdentityRepositoryFactory
+import com.cheesecake.todo.data.repository.identity.IdentityRepositoryImpl
 import com.cheesecake.todo.utils.Constants.PREFS_NAME
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import java.io.IOException
 
-class MyApplication : Application(), AuthRepositoryFactory {
+class MyApplication : Application(), IdentityRepositoryFactory {
 
-    private lateinit var authRepository: AuthRepository
+    private lateinit var identityRepository: IdentityRepository
 
     private val sharedPreferencesService: SharedPreferencesService by lazy {
         SharedPreferencesServiceImpl(
@@ -44,10 +42,10 @@ class MyApplication : Application(), AuthRepositoryFactory {
         super.onCreate()
 
         val networkService = NetworkServiceImpl(okHttpClient)
-        authRepository = AuthRepositoryImpl(networkService, sharedPreferencesService)
+        identityRepository = IdentityRepositoryImpl(networkService, sharedPreferencesService)
     }
 
-    override fun createAuthRepository(): AuthRepository {
-        return authRepository
+    override fun createAuthRepository(): IdentityRepository {
+        return identityRepository
     }
 }
