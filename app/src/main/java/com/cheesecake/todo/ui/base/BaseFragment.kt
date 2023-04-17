@@ -53,6 +53,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
                         networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))
     }
 
+
     protected fun showNoInternetScreen() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle(R.string.no_internet_connection_title)

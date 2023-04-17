@@ -46,4 +46,16 @@
     <string name="newtask">A new task has been added successfully</string>
     <string name="label_text" >Cancel</string>
 
+
+    <string name="task_name">Clothing App</string>
+    <string name="user_name">Maryam Hassan</string>
+    <string name="task_date">10April 2023</string>
+    <string name="task_time">03:17 AM</string>
+    <string name="task_content">As a developer you couldn\'t find enough time to pick what to wear everyday, so create a personal clothing helper app to make your life easier. Clothing Suggester App should check the weather in your city for you using any API you like (we provide some). then you should already enter a set of images of the clothes that you own into the drwable section in the app.</string>
+    <string name="fab">floating action button</string>
+    <string name="card_title">Clothing Suggested App</string>
+    <string name="card_content">An application that helps to choose personal clothes to make life more difficult!</string>
+    <string name="card_date">1 April 2023</string>
+    <string name="card_time">02:17 AM</string>
+    <string name="invalid_credentials">Invalid username or password</string>
 </resources>

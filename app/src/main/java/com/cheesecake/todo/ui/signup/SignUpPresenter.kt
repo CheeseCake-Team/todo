@@ -1,41 +1,35 @@
 package com.cheesecake.todo.ui.signup
 
-import com.cheesecake.todo.BuildConfig
-import com.cheesecake.todo.data.repository.identity.AuthCallback
-import com.cheesecake.todo.data.repository.identity.AuthRepository
+
+import com.cheesecake.todo.data.repository.identity.IdentityRepository
+import com.cheesecake.todo.data.repository.identity.SignUpCallback
 import com.cheesecake.todo.utils.arePasswordsTheSame
 import com.cheesecake.todo.utils.isPasswordValid
 import com.cheesecake.todo.utils.isUsernameValid
 
-class SignUpPresenter(
-    private val authRepository: AuthRepository,
-) {
+class SignUpPresenter(private val identityRepository: IdentityRepository) : SignUpCallback {
 
     private var signUpView: SignUpView? = null
-    private val callback = object : AuthCallback {
 
-        override fun onSuccess(pair: Pair<String, String>,username: String?) {
-            signUpView?.navigateToLoginScreen()
-        }
+    override fun onSignUpComplete() {
+        signUpView?.navigateToLoginScreen()
+    }
 
-        override fun onError(error: String) {
-            signUpView?.showError("Sign up failed!")
-        }
+    override fun onSignUpFail(error: String) {
+        signUpView?.showError(error)
     }
 
     fun signUp(
-        username: String,
-        password: String,
-        confirmationPassword: String
+        username: String, password: String, confirmationPassword: String
     ) {
         when {
-            !isUsernameValid(username) ->
-                signUpView?.showError("Invalid username!")
-            !isPasswordValid(password) ->
-                signUpView?.showError("Invalid password!")
-            !arePasswordsTheSame(password, confirmationPassword) ->
-                signUpView?.showError("Passwords are not matched!")
-            else -> authRepository.signUp(username, password, BuildConfig.teamId, callback)
+            !isUsernameValid(username) -> signUpView?.showError("Invalid username!")
+            !isPasswordValid(password) -> signUpView?.showError("Invalid password!")
+            !arePasswordsTheSame(
+                password,
+                confirmationPassword
+            ) -> signUpView?.showError("Passwords are not matched!")
+            else -> identityRepository.signUp(username, password, "BuildConfig.teamId", this)
         }
     }
 
