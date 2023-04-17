@@ -27,6 +27,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
         val identityRepository = application.createAuthRepository()
 
         presenter = LoginPresenter(identityRepository)
+        presenter.attachView(this)
 
         binding.buttonLogin.setOnClickListener {
             val username = binding.editTextUserNameLogin.text.toString().trim()

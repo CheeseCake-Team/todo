@@ -10,9 +10,5 @@ object Constants {
     const val PERSONAL_ENDPOINT = "https://team-todo-62dmq.ondigitalocean.app/todo/personal"
     const val TEAM_ENDPOINT = "https://team-todo-62dmq.ondigitalocean.app/todo/team"
 
-    const val GET_METHOD = "GET"
-    const val POST_METHOD = "POST"
-    const val PUT_METHOD = "PUT"
-
     const val AUTHORIZATION_HEADER = "Authorization"
 }

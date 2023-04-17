@@ -6,6 +6,8 @@ import com.cheesecake.todo.data.models.request.TodoPersonalRequest
 import com.cheesecake.todo.data.models.request.TodoStatus
 import com.cheesecake.todo.data.models.request.TodoTeamRequest
 import com.cheesecake.todo.data.network.NetworkService
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TodoRepositoryImpl(
     private val networkDataSource: NetworkService,
@@ -13,12 +15,10 @@ class TodoRepositoryImpl(
 ) : TodoRepository {
 
     override fun getTeamTodos(todoCallback: TodoCallback) {
-        val token = sharedPreferencesService.getToken()!!
         networkDataSource.getTeamTodos(todoCallback)
     }
 
     override fun getPersonalTodos(todoCallback: TodoCallback) {
-        val token = sharedPreferencesService.getToken()!!
         networkDataSource.getPersonalTodos(todoCallback)
     }
 
@@ -49,5 +49,17 @@ class TodoRepositoryImpl(
         val todoStatus = TodoStatus(todoId, newStatus)
         networkDataSource.changePersonalTodoStatus(todoStatus, todoCallback)
     }
+
+
+    override fun isTokenValid(): Boolean {
+        val expiry = sharedPreferencesService.getExpireDate()!!
+        return  System.currentTimeMillis() / 1000 < formattedTime(expiry)
+    }
+
+
+    override fun formattedTime(expiry: String) =
+        SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US).apply {
+            timeZone = TimeZone.getTimeZone("UTC")
+        }.parse(expiry)?.time?.div(1000) ?: 0
 
 }

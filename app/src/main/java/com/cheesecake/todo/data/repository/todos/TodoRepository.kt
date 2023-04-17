@@ -13,4 +13,7 @@ interface TodoRepository {
 
     fun changeTeamTodoStatus(todoId: String, newStatus: TodoState, todoCallback: TodoCallback)
 
+    fun isTokenValid(): Boolean
+    fun formattedTime(expiry: String): Long
+
 }
