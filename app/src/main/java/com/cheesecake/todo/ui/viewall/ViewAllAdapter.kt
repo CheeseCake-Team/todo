@@ -6,14 +6,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.cheesecake.todo.data.models.TodoItem
-import com.cheesecake.todo.databinding.FragmentViewAllTodoItemsBinding
-import com.cheesecake.todo.databinding.ItemCardViewTodoBinding
-import com.cheesecake.todo.databinding.ItemHomeRecyclerBinding
+
 import com.cheesecake.todo.databinding.NestedViewAllRecyclerBinding
 import com.cheesecake.todo.databinding.ViewAllSegmentedButtonsBinding
 import com.cheesecake.todo.ui.base.BaseItemViewHolder
 import com.cheesecake.todo.ui.base.TodoDiffUtil
-import com.cheesecake.todo.ui.home.SearchTodosAdapter
+
 
 private const val ITEM_VIEW_TYPE_SEGMENTED = 0
 private const val ITEM_VIEW_TYPE_TODO_CARDS = 1
@@ -83,7 +81,7 @@ class ViewAllAdapter(private var todoItems: List<TodoItem>,private val listener:
     inner class TodoViewHolder(private val binding: NestedViewAllRecyclerBinding) :
         BaseItemViewHolder(binding) {
         fun bind(todosList: List<TodoItem>) {
-            binding.nestedRecyclerViewAllTodos.adapter = SearchTodosAdapter(todosList)
+//            binding.nestedRecyclerViewAllTodos.adapter = SearchTodosAdapter(todosList)
         }
     }
 }

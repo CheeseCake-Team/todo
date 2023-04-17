@@ -16,6 +16,8 @@ import com.cheesecake.todo.data.repository.todos.TodoRepositoryImpl
 import com.cheesecake.todo.databinding.FragmentViewAllTodoItemsBinding
 import com.cheesecake.todo.ui.base.BaseFragment
 import com.cheesecake.todo.ui.home.SearchTodosAdapter
+import com.cheesecake.todo.ui.login.LoginFragment
+import com.cheesecake.todo.utils.Constants
 
 
 class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding>(),ViewAllContract.IView {
@@ -78,7 +80,7 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding>()
 
     override fun navigateToLoginScreen() {
         requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container_activity,LoginFragment())
+            .replace(R.id.fragment_container_activity, LoginFragment())
             .commit()
     }
 

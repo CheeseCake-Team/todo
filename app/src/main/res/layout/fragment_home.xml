@@ -23,35 +23,6 @@
         />
 
 
-<!--    <com.google.android.material.search.SearchBar-->
-<!--        android:id="@+id/search_bar"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
-
-    <!--    <com.google.android.material.textfield.TextInputLayout-->
-<!--        android:id="@+id/text_input_password_login"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginHorizontal="16dp"-->
-<!--        android:hint="@string/search_bar_hint"-->
-<!--        android:layout_marginTop="@dimen/margin_large_24"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:startIconDrawable="@drawable/ic_search">-->
-
-<!--        <com.google.android.material.textfield.TextInputEditText-->
-<!--            android:id="@+id/edit_text_password_login"-->
-<!--            style="@style/UsernameAndPasswordViewStyle"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:inputType="text" />-->
-<!--    </com.google.android.material.textfield.TextInputLayout>-->
-
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_home"

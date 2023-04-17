@@ -1,36 +1,33 @@
-import com.cheesecake.todo.data.models.Tag
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
 import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.data.models.TodoState
 import com.cheesecake.todo.databinding.FragmentSearchBinding
 import com.cheesecake.todo.ui.base.BaseFragment
-import com.cheesecake.todo.ui.home.DataItem
+
+
 import com.cheesecake.todo.ui.home.TodoItemAdapter
 import com.cheesecake.todo.ui.home.TodoItemClickListener
-import com.google.android.material.search.SearchView
 
 
-class SearchFragment() : BaseFragment<FragmentSearchBinding>(), SearchView.OnQueryTextListener {
+
+class SearchFragment() : BaseFragment<FragmentSearchBinding>(),
+    android.widget.SearchView.OnQueryTextListener {
     private var searchAdapter = TodoItemAdapter(object : TodoItemClickListener {
         override fun onTodoItemClick(todoItem: TodoItem) {
-            class HomeFragment() : BaseFragment<FragmentHomeBinding>() {
-
-            }
+        }
         })
-        private val homeAdapter = HomeAdapter(object : TodoItemClickListener {
-            override fun onTodoItemClick(todoItem: TodoItem) {
 
-                @@ -33,44 +29,14 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(), SearchView.OnQueryTe
+    override val bindingInflater: (LayoutInflater) -> FragmentSearchBinding=
+        FragmentSearchBinding::inflate
                 override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
                     super.onViewCreated(view, savedInstanceState)
                     setUp()
-                    addCallbacks()
-
-
-
                 }
 
                 private fun setUp() {
-                    homeAdapter.submitList(list)
+
                     addSearchListener()
                 }
 
@@ -51,22 +48,12 @@ class SearchFragment() : BaseFragment<FragmentSearchBinding>(), SearchView.OnQue
                         val resultOfSearch = searchByTitleOrDescription(query)
                         searchAdapter.submitList(resultOfSearch)
                         binding.recyclerViewHome.adapter = searchAdapter
-                    } else {
-
-                        binding.recyclerViewHome.adapter = homeAdapter
                     }
 
                 }
 
-                private fun addCallbacks() {
-                    binding.apply {
-                        recyclerViewHome.adapter = homeAdapter
-                    }
-                }
 
 
-                @@ -83,23 +49,7 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(), SearchView.OnQueryTe
-            }
 
 
             private fun searchByTitleOrDescription(searchWord: String): List<TodoItem> {
@@ -105,9 +92,5 @@ class SearchFragment() : BaseFragment<FragmentSearchBinding>(), SearchView.OnQue
                 TodoItem(",", "", "", "", TodoState.TODO, ""),
                 TodoItem(",", "", "", "", TodoState.TODO, "")
             )
-            val list = listOf(
-                DataItem.Header(10, 10, 20),
-                DataItem.TagItem(Tag(0, "afdsafds", todosList)),
-                DataItem.TagItem(Tag(1, "sadfsdafffff", todosList0))
-            )
+
         }

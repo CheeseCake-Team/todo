@@ -46,7 +46,7 @@ class ViewAllPresenter(private val todoRepository: TodoRepository) :
 
     private fun filterAndUpdateList(type: Int) {
         val todos = currentList!!.filter { todo ->
-            todo.status == type
+            todo.status.value==type
         }
         _view!!.showTodos(todos)
     }
