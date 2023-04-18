@@ -29,7 +29,7 @@ class TodoItemAdapter(private val listener: (item: TodoItem,isPersonal:Boolean) 
             binding.textViewTeamTodoTitle.text = todoItem.title
             binding.textViewTeamTodoDescription.text = todoItem.description
             binding.textViewTeamTodoAssignee.text = todoItem.assignee
-            binding.textViewTeamTodoCreationDate.text = todoItem.creationTime
+            binding.textViewTeamTodoCreationDate.text = todoItem.creationTime.substringBefore("T")
             binding.cardViewLayoutId.setOnClickListener { listener(todoItem,todoItem.assignee == null) }
         }
     }
