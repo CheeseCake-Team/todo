@@ -73,9 +73,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView {
         }
     }
 
-    private fun loadDetailsFragment(todoItem: TodoItem) {
+    private fun loadDetailsFragment(todoItem: TodoItem, isPersonal:Boolean) {
         requireActivity().supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragment_container_activity, TaskDetailsFragment.newInstance(todoItem))
+            replace(
+                R.id.fragment_container_activity,
+                TaskDetailsFragment.newInstance(todoItem, isPersonal)
+            )
             addToBackStack(null)
             commit()
         }

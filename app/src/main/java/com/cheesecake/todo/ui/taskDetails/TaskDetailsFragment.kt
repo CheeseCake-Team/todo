@@ -6,6 +6,7 @@ import android.view.View
 import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.databinding.FragmentTaskDetailsBinding
 import com.cheesecake.todo.ui.base.BaseFragment
+import com.cheesecake.todo.ui.viewall.ViewAllTodoItemsFragment
 
 private const val TODO_KEY = "todo"
 private const val IS_PERSONAL_KEY = "is_personal_key"
@@ -20,7 +21,7 @@ class TaskDetailsFragment : BaseFragment<FragmentTaskDetailsBinding>() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             toDo = it.getParcelable(TODO_KEY)
-//            isPersonal = it.getBoolean(IS_PERSONAL_KEY)
+            isPersonal = it.getBoolean(IS_PERSONAL_KEY)
         }
     }
 
@@ -43,9 +44,10 @@ class TaskDetailsFragment : BaseFragment<FragmentTaskDetailsBinding>() {
 
 
     companion object {
-        fun newInstance(todo: TodoItem) = TaskDetailsFragment().apply {
+        fun newInstance(todo: TodoItem,isPersonal: Boolean) = TaskDetailsFragment().apply {
             arguments = Bundle().apply {
                 putParcelable(TODO_KEY, todo)
+                putBoolean(IS_PERSONAL_KEY,isPersonal)
             }
         }
     }

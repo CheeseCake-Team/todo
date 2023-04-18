@@ -16,7 +16,7 @@ private const val ITEM_VIEW_TYPE_HEADER = 0
 private const val ITEM_VIEW_TYPE_TAG = 2
 
 class HomeAdapter(
-    private val todoItemListener: (item: TodoItem) -> Unit,
+    private val todoItemListener: (item: TodoItem,isPersonal:Boolean) -> Unit,
     private val viewAllListener: (item: String) -> Unit,
 ) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DataItemDiffCallback()) {
 
