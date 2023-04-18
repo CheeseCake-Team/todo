@@ -1,16 +1,17 @@
 package com.cheesecake.todo.data.network
 
+import android.util.Log
+import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.data.models.request.TodoPersonalRequest
-import com.cheesecake.todo.data.models.request.TodoStatus
+import com.cheesecake.todo.data.models.request.TodoStatusRequest
 import com.cheesecake.todo.data.models.request.TodoTeamRequest
+import com.cheesecake.todo.data.models.response.LoginValue
+import com.cheesecake.todo.data.models.response.SignUpValue
+import com.cheesecake.todo.data.models.response.TodosValue
 import com.cheesecake.todo.data.repository.identity.LoginCallback
 import com.cheesecake.todo.data.repository.identity.SignUpCallback
 import com.cheesecake.todo.data.repository.todos.TodoCallback
-import com.cheesecake.todo.utils.Constants.AUTHORIZATION_HEADER
-import com.cheesecake.todo.utils.Constants.LOGIN_ENDPOINT
-import com.cheesecake.todo.utils.Constants.PERSONAL_ENDPOINT
-import com.cheesecake.todo.utils.Constants.SIGNUP_ENDPOINT
-import com.cheesecake.todo.utils.Constants.TEAM_ENDPOINT
+import com.cheesecake.todo.data.network.AuthorizationInterceptor.Companion.AUTHORIZATION_HEADER
 import com.cheesecake.todo.utils.makeCall
 import okhttp3.Credentials
 import okhttp3.OkHttpClient
@@ -29,9 +30,9 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
                     todoCallback.onError(apiResult.errorMessage)
                 }
                 is ApiResult.Success -> {
-                    val todos = parsePersonalTodos(apiResult.responseBody)
+                    val todos = parseResponse<TodosValue>(apiResult.responseBody)
                     if (todos.isSuccess)
-                        todoCallback.onSuccessPersonalTodo(todos.value)
+                        todoCallback.onSuccessPersonalTodo(todos.value!!.value)
                     else
                         todoCallback.onError(todos.message!!)
                 }
@@ -50,7 +51,7 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
                     todoCallback.onError(apiResult.errorMessage)
                 }
                 is ApiResult.Success -> {
-                    val todos = parseTeamTodos(apiResult.responseBody)
+                    val todos = parseResponse<List<TodoItem>>(apiResult.responseBody)
                     if (todos.isSuccess)
                         todoCallback.onSuccessTeamTodo(todos.value)
                     else
@@ -77,7 +78,7 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
                     todoCallback.onError(apiResult.errorMessage)
                 }
                 is ApiResult.Success -> {
-                    val createTodoPersonalResponse = parsePersonalTodos(apiResult.responseBody)
+                    val createTodoPersonalResponse = parseResponse<List<TodoItem>>(apiResult.responseBody)
                     if (createTodoPersonalResponse.isSuccess)
                         todoCallback.onSuccessPersonalTodo()
                     else
@@ -108,7 +109,7 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
                     todoCallback.onError(apiResult.errorMessage)
                 }
                 is ApiResult.Success -> {
-                    val response = parseTodoStatus(apiResult.responseBody)
+                    val response = parseResponse<TodoItem>(apiResult.responseBody)
                     if (response.isSuccess)
                         todoCallback.onSuccessTeamTodo(null)
                     else
@@ -119,11 +120,11 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
     }
 
     override fun changePersonalTodoStatus(
-        todoStatus: TodoStatus,
+        todoStatusRequest: TodoStatusRequest,
         todoCallback: TodoCallback
     ) {
         val requestBody = createMultipartBody(
-            "id" to todoStatus.todoId, "status" to todoStatus.newStatus.value.toString()
+            "id" to todoStatusRequest.todoId, "status" to todoStatusRequest.newStatus.value.toString()
         )
 
         val request = Request.Builder()
@@ -137,7 +138,7 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
                     todoCallback.onError(apiResult.errorMessage)
                 }
                 is ApiResult.Success -> {
-                    val response = parseTodoStatus(apiResult.responseBody)
+                    val response = parseResponse<String>(apiResult.responseBody)
                     if (response.isSuccess)
                         todoCallback.onSuccessTeamTodo(null)
                     else
@@ -148,11 +149,11 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
     }
 
     override fun changeTeamTodoStatus(
-        todoStatus: TodoStatus,
+        todoStatusRequest: TodoStatusRequest,
         todoCallback: TodoCallback
     ) {
         val requestBody = createMultipartBody(
-            "id" to todoStatus.todoId, "status" to todoStatus.newStatus.value.toString()
+            "id" to todoStatusRequest.todoId, "status" to todoStatusRequest.newStatus.value.toString()
         )
 
         val request = Request.Builder()
@@ -180,14 +181,14 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
             .addHeader(AUTHORIZATION_HEADER, credentials)
             .build()
 
-
         okHttpClient.makeCall(request) { apiResult ->
             when (apiResult) {
                 is ApiResult.Failure -> {
                     loginCallback.onLoginFail(apiResult.errorMessage)
                 }
                 is ApiResult.Success -> {
-                    val loginResponse = parseLoginResponse(apiResult.responseBody)
+                    val loginResponse = parseResponse<LoginValue>(apiResult.responseBody)
+                    Log.d("login: ", loginResponse.toString())
                     if (loginResponse.isSuccess)
                         loginResponse.value?.let { loginCallback.onLoginComplete(it) }
                     else
@@ -216,7 +217,7 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
                     signUpCallback.onSignUpFail(apiResult.errorMessage)
                 }
                 is ApiResult.Success -> {
-                    val signUpResponse = parseSignUpResponse(apiResult.responseBody)
+                    val signUpResponse = parseResponse<SignUpValue>(apiResult.responseBody)
                     if (signUpResponse.isSuccess)
                         signUpCallback.onSignUpComplete()
                     else
@@ -224,5 +225,12 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
                 }
             }
         }
+    }
+
+    private companion object {
+        const val LOGIN_ENDPOINT = "https://team-todo-62dmq.ondigitalocean.app/login"
+        const val SIGNUP_ENDPOINT = "https://team-todo-62dmq.ondigitalocean.app/signup"
+        const val PERSONAL_ENDPOINT = "https://team-todo-62dmq.ondigitalocean.app/todo/personal"
+        const val TEAM_ENDPOINT = "https://team-todo-62dmq.ondigitalocean.app/todo/team"
     }
 }

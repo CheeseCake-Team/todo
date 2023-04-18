@@ -1,7 +1,7 @@
 package com.cheesecake.todo.data.network
 
 import com.cheesecake.todo.data.models.request.TodoPersonalRequest
-import com.cheesecake.todo.data.models.request.TodoStatus
+import com.cheesecake.todo.data.models.request.TodoStatusRequest
 import com.cheesecake.todo.data.models.request.TodoTeamRequest
 import com.cheesecake.todo.data.repository.identity.LoginCallback
 import com.cheesecake.todo.data.repository.identity.SignUpCallback
@@ -21,8 +21,8 @@ interface NetworkService {
         todoCallback: TodoCallback
     )
 
-    fun changePersonalTodoStatus(todoStatus: TodoStatus, todoCallback: TodoCallback)
-    fun changeTeamTodoStatus(todoStatus: TodoStatus, todoCallback: TodoCallback)
+    fun changePersonalTodoStatus(todoStatusRequest: TodoStatusRequest, todoCallback: TodoCallback)
+    fun changeTeamTodoStatus(todoStatusRequest: TodoStatusRequest, todoCallback: TodoCallback)
 
     fun login(username: String, password: String, loginCallback: LoginCallback)
 
