@@ -180,6 +180,7 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
             .addHeader(AUTHORIZATION_HEADER, credentials)
             .build()
 
+
         okHttpClient.makeCall(request) { apiResult ->
             when (apiResult) {
                 is ApiResult.Failure -> {

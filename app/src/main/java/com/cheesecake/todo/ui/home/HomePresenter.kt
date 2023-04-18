@@ -8,7 +8,7 @@ import com.cheesecake.todo.data.repository.todos.TodoRepository
 
 class HomePresenter(private val todoRepository: TodoRepository) : TodoCallback {
     private var homeView: HomeView? = null
-    private lateinit var allTodos: MutableList<TodoItem>
+    private val allTodos= mutableListOf<TodoItem>()
     private lateinit var personalTodos: List<TodoItem>
     private lateinit var teamTodos: List<TodoItem>
 
@@ -49,26 +49,26 @@ class HomePresenter(private val todoRepository: TodoRepository) : TodoCallback {
         todoRepository.getPersonalTodos(this)
     }
 
-    fun getPersonalTodoPercentage(): Int {
+    private fun getPersonalTodoPercentage(): Int {
         val todo = personalTodos.filter { it.status == TodoState.TODO }
-        return todo.size.div(personalTodos.size)
+        return todo.size.div(5)
 
     }
 
-    fun getPersonalProgressPercentage(): Int {
+    private fun getPersonalProgressPercentage(): Int {
         val progress = personalTodos.filter { it.status == TodoState.IN_PROGRESS }
-        return progress.size.div(personalTodos.size)
+        return progress.size.div(5)
 
     }
 
-    fun getPersonalDonePercentage(): Int {
+    private fun getPersonalDonePercentage(): Int {
         val done = personalTodos.filter { it.status == TodoState.DONE }
-        return done.size.div(personalTodos.size)
+        return done.size.div(5)
     }
 
-    fun getTeamDonePercentage(): Int {
+    private fun getTeamDonePercentage(): Int {
         val done = teamTodos.filter { it.status == TodoState.DONE }
-        return done.size.div(teamTodos.size)
+        return done.size.div(5)
     }
 
 

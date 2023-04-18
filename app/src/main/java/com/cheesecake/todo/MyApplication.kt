@@ -16,7 +16,7 @@ import com.cheesecake.todo.utils.Constants.PREFS_NAME
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
-class MyApplication : Application(), IdentityRepositoryFactory,TodoRepositoryFactory {
+class MyApplication : Application(), IdentityRepositoryFactory, TodoRepositoryFactory {
 
     private lateinit var identityRepository: IdentityRepository
     private lateinit var todoRepository: TodoRepository
@@ -26,27 +26,34 @@ class MyApplication : Application(), IdentityRepositoryFactory,TodoRepositoryFac
             getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         )
     }
-    private val okHttpClient: OkHttpClient by lazy {
+
+    private val todosOkHttpClient: OkHttpClient by lazy {
         OkHttpClient
             .Builder()
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             })
-//            .addInterceptor { chain ->
-//                if (!isConnectedToNetwork()) {
-//                    throw IOException("No internet connection")
-//                }
-//                chain.proceed(chain.request())
-//            }
             .addInterceptor(AuthorizationInterceptor(sharedPreferencesService.getToken()!!))
+            .build()
+    }
+
+    private val identityOkHttpClient: OkHttpClient by lazy {
+        OkHttpClient
+            .Builder()
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BASIC
+            })
             .build()
     }
 
     override fun onCreate() {
         super.onCreate()
-        val networkService = NetworkServiceImpl(okHttpClient)
-        identityRepository = IdentityRepositoryImpl(networkService, sharedPreferencesService)
-        todoRepository = TodoRepositoryImpl(networkService,sharedPreferencesService)
+        val networkService = NetworkServiceImpl(todosOkHttpClient)
+        val identityNetworkService = NetworkServiceImpl(identityOkHttpClient)
+
+        identityRepository =
+            IdentityRepositoryImpl(identityNetworkService, sharedPreferencesService)
+        todoRepository = TodoRepositoryImpl(networkService, sharedPreferencesService)
     }
 
     override fun createAuthRepository(): IdentityRepository {
