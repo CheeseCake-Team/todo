@@ -10,8 +10,8 @@
     <string name="welcome">Welcome!</string>
     <string name="sign_up_details">Let Do Fast be your daily assistant to help you achieve more and increase your productivity</string>
     <string name="have_an_account">Have an account?</string>
-    <string name="personal_todo">Personal Todo</string>
-    <string name="team_todo">Team Todo</string>
+    <string name="personal_todo">Personal</string>
+    <string name="team_todo">Team</string>
     <string name="keep_it_up">Keep it up!</string>
     <string name="your_daily_goals_almost_done">Your daily goals almost done</string>
     <string name="todo">Todo</string>
@@ -27,5 +27,51 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="todo_title">Todo Title</string>
+    <string name="creation_date">1 April 2023</string>
+    <string name="creation_time">02:17 AM</string>
+    <string name="todo_description">An application that helps to choose personal clothes to make life more difficult!</string>
+    <string name="assignee_name">Assignee Name</string>
+    <string name="search">Search</string>
+    <string name="no_result_maches">No Result Maches</string>
+    <string name="let_s_do_new_plans">Let’s do new plans</string>
 
+
+
+
+
+
+
+
+
+
+
+
+
+    <string name="no_internet_connection_title">No Internet Connection</string>
+    <string name="no_internet_connection_message">Please check your internet connection and try again</string>
+    <string name="retry">Retry</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="type">Type</string>
+    <string name="create">Create</string>
+    <string name="create_task">Create Task</string>
+    <string name="home">Home</string>
+    <string name="category">Category</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="newtask">A new task has been added successfully</string>
+    <string name="label_text" >Cancel</string>
+
+
+    <string name="task_name">Clothing App</string>
+    <string name="user_name">Maryam Hassan</string>
+    <string name="task_date">10April 2023</string>
+    <string name="task_time">03:17 AM</string>
+    <string name="task_content">As a developer you couldn\'t find enough time to pick what to wear everyday, so create a personal clothing helper app to make your life easier. Clothing Suggester App should check the weather in your city for you using any API you like (we provide some). then you should already enter a set of images of the clothes that you own into the drwable section in the app.</string>
+    <string name="fab">floating action button</string>
+    <string name="card_title">Clothing Suggested App</string>
+    <string name="card_content">An application that helps to choose personal clothes to make life more difficult!</string>
+    <string name="card_date">1 April 2023</string>
+    <string name="card_time">02:17 AM</string>
+    <string name="invalid_credentials">Invalid username or password</string>
 </resources>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.MainActivity">
+
+    <ImageView
+        android:id="@+id/image_view_top_shape"
+        android:layout_width="160dp"
+        android:layout_height="108dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/sign_up_top_shape"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_view_welcome_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_medium_16"
+        android:layout_marginTop="274dp"
+        android:text="@string/welcome_back"
+        android:textColor="#6750A4"
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_user_name_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_medium_16"
+        android:layout_marginTop="@dimen/margin_large_24"
+        android:hint="@string/username"
+
+        app:layout_constraintTop_toBottomOf="@+id/text_view_welcome_login">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_user_name_login"
+            style="@style/UsernameAndPasswordViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_password_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/text_input_user_name_login"
+        app:layout_constraintTop_toBottomOf="@id/text_input_user_name_login"
+        app:passwordToggleEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_password_login"
+            style="@style/UsernameAndPasswordViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/button_login"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginHorizontal="@dimen/margin_medium_16"
+        android:layout_marginTop="@dimen/margin_large_24"
+        android:text="@string/login"
+        app:layout_constraintTop_toBottomOf="@+id/text_input_password_login" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/button_login"
+        app:layout_constraintStart_toStartOf="@+id/button_login"
+        app:layout_constraintTop_toBottomOf="@+id/button_login">
+
+        <TextView
+            android:id="@+id/text_view_do_not_have_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:text="@string/do_not_have_an_account"
+            style="@style/HaveAnAccountText"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="595dp" />
+
+        <TextView
+            android:id="@+id/text_view_sign_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_up"
+            style="@style/SignUpText"
+            app:layout_constraintTop_toTopOf="@+id/textView2"
+            tools:layout_editor_absoluteX="349dp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
