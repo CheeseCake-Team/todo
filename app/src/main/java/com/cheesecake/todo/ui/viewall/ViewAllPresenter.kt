@@ -1,8 +1,11 @@
 package com.cheesecake.todo.ui.viewall
 
+import android.util.Log
 import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.data.repository.todos.TodoCallback
 import com.cheesecake.todo.data.repository.todos.TodoRepository
+
+private const val TAG = "ViewAllPresenter"
 
 class ViewAllPresenter(private val todoRepository: TodoRepository) :
     ViewAllContract.IPresenter, TodoCallback {
@@ -15,8 +18,6 @@ class ViewAllPresenter(private val todoRepository: TodoRepository) :
         this._view = view
         this._isPersonal = isPersonal
     }
-
-
 
     override fun detachView() {
         this.apply {
@@ -34,8 +35,12 @@ class ViewAllPresenter(private val todoRepository: TodoRepository) :
         }
     }
 
-    override fun onSuccess(todos: List<TodoItem>?) {
-        _view!!.showTodos(todos!!)
+    override fun onSuccessTeamTodo(todos: List<TodoItem>?) {
+        currentList = todos
+    }
+
+    override fun onSuccessPersonalTodo(todos: List<TodoItem>?) {
+        currentList = todos
     }
 
     override fun onError(error: String) {
@@ -43,13 +48,13 @@ class ViewAllPresenter(private val todoRepository: TodoRepository) :
     }
 
     override fun onToggleSelected(position: Int) {
-        filterAndUpdateList(position)
-    }
-
-    private fun filterAndUpdateList(type: Int) {
-        val todos = currentList!!.filter { todo ->
-            todo.status.value == type
+        Log.d(TAG, position.toString() + "here")
+        val todos = currentList!!.filter {
+            it.status.value == position
         }
         _view!!.showTodos(todos)
+        Log.d(TAG, currentList.toString())
+        Log.d(TAG, todos.toString())
     }
+
 }

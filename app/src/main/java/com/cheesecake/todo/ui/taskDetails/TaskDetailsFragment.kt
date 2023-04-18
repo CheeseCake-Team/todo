@@ -6,8 +6,9 @@ import android.view.View
 import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.databinding.FragmentTaskDetailsBinding
 import com.cheesecake.todo.ui.base.BaseFragment
+import com.cheesecake.todo.ui.viewall.ViewAllTodoItemsFragment
 
-private const val TO_DO_KEY = "toDo"
+private const val TODO_KEY = "todo"
 private const val IS_PERSONAL_KEY = "is_personal_key"
 
 class TaskDetailsFragment : BaseFragment<FragmentTaskDetailsBinding>() {
@@ -19,7 +20,7 @@ class TaskDetailsFragment : BaseFragment<FragmentTaskDetailsBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            toDo = it.getParcelable(TO_DO_KEY)
+            toDo = it.getParcelable(TODO_KEY)
             isPersonal = it.getBoolean(IS_PERSONAL_KEY)
         }
     }
@@ -27,8 +28,7 @@ class TaskDetailsFragment : BaseFragment<FragmentTaskDetailsBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.textViewTaskName.text = toDo?.title.toString()
-        binding.textViewTaskDate.text = toDo?.creationTime.toString()
-        binding.textViewTaskTime.text = toDo?.creationTime.toString()
+        binding.textViewTaskDate.text = toDo?.creationTime.toString().substringBefore("T")
         binding.textViewTaskContent.text = toDo?.description.toString()
         binding.textViewUserName.text = toDo?.assignee.toString()
         if (isPersonal!!){
@@ -43,11 +43,10 @@ class TaskDetailsFragment : BaseFragment<FragmentTaskDetailsBinding>() {
 
 
     companion object {
-        fun newInstance(toDo: TodoItem,isPersonal: Boolean) = TaskDetailsFragment().apply {
+        fun newInstance(todo: TodoItem,isPersonal: Boolean) = TaskDetailsFragment().apply {
             arguments = Bundle().apply {
-                putParcelable(TO_DO_KEY, toDo)
-                putBoolean(IS_PERSONAL_KEY, isPersonal)
-
+                putParcelable(TODO_KEY, todo)
+                putBoolean(IS_PERSONAL_KEY,isPersonal)
             }
         }
     }

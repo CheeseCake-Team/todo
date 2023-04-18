@@ -19,8 +19,9 @@
         android:layout_marginTop="@dimen/margin_large_24"
         android:queryBackground="@null"
         android:imeOptions="flagNoFullscreen"
-       android:background="@drawable/search_style"
+        android:background="@drawable/search_style"
         />
+
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -28,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        android:layout_marginTop="@dimen/margin_medium_16"
+        android:layout_marginTop="@dimen/margin_large_24"
         android:orientation="vertical"
         android:paddingVertical="@dimen/margin_small_8"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

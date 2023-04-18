@@ -15,13 +15,12 @@ class LoginPresenter(private val identityRepository: IdentityRepository) : Login
     }
 
     fun login(username: String, password: String) {
-
         identityRepository.login(username, password, this)
     }
 
-    override fun onLoginComplete(loginValue: LoginValue, username: String?) {
+    override fun onLoginComplete(loginValue: LoginValue) {
         identityRepository.saveTokenAndExpireDate(loginValue.token, loginValue.expireAt)
-        loginView?.navigateToHomeScreen(username!!)
+        loginView?.navigateToHomeScreen()
     }
 
     override fun onLoginFail(error: String) {

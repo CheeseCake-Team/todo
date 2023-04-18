@@ -14,6 +14,10 @@ import com.cheesecake.todo.databinding.FragmentLoginBinding
 import com.cheesecake.todo.ui.base.BaseFragment
 import com.cheesecake.todo.ui.signup.SignUpFragment
 import com.cheesecake.todo.utils.Constants.PREFS_NAME
+import com.cheesecake.todo.data.repository.identity.IdentityRepositoryFactory
+import com.cheesecake.todo.databinding.FragmentLoginBinding
+import com.cheesecake.todo.ui.base.BaseFragment
+import com.cheesecake.todo.ui.home.HomeFragment
 
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
@@ -71,7 +75,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
         }
         binding.textViewSignUp.setOnClickListener {
             navigateToSignup()
-            
+           
         }
     }
 
@@ -81,13 +85,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
     }
 
 
-    override fun navigateToHomeScreen(username: String) {
-        requireActivity().runOnUiThread {
-            Toast.makeText(
-                requireContext(),username,
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+    override fun navigateToHomeScreen() {
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container_activity, HomeFragment()).commit()
     }
 
     private fun navigateToSignup(){
@@ -103,7 +103,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
         }
     }
 
-    private fun initPresenter (){
+    private fun initPresenter() {
         val application = requireActivity().application as IdentityRepositoryFactory
         val identityRepository = application.createAuthRepository()
         presenter = LoginPresenter(identityRepository)

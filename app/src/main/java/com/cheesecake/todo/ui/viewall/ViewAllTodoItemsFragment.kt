@@ -1,16 +1,18 @@
 package com.cheesecake.todo.ui.viewall
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import com.cheesecake.todo.R
 import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.data.repository.todos.TodoRepositoryFactory
 import com.cheesecake.todo.databinding.FragmentViewAllTodoItemsBinding
 import com.cheesecake.todo.ui.base.BaseFragment
+import com.cheesecake.todo.ui.home.TodoItemAdapter
 import com.cheesecake.todo.ui.login.LoginFragment
+import com.cheesecake.todo.ui.taskDetails.TaskDetailsFragment
 
 
 class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding>(),
@@ -19,30 +21,45 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding>()
     override val bindingInflater: (LayoutInflater) -> FragmentViewAllTodoItemsBinding =
         FragmentViewAllTodoItemsBinding::inflate
 
-
     private lateinit var presenter: ViewAllContract.IPresenter
-    private lateinit var adapter: ViewAllAdapter
+    private lateinit var adapter: TodoItemAdapter
     private var _isPersonalStatus: Boolean? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             _isPersonalStatus = it.getBoolean(IS_PERSONAL_KEY)
         }
+        setupPresenter()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val view = super.onCreateView(inflater, container, savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+        addCallbacks()
+    }
+
+    private fun initView() {
+        adapter = TodoItemAdapter(::loadDetailsFragment)
+        binding.toggleButtonTodo.performClick()
+        binding.recyclerViewAllTodos.adapter = adapter
+    }
+
+    private fun addCallbacks() {
+        binding.toggleButtonGroup.addOnButtonCheckedListener { toggleButton, checkedId, isChecked ->
+            when (checkedId) {
+                R.id.toggle_button_todo -> if (isChecked) toggleSelected(0)
+                R.id.toggle_button_progress -> if (isChecked) toggleSelected(1)
+                R.id.toggle_button_done -> if (isChecked) toggleSelected(2)
+            }
+        }
+    }
+
+    private fun setupPresenter() {
         val todoFactory = requireActivity().application as TodoRepositoryFactory
         presenter = ViewAllPresenter(todoFactory.createTodoRepository())
         presenter.attachView(this, _isPersonalStatus)
         presenter.requestAllTodos()
-        return view
     }
 
     override fun onDestroy() {
@@ -62,8 +79,21 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding>()
     }
 
     override fun showTodos(todos: List<TodoItem>) {
-        adapter = ViewAllAdapter(todos, ::toggleSelected)
-        binding.recyclerViewAllTodos.adapter = adapter
+        Log.e("showTodos: ", todos.toString())
+        requireActivity().runOnUiThread {
+            adapter.submitList(todos)
+        }
+    }
+
+    private fun loadDetailsFragment(todoItem: TodoItem, isPersonal: Boolean) {
+        requireActivity().supportFragmentManager.beginTransaction().apply {
+            replace(
+                R.id.fragment_container_activity,
+                TaskDetailsFragment.newInstance(todoItem, isPersonal)
+            )
+            addToBackStack(null)
+            commit()
+        }
     }
 
 
@@ -82,6 +112,5 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding>()
     override fun toggleSelected(position: Int) {
         presenter.onToggleSelected(position)
     }
-
 
 }

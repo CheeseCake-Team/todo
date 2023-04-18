@@ -1,19 +1,14 @@
 package com.cheesecake.todo.ui.signup
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import com.cheesecake.todo.R
-import com.cheesecake.todo.data.local.SharedPreferencesServiceImpl
-import com.cheesecake.todo.data.network.NetworkServiceImpl
 import com.cheesecake.todo.data.repository.identity.IdentityRepositoryFactory
-import com.cheesecake.todo.data.repository.identity.IdentityRepositoryImpl
 import com.cheesecake.todo.databinding.FragmentSignUpBinding
 import com.cheesecake.todo.ui.base.BaseFragment
 import com.cheesecake.todo.ui.login.LoginFragment
-import com.cheesecake.todo.utils.Constants
 
 class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView {
     override val bindingInflater: (LayoutInflater) -> FragmentSignUpBinding =
@@ -32,9 +27,6 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView {
         addCallBacks()
 
     }
-
-
-
 
 
     private fun addCallBacks() {
@@ -72,16 +64,11 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView {
 
 
         binding.buttonSignUp.setOnClickListener {
-
-            if (!isNetworkAvailable()) showNoInternetScreen()
-            else {
-                presenter.signUp(
-                    binding.editTextUserNameSignUp.text.toString(),
-                    binding.editTextPasswordSignUp.text.toString(),
-                    binding.editTextConfirmPasswordSignUp.text.toString()
-                )
-            }
-
+            presenter.signUp(
+                binding.editTextUserNameSignUp.text.toString(),
+                binding.editTextPasswordSignUp.text.toString(),
+                binding.editTextConfirmPasswordSignUp.text.toString()
+            )
         }
 
         binding.textViewLogin.setOnClickListener {
