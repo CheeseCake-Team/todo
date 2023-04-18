@@ -30,6 +30,39 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView {
 
 
     private fun addCallBacks() {
+        val usernameLayout = binding.textInputUserNameSignUp
+        val passwordLayout = binding.textInputPasswordSignUp
+        val confirmPasswordLayout = binding.textInputConfirmPasswordSignUp
+
+        usernameLayout.isHintAnimationEnabled = false
+        passwordLayout.isHintAnimationEnabled = false
+        confirmPasswordLayout.isHintAnimationEnabled = false
+
+        binding.editTextUserNameSignUp.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                usernameLayout.hint = ""
+            } else if (binding.editTextUserNameSignUp.text.toString().isEmpty()) {
+                usernameLayout.hint = getString(R.string.username)
+            }
+        }
+
+        binding.editTextPasswordSignUp.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                passwordLayout.hint = ""
+            } else if (binding.editTextPasswordSignUp.text.toString().isEmpty()) {
+                passwordLayout.hint = getString(R.string.password)
+            }
+        }
+
+        binding.editTextConfirmPasswordSignUp.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                confirmPasswordLayout.hint = ""
+            } else if (binding.editTextConfirmPasswordSignUp.text.toString().isEmpty()) {
+                confirmPasswordLayout.hint = getString(R.string.confirm_password)
+            }
+        }
+
+
         binding.buttonSignUp.setOnClickListener {
             presenter.signUp(
                 binding.editTextUserNameSignUp.text.toString(),
