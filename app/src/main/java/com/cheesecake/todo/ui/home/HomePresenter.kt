@@ -44,15 +44,17 @@ class HomePresenter(private val todoRepository: TodoRepository) : TodoCallback {
     }
 
     fun search(text: String):List<TodoItem> {
-        val firstSearchResult = (homeList[0] as DataItem.TagItem).tag.todos.filter { it.title.contains(text)
-                || it.description.contains(text)
-        }
-        Log.d("onQueryTextChange: ", firstSearchResult.toString())
-        val secondSearchResult = (homeList[1] as DataItem.TagItem).tag.todos.filter { it.title.contains(text)
-                || it.description.contains(text)
-        }
-        Log.d("onQueryTextChange: ", secondSearchResult.toString())
-        return firstSearchResult + secondSearchResult
+        return if (homeList.size > 2) {
+            val firstSearchResult = (homeList[0] as DataItem.TagItem).tag.todos.filter { it.title.contains(text)
+                    || it.description.contains(text)
+            }
+            Log.d("onQueryTextChange: ", firstSearchResult.toString())
+            val secondSearchResult = (homeList[1] as DataItem.TagItem).tag.todos.filter { it.title.contains(text)
+                    || it.description.contains(text)
+            }
+            Log.d("onQueryTextChange: ", secondSearchResult.toString())
+            firstSearchResult + secondSearchResult
+        } else emptyList()
     }
 
 }
