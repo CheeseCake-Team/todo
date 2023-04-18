@@ -37,14 +37,14 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
         val usernameLayout = binding.textInputUserNameLogin
         val passwordLayout = binding.textInputPasswordLogin
 
-        usernameLayout.setHintAnimationEnabled(false)
-        passwordLayout.setHintAnimationEnabled(false)
+        usernameLayout.isHintAnimationEnabled = false
+        passwordLayout.isHintAnimationEnabled = false
 
         binding.editTextUserNameLogin.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 usernameLayout.hint = ""
             } else if (binding.editTextUserNameLogin.text.toString().isEmpty()) {
-                usernameLayout.setHint(getString(R.string.username))
+                usernameLayout.hint = getString(R.string.username)
             }
         }
 
@@ -52,7 +52,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
             if (hasFocus) {
                 passwordLayout.hint = ""
             } else if (binding.editTextPasswordLogin.text.toString().isEmpty()) {
-                passwordLayout.setHint(getString(R.string.password))
+                passwordLayout.hint = getString(R.string.password)
             }
         }
 

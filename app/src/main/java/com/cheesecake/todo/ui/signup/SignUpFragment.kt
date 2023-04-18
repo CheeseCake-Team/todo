@@ -42,15 +42,15 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView {
         val passwordLayout = binding.textInputPasswordSignUp
         val confirmPasswordLayout = binding.textInputConfirmPasswordSignUp
 
-        usernameLayout.setHintAnimationEnabled(false)
-        passwordLayout.setHintAnimationEnabled(false)
-        confirmPasswordLayout.setHintAnimationEnabled(false)
+        usernameLayout.isHintAnimationEnabled = false
+        passwordLayout.isHintAnimationEnabled = false
+        confirmPasswordLayout.isHintAnimationEnabled = false
 
         binding.editTextUserNameSignUp.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 usernameLayout.hint = ""
             } else if (binding.editTextUserNameSignUp.text.toString().isEmpty()) {
-                usernameLayout.setHint(getString(R.string.username))
+                usernameLayout.hint = getString(R.string.username)
             }
         }
 
@@ -58,7 +58,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView {
             if (hasFocus) {
                 passwordLayout.hint = ""
             } else if (binding.editTextPasswordSignUp.text.toString().isEmpty()) {
-                passwordLayout.setHint(getString(R.string.password))
+                passwordLayout.hint = getString(R.string.password)
             }
         }
 
@@ -66,7 +66,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView {
             if (hasFocus) {
                 confirmPasswordLayout.hint = ""
             } else if (binding.editTextConfirmPasswordSignUp.text.toString().isEmpty()) {
-                confirmPasswordLayout.setHint(getString(R.string.confirm_password))
+                confirmPasswordLayout.hint = getString(R.string.confirm_password)
             }
         }
 
