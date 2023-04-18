@@ -3,7 +3,7 @@ package com.cheesecake.todo.data.repository.todos
 import com.cheesecake.todo.data.local.SharedPreferencesService
 import com.cheesecake.todo.data.models.TodoState
 import com.cheesecake.todo.data.models.request.TodoPersonalRequest
-import com.cheesecake.todo.data.models.request.TodoStatus
+import com.cheesecake.todo.data.models.request.TodoStatusRequest
 import com.cheesecake.todo.data.models.request.TodoTeamRequest
 import com.cheesecake.todo.data.network.NetworkService
 import java.text.SimpleDateFormat
@@ -39,15 +39,15 @@ class TodoRepositoryImpl(
     override fun changeTeamTodoStatus(
         todoId: String, newStatus: TodoState, todoCallback: TodoCallback
     ) {
-        val todoStatus = TodoStatus(todoId, newStatus)
-        networkDataSource.changeTeamTodoStatus(todoStatus, todoCallback)
+        val todoStatusRequest = TodoStatusRequest(todoId, newStatus)
+        networkDataSource.changeTeamTodoStatus(todoStatusRequest, todoCallback)
     }
 
     override fun changePersonalTodoStatus(
         todoId: String, newStatus: TodoState, todoCallback: TodoCallback
     ) {
-        val todoStatus = TodoStatus(todoId, newStatus)
-        networkDataSource.changePersonalTodoStatus(todoStatus, todoCallback)
+        val todoStatusRequest = TodoStatusRequest(todoId, newStatus)
+        networkDataSource.changePersonalTodoStatus(todoStatusRequest, todoCallback)
     }
 
     override fun isTokenValid(): Boolean {

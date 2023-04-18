@@ -4,7 +4,6 @@ import android.content.Context
 import com.cheesecake.todo.data.local.SharedPreferencesServiceImpl
 import com.cheesecake.todo.ui.createtodo.model.CreateToDoModel
 import com.cheesecake.todo.ui.createtodo.presenter.StatusResponse
-import com.cheesecake.todo.utils.Constants
 import com.google.gson.Gson
 import okhttp3.*
 import java.io.IOException
@@ -73,7 +72,7 @@ class CreateTodoPresenter(var context: Context) {
      fun checkToken() : String?{
         sharedPreferencesServiceImpl = SharedPreferencesServiceImpl(
             context.getSharedPreferences(
-                Constants.PREFS_NAME,
+                "Constants.PREFS_NAME",
                 Context.MODE_PRIVATE
             )
         )

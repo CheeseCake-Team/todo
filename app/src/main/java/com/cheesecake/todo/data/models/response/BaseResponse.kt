@@ -2,9 +2,8 @@ package com.cheesecake.todo.data.models.response
 
 import com.google.gson.annotations.SerializedName
 
-open class BaseResponse<T>(
-    open val value: T?,
-    open val message: String?,
-    @SerializedName("isSuccess")
-    open val isSuccess: Boolean
+data class BaseResponse<T>(
+    @SerializedName("value") val value: T,
+    @SerializedName("message") val message: String,
+    @SerializedName("isSuccess") val isSuccess: Boolean = true,
 )
