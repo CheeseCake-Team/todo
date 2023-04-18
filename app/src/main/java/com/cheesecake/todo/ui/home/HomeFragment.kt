@@ -15,7 +15,7 @@ import com.cheesecake.todo.ui.login.LoginFragment
 import com.cheesecake.todo.ui.taskDetails.TaskDetailsFragment
 import com.cheesecake.todo.ui.viewall.ViewAllTodoItemsFragment
 
-class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView, OnQueryTextListener {
 
     override val bindingInflater: (LayoutInflater) -> FragmentHomeBinding =
         FragmentHomeBinding::inflate
@@ -26,15 +26,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUp()
+        addSearchCallBack()
     }
 
+    private fun addSearchCallBack() {
+        binding.searchBar.setOnQueryTextListener(this)
+    }
 
     private fun setUp() {
         val todoFactory = requireActivity().application as TodoRepositoryFactory
         presenter = HomePresenter(todoFactory.createTodoRepository())
         presenter.attachView(this)
         presenter.initTodos()
-
         homeAdapter = HomeAdapter(::loadDetailsFragment, ::loadViewAllFragment)
         binding.recyclerViewHome.adapter = homeAdapter
     }
@@ -86,7 +89,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView {
         loadLoginFragment()
     }
 
-
     private fun loadLoginFragment() {
         requireActivity().supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragment_container_activity, LoginFragment())
@@ -99,4 +101,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView {
         super.onDestroyView()
         presenter.detachView()
     }
+
+    override fun onQueryTextSubmit(p0: String?): Boolean {
+
+        return false
+    }
+
+    override fun onQueryTextChange(p0: String?): Boolean {
+        val list = presenter.search(p0.toString())
+        Log.d("onQueryTextChange: ", list.toString())
+        if (list.isEmpty() || p0!!.isEmpty()) {
+            binding.recyclerViewHome.adapter = homeAdapter
+        } else {
+            val adapter = TodoItemAdapter(::loadDetailsFragment)
+            adapter.submitList(list)
+            binding.recyclerViewHome.adapter = adapter
+        }
+        return false
+    }
+
+
 }

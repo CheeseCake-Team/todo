@@ -1,5 +1,6 @@
 package com.cheesecake.todo.ui.home
 
+import android.util.Log
 import com.cheesecake.todo.data.models.Tag
 import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.data.repository.todos.TodoCallback
@@ -41,4 +42,17 @@ class HomePresenter(private val todoRepository: TodoRepository) : TodoCallback {
             todoRepository.getTeamTodos(this)
         } else homeView?.navigateToLoginScreen()
     }
+
+    fun search(text: String):List<TodoItem> {
+        val firstSearchResult = (homeList[0] as DataItem.TagItem).tag.todos.filter { it.title.contains(text)
+                || it.description.contains(text)
+        }
+        Log.d("onQueryTextChange: ", firstSearchResult.toString())
+        val secondSearchResult = (homeList[1] as DataItem.TagItem).tag.todos.filter { it.title.contains(text)
+                || it.description.contains(text)
+        }
+        Log.d("onQueryTextChange: ", secondSearchResult.toString())
+        return firstSearchResult + secondSearchResult
+    }
+
 }

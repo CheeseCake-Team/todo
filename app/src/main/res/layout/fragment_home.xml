@@ -23,13 +23,12 @@
         />
 
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_home"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        android:layout_marginTop="@dimen/margin_large_24"
+        android:layout_marginTop="@dimen/margin_medium_16"
         android:orientation="vertical"
         android:paddingVertical="@dimen/margin_small_8"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
