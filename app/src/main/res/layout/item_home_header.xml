@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_medium_16"
-        android:layout_marginTop="@dimen/margin_large_24"
+        android:layout_marginTop="@dimen/margin_medium_8"
         style="@style/Widget.Material3.CardView.Filled"
         android:foreground="@drawable/fixed_card_foreground"
         app:cardBackgroundColor="@color/md_theme_light_primary"
