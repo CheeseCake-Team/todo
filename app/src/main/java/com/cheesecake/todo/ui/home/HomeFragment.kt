@@ -1,6 +1,7 @@
 package com.cheesecake.todo.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,11 +28,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-
-        setUp()
         return super.onCreateView(inflater, container, savedInstanceState)
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setUp()
+    }
+
 
     private fun setUp() {
         val todoFactory = requireActivity().application as TodoRepositoryFactory
@@ -58,7 +62,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView {
     }
 
     override fun showError(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+        requireActivity().runOnUiThread {
+            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+            Log.e("showError: ", message)
+        }
     }
 
     private fun loadViewAllFragment(todoTitle: String) {

@@ -38,7 +38,7 @@ class MyApplication : Application(), IdentityRepositoryFactory,TodoRepositoryFac
 //                }
 //                chain.proceed(chain.request())
 //            }
-            //.addInterceptor(AuthorizationInterceptor(sharedPreferencesService.getToken()!!))
+            .addInterceptor(AuthorizationInterceptor(sharedPreferencesService.getToken()!!))
             .build()
     }
 

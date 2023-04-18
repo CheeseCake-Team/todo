@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
+import com.cheesecake.todo.R
 import com.cheesecake.todo.data.local.SharedPreferencesService
 import com.cheesecake.todo.data.repository.identity.IdentityRepositoryFactory
 import com.cheesecake.todo.databinding.FragmentLoginBinding
 import com.cheesecake.todo.ui.base.BaseFragment
+import com.cheesecake.todo.ui.home.HomeFragment
 
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
@@ -46,10 +48,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
 
     override fun navigateToHomeScreen(username: String) {
         requireActivity().runOnUiThread {
-            Toast.makeText(
-                requireContext(),username,
-                Toast.LENGTH_SHORT
-            ).show()
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container_activity, HomeFragment()).commit()
         }
     }
 

@@ -45,3 +45,6 @@ class TodoDiffCallback : DiffUtil.ItemCallback<TodoItem>() {
     }
 }
 
+interface TodoItemClickListener {
+    fun onTodoItemClick(todoItem: TodoItem)
+}

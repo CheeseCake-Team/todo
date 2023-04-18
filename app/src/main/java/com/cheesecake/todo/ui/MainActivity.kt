@@ -13,6 +13,7 @@ import com.cheesecake.todo.ui.base.BaseFragment
 import com.cheesecake.todo.ui.signup.SignUpFragment
 
 import com.cheesecake.todo.ui.createtodo.ToDoFragment
+import com.cheesecake.todo.ui.login.LoginFragment
 import com.cheesecake.todo.ui.viewall.ViewAllTodoItemsFragment
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
@@ -33,6 +34,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private fun initializeHomeScreen() {
        binding.appbar.visibility = View.GONE
-       loadFragmentIntoContainer(SignUpFragment())
+       loadFragmentIntoContainer(LoginFragment())
     }
 }

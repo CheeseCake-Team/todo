@@ -34,6 +34,9 @@ class HomePresenter(private val todoRepository: TodoRepository) : TodoCallback {
                 teamTodo = teamTodos
             )
             homeView?.initHomeList(homeItem)
+        } else {
+            personalTodos = allTodos.filter { it.assignee == null }
+            teamTodos = allTodos.filter { it.assignee != null }
         }
     }
 
@@ -44,8 +47,6 @@ class HomePresenter(private val todoRepository: TodoRepository) : TodoCallback {
     fun initTodos() {
         todoRepository.getTeamTodos(this)
         todoRepository.getPersonalTodos(this)
-        personalTodos = allTodos.filter { it.assignee == null }
-        teamTodos = allTodos.filter { it.assignee != null }
     }
 
     fun getPersonalTodoPercentage(): Int {
