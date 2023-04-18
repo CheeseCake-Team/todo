@@ -1,29 +1,33 @@
 package com.cheesecake.todo.ui.home
 
-import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.cheesecake.todo.data.models.Tag
 import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.databinding.ItemHomeHeaderBinding
-import com.cheesecake.todo.databinding.ItemHomeRecyclerBinding
-import com.cheesecake.todo.databinding.ItemTodoCardsBinding
-import com.cheesecake.todo.ui.base.BaseItemViewHolder
-
+import com.cheesecake.todo.databinding.ItemTagBinding
+import com.hookedonplay.decoviewlib.charts.SeriesItem
 
 private const val ITEM_VIEW_TYPE_HEADER = 0
-private const val ITEM_VIEW_TYPE_TODO_CARDS = 1
-private const val ITEM_VIEW_TYPE_TODO_recycler = 2
+private const val ITEM_VIEW_TYPE_TAG = 2
 
 class HomeAdapter(
-    private var homeList: List<*>,
-//    private val listener: () -> Unit
-    private var context: Context
+    private val todoItemListener: (item: TodoItem) -> Unit,
+    private val viewAllListener: (item: String) -> Unit,
+) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DataItemDiffCallback()) {
 
-) : RecyclerView.Adapter<BaseItemViewHolder>() {
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)) {
+            is DataItem.Header -> ITEM_VIEW_TYPE_HEADER
+            is DataItem.TagItem -> ITEM_VIEW_TYPE_TAG
+        }
+    }
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             ITEM_VIEW_TYPE_HEADER -> HeaderViewHolder(
@@ -31,76 +35,108 @@ class HomeAdapter(
                     layoutInflater, parent, false
                 )
             )
-            ITEM_VIEW_TYPE_TODO_CARDS -> CardsViewHolder(
-                ItemTodoCardsBinding.inflate(
+            ITEM_VIEW_TYPE_TAG -> TagViewHolder(
+                ItemTagBinding.inflate(
                     layoutInflater,
                     parent,
                     false
                 )
             )
-            else -> TodoRecyclerViewHolder(
-                ItemHomeRecyclerBinding.inflate(
-                    layoutInflater,
-                    parent,
-                    false
-                )
-            )
+            else -> throw java.lang.ClassCastException("Unknown view type: $viewType")
         }
     }
 
-
-    override fun onBindViewHolder(holder: BaseItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is HeaderViewHolder -> {
-                val item = homeList[0] as TodoItem
-                //holder.bind(item)
-            }
-            is CardsViewHolder -> {
-                val item = homeList[1] as TodoItem
+                val item = getItem(position) as DataItem.Header
                 holder.bind(item)
             }
-            is TodoRecyclerViewHolder -> {
-                val item = homeList[position] as List<TodoItem>
-                holder.bind(item)
+            is TagViewHolder -> {
+                val item = getItem(position) as DataItem.TagItem
+                holder.bind(
+                    item.tag, viewAllListener
+                )
             }
         }
-
     }
-
-    override fun getItemViewType(position: Int): Int {
-        return when (position) {
-            0 -> ITEM_VIEW_TYPE_HEADER
-            1 -> ITEM_VIEW_TYPE_TODO_CARDS
-            else -> ITEM_VIEW_TYPE_TODO_recycler
-        }
-    }
-
-    override fun getItemCount() = homeList.size
 
     inner class HeaderViewHolder(private val binding: ItemHomeHeaderBinding) :
-        BaseItemViewHolder(binding) {
+        RecyclerView.ViewHolder(binding.root) {
 
-    }
-
-    inner class CardsViewHolder(private val binding: ItemTodoCardsBinding) :
-        BaseItemViewHolder(binding) {
-        fun bind(todoItem: TodoItem) {
-        }
-    }
-
-    inner class TodoRecyclerViewHolder(private val binding: ItemHomeRecyclerBinding) :
-        BaseItemViewHolder(binding) {
-        fun bind(todoItem: List<TodoItem>) {
-            if (todoItem[0].assignee == null) {
-                binding.textRecently.text = "Recently Personal"
-            } else {
-                binding.textRecently.text = "Recently Team"
+        fun bind(header: DataItem.Header) {
+            setupPieChart()
+            binding.apply {
+                personTodoProgressBar.max = (header.doneNumber + header.progressNumber
+                        + header.todoNumber).toFloat()
+                personTodoProgressBar.progress = header.doneNumber.toFloat()
             }
-            binding.recyclerView.adapter = SearchTodosAdapter(todoItem)
-            //binding.textViewAll.setOnClickListener { listener }
+        }
+
+        private fun setupPieChart() {
+            val todo = SeriesItem.Builder(Color.argb(92, 225, 225, 225))
+                .setRange(0f, 100f, 100f)
+                .setInitialVisibility(true)
+                .setLineWidth(12f)
+                .build()
+
+            val progress = SeriesItem.Builder(Color.argb(153, 225, 225, 225))
+                .setRange(0f, 100f, 80f)
+                .setLineWidth(12f)
+                .build()
+
+            val done = SeriesItem.Builder(Color.argb(255, 225, 225, 225))
+                .setRange(0f, 100f, 60f)
+                .setLineWidth(12f)
+                .build()
+
+            binding.pieChart.addSeries(todo)
+            binding.pieChart.addSeries(progress)
+            binding.pieChart.addSeries(done)
         }
 
     }
 
+    inner class TagViewHolder(private val binding: ItemTagBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(
+            tag: Tag,
+            listener: (item: String) -> Unit
+        ) {
+            binding.apply {
+                textRecently.text = tag.title
+                textViewAll.setOnClickListener { listener(tag.title) }
+            }
+            val adapter = TodoItemAdapter(todoItemListener)
+            adapter.submitList(tag.todos)
+            binding.recyclerView.adapter = adapter
+        }
 
+    }
+
+}
+
+class DataItemDiffCallback : DiffUtil.ItemCallback<DataItem>() {
+    override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
+        return oldItem == newItem
+    }
+}
+
+
+sealed class DataItem {
+    data class TagItem(val tag: Tag) : DataItem() {
+        override val id = tag.id
+    }
+
+    data class Header(val todoNumber: Int, val progressNumber: Int, val doneNumber: Int) :
+        DataItem() {
+        override val id: Int
+            get() = Int.MAX_VALUE
+    }
+
+    abstract val id: Int
 }
