@@ -4,11 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import com.cheesecake.todo.R
-import com.cheesecake.todo.data.models.HomeItem
-import com.cheesecake.todo.data.models.Tag
 import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.data.repository.todos.TodoRepositoryFactory
 import com.cheesecake.todo.databinding.FragmentHomeBinding
@@ -38,16 +35,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView {
         binding.recyclerViewHome.adapter = homeAdapter
     }
 
-    override fun initHomeList(homeItem: List<DataItem>) {
+    override fun initHomeList(homeList: MutableList<DataItem>) {
         requireActivity().runOnUiThread {
+            while (homeList.size < 2) {
+                Log.e("while", "here")
+            }
+            Log.d("list", homeList[0].toString())
+            Log.d("list", homeList[1].toString())
             val todosList = listOf(
                 DataItem.Header(
-                    homeItem.personalTodoPercentage,
-                    homeItem.personalProgressPercentage,
-                    homeItem.personalDonePercentage
+                    (homeList[0] as DataItem.TagItem).tag.todos,
+                    (homeList[1] as DataItem.TagItem).tag.todos
                 ),
-                DataItem.TagItem(Tag(0, "Recently Personal", homeItem.personalTodos)),
-                DataItem.TagItem(Tag(1, "Recently Team", homeItem.teamTodo))
+                homeList[0],
+                homeList[1]
             )
             homeAdapter.submitList(todosList)
         }

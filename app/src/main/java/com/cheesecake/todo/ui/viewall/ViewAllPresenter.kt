@@ -38,6 +38,10 @@ class ViewAllPresenter(private val todoRepository: TodoRepository) :
         _view!!.showTodos(todos!!)
     }
 
+    override fun onSuccessPersonalTodo(todos: List<TodoItem>?) {
+        _view!!.showTodos(todos!!)
+    }
+
     override fun onError(error: String) {
         _view!!.showError(error)
     }
