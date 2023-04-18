@@ -188,9 +188,9 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
                 is ApiResult.Success -> {
                     val loginResponse = parseLoginResponse(apiResult.responseBody)
                     if (loginResponse.isSuccess)
-                        loginCallback.onLoginComplete(loginResponse.value!!)
+                        loginResponse.value?.let { loginCallback.onLoginComplete(it,username = username) }
                     else
-                        loginCallback.onLoginFail(loginResponse.message!!)
+                        loginResponse.message?.let { loginCallback.onLoginFail(it) }
                 }
             }
         }
