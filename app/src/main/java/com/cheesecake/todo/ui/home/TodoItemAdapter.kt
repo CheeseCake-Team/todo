@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.databinding.ItemTodoBinding
 
-class TodoItemAdapter(private val listener: TodoItemClickListener) :
+class TodoItemAdapter(private val listener: (item: TodoItem) -> Unit) :
     ListAdapter<TodoItem, TodoItemAdapter.TodoViewHolder>(TodoDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
@@ -25,12 +25,12 @@ class TodoItemAdapter(private val listener: TodoItemClickListener) :
 
     class TodoViewHolder(private val binding: ItemTodoBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(todoItem: TodoItem, listener: TodoItemClickListener) {
+        fun bind(todoItem: TodoItem, listener: (item: TodoItem) -> Unit) {
             binding.textViewTeamTodoTitle.text = todoItem.title
             binding.textViewTeamTodoDescription.text = todoItem.description
             binding.textViewTeamTodoAssignee.text = todoItem.assignee
             binding.textViewTeamTodoCreationDate.text = todoItem.creationTime
-            binding.cardViewLayoutId.setOnClickListener { listener.onTodoItemClick(todoItem) }
+            binding.cardViewLayoutId.setOnClickListener { listener(todoItem) }
         }
     }
 }
@@ -45,6 +45,3 @@ class TodoDiffCallback : DiffUtil.ItemCallback<TodoItem>() {
     }
 }
 
-interface TodoItemClickListener {
-    fun onTodoItemClick(todoItem: TodoItem)
-}
