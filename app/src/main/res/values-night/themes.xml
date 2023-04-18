@@ -1,12 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Todo" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.Todo" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
         <item name="colorPrimary">@color/md_theme_light_primary</item>
         <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_light_primary</item>
         <item name="colorOnPrimaryContainer">@color/md_theme_light_onPrimary</item>
-
+        <item name="colorOnSurfaceVariant">@color/md_theme_light_surfaceVariant</item>
     </style>
 
     <style name="Theme.App.Todo.SplashScreen" parent="Theme.SplashScreen">
@@ -23,7 +23,7 @@
         <item name="android:textColor">@color/white_hint</item>
     </style>
 
-    <style name="CardTitle" parent="TextSubTitle">
+    <style name="CardTitle" parent="create_button">
         <item name="android:textColor">@color/white_title</item>
     </style>
 

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Margin Space -->
     <dimen name="margin_small_2">2dp</dimen>
     <dimen name="margin_small_4">4dp</dimen>
     <dimen name="margin_small_8">8dp</dimen>
     <dimen name="margin_medium_12">12dp</dimen>
     <dimen name="margin_medium_16">16dp</dimen>
     <dimen name="margin_large_24">24dp</dimen>
-
+    <!-- Font Size -->
     <dimen name="font_size_12">12sp</dimen>
     <dimen name="font_size_14">14sp</dimen>
     <dimen name="font_size_16">16sp</dimen>
@@ -15,6 +16,8 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="fragment_horizontal_margin">16dp</dimen>
     <dimen name="fragment_vertical_margin">16dp</dimen>
+    <dimen name="space_44">44dp</dimen>
+    <dimen name="margin_medium_8">8dp</dimen>
 
     <dimen name="margin_large_84">84dp</dimen>
     <dimen name="margin_medium_18">18dp</dimen>

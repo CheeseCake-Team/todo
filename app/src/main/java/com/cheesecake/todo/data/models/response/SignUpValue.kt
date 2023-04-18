@@ -1,5 +1,6 @@
 package com.cheesecake.todo.data.models.response
 
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class SignUpValue(
@@ -8,7 +9,8 @@ data class SignUpValue(
 ) : Serializable
 
 data class SignUpResponse(
-    override val value: SignUpValue?,
-    override val message: String?,
-    override val isSuccess: Boolean
-) : BaseResponse<SignUpValue>(value, message, isSuccess)
+    val value: SignUpValue?,
+    val message: String?,
+    @SerializedName("isSuccess")
+    val isSuccess: Boolean
+)

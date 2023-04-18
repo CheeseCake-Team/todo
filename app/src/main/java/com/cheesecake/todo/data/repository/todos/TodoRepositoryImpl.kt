@@ -50,12 +50,14 @@ class TodoRepositoryImpl(
         networkDataSource.changePersonalTodoStatus(todoStatus, todoCallback)
     }
 
-
     override fun isTokenValid(): Boolean {
-        val expiry = sharedPreferencesService.getExpireDate()!!
-        return  System.currentTimeMillis() / 1000 < formattedTime(expiry)
+        val expiry = sharedPreferencesService.getExpireDate()
+        return if (expiry != null && expiry.isNotEmpty()) {
+            System.currentTimeMillis() / 1000 < formattedTime(expiry)
+        } else {
+            false
+        }
     }
-
 
     override fun formattedTime(expiry: String) =
         SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US).apply {

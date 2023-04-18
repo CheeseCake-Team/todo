@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="todo_title">Todo Title</string>
-    <string name="creation_date">1 April 2023</string>
-    <string name="creation_time">02:17 AM</string>
-    <string name="todo_description">An application that helps to choose personal clothes to make life more difficult!</string>
-    <string name="assignee_name">Assignee Name</string>
-    <string name="invalid_credentials"><![CDATA[Invalid username or password<]]></string>
-</resources>
