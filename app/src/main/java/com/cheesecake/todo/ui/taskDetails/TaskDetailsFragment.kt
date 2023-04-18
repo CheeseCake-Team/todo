@@ -45,7 +45,7 @@ class TaskDetailsFragment : BaseFragment<FragmentTaskDetailsBinding>() {
     companion object {
         fun newInstance(todo: TodoItem) = TaskDetailsFragment().apply {
             arguments = Bundle().apply {
-                putParcelable(TODO_KEY, toDo)
+                putParcelable(TODO_KEY, todo)
             }
         }
     }
