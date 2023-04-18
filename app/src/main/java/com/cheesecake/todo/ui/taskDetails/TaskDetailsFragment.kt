@@ -28,8 +28,7 @@ class TaskDetailsFragment : BaseFragment<FragmentTaskDetailsBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.textViewTaskName.text = toDo?.title.toString()
-        binding.textViewTaskDate.text = toDo?.creationTime.toString()
-        binding.textViewTaskTime.text = toDo?.creationTime.toString()
+        binding.textViewTaskDate.text = toDo?.creationTime.toString().substringBefore("T")
         binding.textViewTaskContent.text = toDo?.description.toString()
         binding.textViewUserName.text = toDo?.assignee.toString()
         if (isPersonal!!){

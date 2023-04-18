@@ -41,16 +41,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView, OnQueryTextL
         homeAdapter = HomeAdapter(::loadDetailsFragment, ::loadViewAllFragment)
         binding.recyclerViewHome.adapter = homeAdapter
     }
+
     override fun initHomeList(homeList: MutableList<DataItem>) {
         requireActivity().runOnUiThread {
-            val todosList = listOf(
-                DataItem.Header(
-                    (homeList[0] as DataItem.TagItem).tag.todos,
-                    (homeList[1] as DataItem.TagItem).tag.todos
-                ),
-                homeList[0],
-                homeList[1]
-            )
+            val todosList = if ((homeList[0] as DataItem.TagItem).tag.title.contains("Personal")) {
+                listOf(
+                    DataItem.Header(
+                        (homeList[0] as DataItem.TagItem).tag.todos,
+                        (homeList[1] as DataItem.TagItem).tag.todos
+                    ),
+                    homeList[0],
+                    homeList[1]
+                )
+            } else {
+                listOf(
+                    DataItem.Header(
+                        (homeList[1] as DataItem.TagItem).tag.todos,
+                        (homeList[0] as DataItem.TagItem).tag.todos
+                    ),
+                    homeList[1],
+                    homeList[0]
+                )
+            }
             homeAdapter.submitList(todosList)
         }
     }
