@@ -25,9 +25,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
         FragmentLoginBinding::inflate
 
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initPresenter()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+ 
         val application = requireActivity().application as IdentityRepositoryFactory
         val identityRepository = application.createAuthRepository()
 
@@ -56,6 +62,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
             }
         }
 
+ 
         binding.buttonLogin.setOnClickListener {
             val username = binding.editTextUserNameLogin.text.toString().trim()
             val password = binding.editTextPasswordLogin.text.toString().trim()
@@ -94,5 +101,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
         requireActivity().runOnUiThread {
             Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun initPresenter (){
+        val application = requireActivity().application as IdentityRepositoryFactory
+        val identityRepository = application.createAuthRepository()
+        presenter = LoginPresenter(identityRepository)
+        presenter.attachView(this)
     }
 }
