@@ -19,7 +19,7 @@
         android:layout_marginTop="@dimen/margin_large_24"
         android:queryBackground="@null"
         android:imeOptions="flagNoFullscreen"
-       android:background="@drawable/search_style"
+        android:background="@drawable/search_style"
         />
 
 

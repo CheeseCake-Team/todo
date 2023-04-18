@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/margin_medium_16"
+    android:layout_marginHorizontal="@dimen/margin_small_4"
     android:layout_marginTop="@dimen/margin_small_4"
-    android:layout_marginEnd="@dimen/margin_medium_16"
     android:layout_marginBottom="@dimen/margin_small_4"
     app:cardCornerRadius="@dimen/margin_medium_16">
 
@@ -18,17 +18,13 @@
             android:id="@+id/text_view_team_todo_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_medium_16"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="@dimen/margin_medium_16"
             android:background="@drawable/todo_title_background"
+            android:layout_marginTop="@dimen/margin_medium_16"
+            android:layout_marginStart="@dimen/margin_medium_16"
             android:lines="1"
             android:padding="@dimen/margin_small_4"
             android:text="@string/todo_title"
-            android:textColor="@color/md_theme_light_primary"
-            android:textSize="@dimen/font_size_16"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/text_view_team_todo_description"
+            style="@style/CardTitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,23 +33,18 @@
             android:id="@+id/text_view_team_todo_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_medium_16"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="@dimen/margin_medium_16"
+            android:layout_marginTop="@dimen/margin_medium_16"
             android:lines="2"
             android:text="@string/todo_description"
-            android:textColor="#60000000"
-            android:textSize="@dimen/font_size_14"
-            android:textStyle="bold"
+            style="@style/CardDetails"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_view_team_todo_title" />
+            android:layout_marginHorizontal="@dimen/margin_medium_16"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_team_todo_title" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_view_team_todo_assignee"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_medium_16"
             android:layout_marginTop="@dimen/margin_medium_12"
             android:layout_marginBottom="@dimen/margin_medium_16"
             android:drawableStart="@drawable/icon_assignee"
@@ -62,7 +53,7 @@
             android:textColor="@color/md_theme_light_primary"
             android:textSize="@dimen/font_size_12"
             app:layout_constraintBottom_toBottomOf="@id/card_view_layout_id"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/text_view_team_todo_description"
             app:layout_constraintTop_toBottomOf="@id/text_view_team_todo_description" />
 
 
@@ -73,10 +64,10 @@
             android:layout_marginTop="@dimen/margin_medium_12"
             android:layout_marginEnd="@dimen/margin_medium_16"
             android:layout_marginBottom="@dimen/margin_medium_16"
+            android:background="@drawable/todo_date_background"
             android:drawableStart="@drawable/calendar_svgrepo_com"
             android:drawablePadding="@dimen/margin_small_4"
             android:lines="1"
-            android:background="@drawable/todo_date_background"
             android:padding="@dimen/margin_small_4"
             android:text="@string/creation_date"
             android:textColor="#84879D"
@@ -87,6 +78,7 @@
 
 
         <View
+            android:id="@+id/view"
             android:layout_width="5dp"
             android:layout_height="0dp"
             android:background="@color/md_theme_light_primary"
