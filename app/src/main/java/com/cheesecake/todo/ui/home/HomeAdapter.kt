@@ -65,30 +65,57 @@ class HomeAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(header: DataItem.Header) {
-            setupPieChart()
+            val personalProgressTodoItem = header.personalTodoItems.count { it.status.value == 1 }.toFloat()
+            val personalDoneTodoItem = header.personalTodoItems.count { it.status.value == 2 }.toFloat()
+            val teamDoneTodoItem = header.teamTodoItems.count { it.status.value == 2 }.toFloat()
+            setPersonalProgress(header, personalDoneTodoItem)
+            setTeamProgress(header, teamDoneTodoItem)
+            setupPieChart(
+                header.personalTodoItems.size.toFloat(),
+                personalDoneTodoItem,
+                personalProgressTodoItem
+            )
+        }
+
+        private fun setPersonalProgress(header: DataItem.Header, personalDoneTodoItem: Float) {
             binding.apply {
-                personTodoProgressBar.max = (header.doneNumber + header.progressNumber
-                        + header.todoNumber).toFloat()
-                personTodoProgressBar.progress = header.doneNumber.toFloat()
+                personTodoProgressBar.max = header.personalTodoItems.size.toFloat()
+                personTodoProgressBar.progress = personalDoneTodoItem
+                textViewFixedPersonalProgress.text =
+                    ((personalDoneTodoItem * 100) / header.personalTodoItems.size).toString()
             }
         }
 
-        private fun setupPieChart() {
+        private fun setTeamProgress(header: DataItem.Header, teamDoneTodoItem: Float) {
+            binding.apply {
+                teamTodoProgressBar.max = header.teamTodoItems.size.toFloat()
+                teamTodoProgressBar.progress = teamDoneTodoItem
+                textViewFixedTeamProgress.text =
+                    ((teamDoneTodoItem * 100) / header.teamTodoItems.size).toString()
+            }
+        }
+
+        private fun setupPieChart(max: Float, personalDoneTodoItem: Float,
+                                  personalProgressTodoItem: Float) {
             val todo = SeriesItem.Builder(Color.argb(92, 225, 225, 225))
-                .setRange(0f, 100f, 100f)
+                .setRange(0f, max, max)
                 .setInitialVisibility(true)
                 .setLineWidth(12f)
                 .build()
 
             val progress = SeriesItem.Builder(Color.argb(153, 225, 225, 225))
-                .setRange(0f, 100f, 80f)
+                .setRange(0f, max, personalProgressTodoItem)
                 .setLineWidth(12f)
                 .build()
 
             val done = SeriesItem.Builder(Color.argb(255, 225, 225, 225))
-                .setRange(0f, 100f, 60f)
+                .setRange(0f, max, personalDoneTodoItem)
                 .setLineWidth(12f)
                 .build()
+
+            binding.textViewDonePercentage.text =
+                ((personalDoneTodoItem * 100) / max).toString()
+
 
             binding.pieChart.addSeries(todo)
             binding.pieChart.addSeries(progress)
@@ -132,7 +159,7 @@ sealed class DataItem {
         override val id = tag.id
     }
 
-    data class Header(val todoNumber: Int, val progressNumber: Int, val doneNumber: Int) :
+    data class Header(val personalTodoItems: List<TodoItem>, val teamTodoItems: List<TodoItem>) :
         DataItem() {
         override val id: Int
             get() = Int.MAX_VALUE
