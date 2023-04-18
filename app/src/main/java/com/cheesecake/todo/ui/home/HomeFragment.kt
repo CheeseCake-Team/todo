@@ -38,7 +38,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView {
         binding.recyclerViewHome.adapter = homeAdapter
     }
 
-    override fun initHomeList(homeItem: HomeItem) {
+    override fun initHomeList(homeItem: List<DataItem>) {
         requireActivity().runOnUiThread {
             val todosList = listOf(
                 DataItem.Header(
@@ -74,11 +74,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView {
 
     private fun loadDetailsFragment(todoItem: TodoItem) {
         requireActivity().supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragment_container_activity, TaskDetailsFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable("todoItem", todoItem)
-                }
-            })
+            replace(R.id.fragment_container_activity, TaskDetailsFragment.newInstance(todoItem))
             addToBackStack(null)
             commit()
         }

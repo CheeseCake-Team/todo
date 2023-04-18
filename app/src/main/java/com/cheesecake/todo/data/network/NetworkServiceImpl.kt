@@ -31,7 +31,7 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
                 is ApiResult.Success -> {
                     val todos = parsePersonalTodos(apiResult.responseBody)
                     if (todos.isSuccess)
-                        todoCallback.onSuccess(todos.value)
+                        todoCallback.onSuccessPersonalTodo(todos.value)
                     else
                         todoCallback.onError(todos.message!!)
                 }
@@ -52,7 +52,7 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
                 is ApiResult.Success -> {
                     val todos = parseTeamTodos(apiResult.responseBody)
                     if (todos.isSuccess)
-                        todoCallback.onSuccess(todos.value)
+                        todoCallback.onSuccessTeamTodo(todos.value)
                     else
                         todoCallback.onError(todos.message!!)
                 }
@@ -79,7 +79,7 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
                 is ApiResult.Success -> {
                     val createTodoPersonalResponse = parsePersonalTodos(apiResult.responseBody)
                     if (createTodoPersonalResponse.isSuccess)
-                        todoCallback.onSuccess()
+                        todoCallback.onSuccessPersonalTodo()
                     else
                         todoCallback.onError(createTodoPersonalResponse.message!!)
                 }
@@ -110,7 +110,7 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
                 is ApiResult.Success -> {
                     val response = parseTodoStatus(apiResult.responseBody)
                     if (response.isSuccess)
-                        todoCallback.onSuccess(null)
+                        todoCallback.onSuccessTeamTodo(null)
                     else
                         todoCallback.onError(response.message!!)
                 }
@@ -139,7 +139,7 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
                 is ApiResult.Success -> {
                     val response = parseTodoStatus(apiResult.responseBody)
                     if (response.isSuccess)
-                        todoCallback.onSuccess(null)
+                        todoCallback.onSuccessTeamTodo(null)
                     else
                         todoCallback.onError(response.message!!)
                 }
@@ -164,7 +164,7 @@ class NetworkServiceImpl(private val okHttpClient: OkHttpClient) : NetworkServic
             when (apiResult) {
                 is ApiResult.Failure -> todoCallback.onError(apiResult.errorMessage)
 
-                is ApiResult.Success -> todoCallback.onSuccess(null)
+                is ApiResult.Success -> todoCallback.onSuccessTeamTodo(null)
             }
         }
     }

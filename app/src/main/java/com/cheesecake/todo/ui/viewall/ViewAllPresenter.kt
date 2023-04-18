@@ -34,7 +34,7 @@ class ViewAllPresenter(private val todoRepository: TodoRepository) :
         }
     }
 
-    override fun onSuccess(todos: List<TodoItem>?) {
+    override fun onSuccessTeamTodo(todos: List<TodoItem>?) {
         _view!!.showTodos(todos!!)
     }
 
