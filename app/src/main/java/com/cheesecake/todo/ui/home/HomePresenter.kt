@@ -20,12 +20,15 @@ class HomePresenter(private val todoRepository: TodoRepository) : TodoCallback {
     override fun onSuccessTeamTodo(todos: List<TodoItem>?) {
         val tag = DataItem.TagItem(Tag(2, "Recently Team", todos!!))
         homeList.add(tag)
-        homeView?.initHomeList(homeList)
+        if (homeList.size == 2)
+            homeView?.initHomeList(homeList)
     }
 
     override fun onSuccessPersonalTodo(todos: List<TodoItem>?) {
         val tag = DataItem.TagItem(Tag(1, "Recently Personal", todos!!))
         homeList.add(tag)
+        if (homeList.size == 2)
+            homeView?.initHomeList(homeList)
     }
 
     override fun onError(error: String) {
@@ -33,8 +36,9 @@ class HomePresenter(private val todoRepository: TodoRepository) : TodoCallback {
     }
 
     fun initTodos() {
-        todoRepository.getPersonalTodos(this)
-        todoRepository.getTeamTodos(this)
+        if (todoRepository.isTokenValid()) {
+            todoRepository.getPersonalTodos(this)
+            todoRepository.getTeamTodos(this)
+        } else homeView?.navigateToLoginScreen()
     }
-
 }

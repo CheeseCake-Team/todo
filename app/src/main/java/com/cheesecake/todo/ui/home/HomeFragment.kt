@@ -10,6 +10,7 @@ import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.data.repository.todos.TodoRepositoryFactory
 import com.cheesecake.todo.databinding.FragmentHomeBinding
 import com.cheesecake.todo.ui.base.BaseFragment
+import com.cheesecake.todo.ui.login.LoginFragment
 import com.cheesecake.todo.ui.taskDetails.TaskDetailsFragment
 import com.cheesecake.todo.ui.viewall.ViewAllTodoItemsFragment
 
@@ -17,6 +18,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView {
 
     override val bindingInflater: (LayoutInflater) -> FragmentHomeBinding =
         FragmentHomeBinding::inflate
+
     private lateinit var presenter: HomePresenter
     private lateinit var homeAdapter: HomeAdapter
 
@@ -31,17 +33,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView {
         presenter = HomePresenter(todoFactory.createTodoRepository())
         presenter.attachView(this)
         presenter.initTodos()
+
         homeAdapter = HomeAdapter(::loadDetailsFragment, ::loadViewAllFragment)
         binding.recyclerViewHome.adapter = homeAdapter
     }
-
     override fun initHomeList(homeList: MutableList<DataItem>) {
         requireActivity().runOnUiThread {
-            while (homeList.size < 2) {
-                Log.e("while", "here")
-            }
-            Log.d("list", homeList[0].toString())
-            Log.d("list", homeList[1].toString())
             val todosList = listOf(
                 DataItem.Header(
                     (homeList[0] as DataItem.TagItem).tag.todos,
@@ -73,7 +70,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView {
         }
     }
 
-    private fun loadDetailsFragment(todoItem: TodoItem, isPersonal:Boolean) {
+    private fun loadDetailsFragment(todoItem: TodoItem, isPersonal: Boolean) {
         requireActivity().supportFragmentManager.beginTransaction().apply {
             replace(
                 R.id.fragment_container_activity,
@@ -83,6 +80,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView {
             commit()
         }
     }
+
+    override fun navigateToLoginScreen() {
+        loadLoginFragment()
+    }
+
+
+    private fun loadLoginFragment() {
+        requireActivity().supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment_container_activity, LoginFragment())
+            commit()
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

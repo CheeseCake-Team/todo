@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import com.cheesecake.todo.R
-import com.cheesecake.todo.data.local.SharedPreferencesService
 import com.cheesecake.todo.data.repository.identity.IdentityRepositoryFactory
 import com.cheesecake.todo.databinding.FragmentLoginBinding
 import com.cheesecake.todo.ui.base.BaseFragment
@@ -36,7 +35,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
             presenter.login(username, password)
         }
         binding.textViewSignUp.setOnClickListener {
-            
+
         }
     }
 
@@ -46,11 +45,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
     }
 
 
-    override fun navigateToHomeScreen(username: String) {
-        requireActivity().runOnUiThread {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container_activity, HomeFragment()).commit()
-        }
+    override fun navigateToHomeScreen() {
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container_activity, HomeFragment()).commit()
     }
 
     override fun showError(error: String) {
@@ -59,7 +56,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
         }
     }
 
-    private fun initPresenter (){
+    private fun initPresenter() {
         val application = requireActivity().application as IdentityRepositoryFactory
         val identityRepository = application.createAuthRepository()
         presenter = LoginPresenter(identityRepository)
