@@ -11,7 +11,8 @@ import com.cheesecake.todo.ui.viewall.ViewAllTodoItemsFragment
 private const val TODO_KEY = "todo"
 private const val IS_PERSONAL_KEY = "is_personal_key"
 
-class TaskDetailsFragment : BaseFragment<FragmentTaskDetailsBinding>() {
+class TaskDetailsFragment : BaseFragment<FragmentTaskDetailsBinding>(), TaskDetailsView {
+
     private var toDo: TodoItem? = null
     private var isPersonal: Boolean? = null
     override val bindingInflater: (LayoutInflater) -> FragmentTaskDetailsBinding =
@@ -49,5 +50,17 @@ class TaskDetailsFragment : BaseFragment<FragmentTaskDetailsBinding>() {
                 putBoolean(IS_PERSONAL_KEY,isPersonal)
             }
         }
+    }
+
+    override fun updateState(position: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun attachView(taskDetailsView: TaskDetailsView) {
+        TODO("Not yet implemented")
+    }
+
+    override fun detachView() {
+        TODO("Not yet implemented")
     }
 }
