@@ -2,6 +2,7 @@ package com.cheesecake.todo.utils
 
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.view.View
 import com.cheesecake.todo.data.models.response.BaseResponse
 import com.cheesecake.todo.data.network.ResponseCallback
 import com.google.gson.Gson
@@ -53,7 +54,12 @@ inline fun <reified T> Gson.parseResponse(response: String?): BaseResponse<T> =
 
 
 
-
+fun View.makeGone(){
+    this.visibility=View.GONE
+}
+fun View.makeVisible(){
+    this.visibility=View.VISIBLE
+}
 
 
 

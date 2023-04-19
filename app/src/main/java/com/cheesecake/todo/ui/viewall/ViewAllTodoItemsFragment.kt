@@ -10,6 +10,7 @@ import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.data.repository.todos.TodoRepositoryFactory
 import com.cheesecake.todo.databinding.FragmentViewAllTodoItemsBinding
 import com.cheesecake.todo.ui.base.BaseFragment
+import com.cheesecake.todo.ui.createtodo.ToDoCreationFragment
 import com.cheesecake.todo.ui.home.TodoItemAdapter
 import com.cheesecake.todo.ui.login.LoginFragment
 import com.cheesecake.todo.ui.taskDetails.TaskDetailsFragment
@@ -42,6 +43,7 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding>()
         super.onViewCreated(view, savedInstanceState)
         initView()
         addCallbacks()
+        createTodo()
     }
     private fun initView() {
         adapter = TodoItemAdapter(::loadDetailsFragment)
@@ -115,6 +117,17 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding>()
 
     override fun toggleSelected(position: Int) {
         presenter.onToggleSelected(position)
+    }
+    private fun createTodo(){
+        binding.fabAddNote.setOnClickListener{
+                requireActivity().supportFragmentManager.beginTransaction().apply {
+                    replace(   R.id.fragment_container_activity,
+                    ToDoCreationFragment.newInstance(false))
+                    addToBackStack(null)
+                    commit()
+                }
+
+        }
     }
 
 }

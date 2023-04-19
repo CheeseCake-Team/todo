@@ -24,3 +24,4 @@ class TaskDetailsPresenter(private val todoRepository: TodoRepository) {
 //            todoRepository.changeTeamTodoStatus(todo.id, newState,)
         }
     }
+}
