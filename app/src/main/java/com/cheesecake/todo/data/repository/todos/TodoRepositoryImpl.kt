@@ -7,13 +7,13 @@ import com.cheesecake.todo.data.models.request.TodoPersonalRequest
 import com.cheesecake.todo.data.models.request.TodoStatusRequest
 import com.cheesecake.todo.data.models.request.TodoTeamRequest
 import com.cheesecake.todo.data.models.response.BaseResponse
-import com.cheesecake.todo.data.network.NetworkService
+import com.cheesecake.todo.data.network.todos.TodoNetworkService
 import com.cheesecake.todo.data.network.ResponseCallback
 import java.text.SimpleDateFormat
 import java.util.*
 
 class TodoRepositoryImpl(
-    private val networkDataSource: NetworkService,
+    private val networkDataSource: TodoNetworkService,
     private val sharedPreferencesService: SharedPreferencesService
 ) : TodoRepository {
 

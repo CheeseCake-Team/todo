@@ -6,13 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.cheesecake.todo.R
+import com.cheesecake.todo.ui.login.LoginFragment
 
-abstract class BaseFragment<VB : ViewBinding> : Fragment() {
+abstract class BaseFragment<VB : ViewBinding, P : BasePresenter<*, *>> : Fragment() {
 
     protected abstract val bindingInflater: (LayoutInflater) -> VB
+    protected abstract val presenter: P
 
     private var _binding: VB? = null
-
     protected val binding: VB
         get() = _binding as VB
 
@@ -25,12 +27,16 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
+
+    protected fun loadLoginFragment() {
+        requireActivity().supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment_container_activity, LoginFragment())
+            commit()
+        }
+    }
+
 }

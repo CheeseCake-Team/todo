@@ -1,11 +1,17 @@
 package com.cheesecake.todo.data.repository.todos
 
 import com.cheesecake.todo.data.models.TodoState
+import com.cheesecake.todo.data.repository.BaseRepository
 
-interface TodoRepository {
+interface TodoRepository : BaseRepository {
     fun getTeamTodos(todoCallback: TodoCallback)
     fun getPersonalTodos(todoCallback: TodoCallback)
-    fun createTeamTodo(title: String, description: String, assignee: String, todoCallback: TodoCallback)
+    fun createTeamTodo(
+        title: String,
+        description: String,
+        assignee: String,
+        todoCallback: TodoCallback
+    )
 
     fun createPersonalTodo(title: String, description: String, todoCallback: TodoCallback)
 

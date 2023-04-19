@@ -20,7 +20,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
 
-    private fun loadFragmentIntoContainer(baseFragment: BaseFragment<*>) {
+    private fun loadFragmentIntoContainer(baseFragment: BaseFragment<*,*>) {
         supportFragmentManager.beginTransaction()
             .add(R.id.fragment_container_activity, baseFragment).commit()
     }

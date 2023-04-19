@@ -22,7 +22,7 @@ class ToDoFragment : BaseFragment<FragmentCreateToDoBinding>() {
 
     private lateinit var title: String
     private lateinit var description: String
-    private val presenter : CreateTodoPresenter by lazy {
+    private val presenter: CreateTodoPresenter by lazy {
         CreateTodoPresenter(requireContext())
     }
     private var status = "" // take init value from previous fragment
@@ -73,6 +73,7 @@ class ToDoFragment : BaseFragment<FragmentCreateToDoBinding>() {
                             Log.d("TAG", "onSuccess: ${toDoModel.value}")
                             showDialog()
                         }
+
                         override fun onError(error: String) {
                         }
                     }
@@ -84,10 +85,11 @@ class ToDoFragment : BaseFragment<FragmentCreateToDoBinding>() {
                     object : StatusResponse {
                         override fun onSuccess(toDoModel: CreateToDoModel) {
                             Log.d("TAG", "onSuccess: ${toDoModel.value}")
-                           requireActivity().runOnUiThread {
-                               showDialog()
-                           }
+                            requireActivity().runOnUiThread {
+                                showDialog()
+                            }
                         }
+
                         override fun onError(error: String) {
                         }
                     }
@@ -135,7 +137,7 @@ class ToDoFragment : BaseFragment<FragmentCreateToDoBinding>() {
     private fun checkChip(
         checkPersonal: Boolean, checkTeam: Boolean,
         colorPersonal: Int, colorTeam: Int, status: String
-        ): String {
+    ): String {
         binding.apply {
             chipPersonalTodo.apply {
                 isCheckable = checkPersonal
@@ -193,17 +195,20 @@ class ToDoFragment : BaseFragment<FragmentCreateToDoBinding>() {
         return status
     }
 
-    private fun showDialog(){
+    private fun showDialog() {
         val dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.confirmationdialog);
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        );
         dialog.setCancelable(false)
         dialog.window?.attributes?.windowAnimations = R.style.animationDialog;
 
-       val cancel = dialog.findViewById<TextView>(R.id.text_view_cancel_text_button);
+        val cancel = dialog.findViewById<TextView>(R.id.text_view_cancel_text_button);
 
-        cancel.setOnClickListener{
-                dialog.dismiss();
+        cancel.setOnClickListener {
+            dialog.dismiss();
         }
         dialog.show();
     }

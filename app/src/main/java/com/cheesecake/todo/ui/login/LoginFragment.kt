@@ -10,72 +10,48 @@ import com.cheesecake.todo.databinding.FragmentLoginBinding
 import com.cheesecake.todo.ui.base.BaseFragment
 import com.cheesecake.todo.ui.home.HomeFragment
 import com.cheesecake.todo.ui.signup.SignUpFragment
+import com.cheesecake.todo.utils.setFocusAndHint
 
 
-class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
-
-    private lateinit var presenter: LoginPresenter
-
+class LoginFragment : BaseFragment<FragmentLoginBinding, LoginPresenter>(), LoginView {
 
     override val bindingInflater: (LayoutInflater) -> FragmentLoginBinding =
         FragmentLoginBinding::inflate
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initPresenter()
+    override val presenter by lazy {
+        val identityRepositoryFactory = requireActivity().application as IdentityRepositoryFactory
+        val identityRepository = identityRepositoryFactory.createAuthRepository()
+        LoginPresenter(identityRepository, this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-        val application = requireActivity().application as IdentityRepositoryFactory
-        val identityRepository = application.createAuthRepository()
-
-        presenter = LoginPresenter(identityRepository)
-        presenter.attachView(this)
-
-        val usernameLayout = binding.textInputUserNameLogin
-        val passwordLayout = binding.textInputPasswordLogin
-
-        usernameLayout.isHintAnimationEnabled = false
-        passwordLayout.isHintAnimationEnabled = false
-
-        binding.editTextUserNameLogin.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                usernameLayout.hint = ""
-            } else if (binding.editTextUserNameLogin.text.toString().isEmpty()) {
-                usernameLayout.hint = getString(R.string.username)
-            }
-        }
-
-        binding.editTextPasswordLogin.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                passwordLayout.hint = ""
-            } else if (binding.editTextPasswordLogin.text.toString().isEmpty()) {
-                passwordLayout.hint = getString(R.string.password)
-            }
-        }
-
-
-        binding.buttonLogin.setOnClickListener {
-            val username = binding.editTextUserNameLogin.text.toString().trim()
-            val password = binding.editTextPasswordLogin.text.toString().trim()
-
-            presenter.login(username, password)
-        }
-        binding.textViewSignUp.setOnClickListener {
-            navigateToSignup()
-
-        }
+        addCallBacks()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        presenter.detachView()
-    }
+    private fun addCallBacks() {
+        setFocusAndHint(
+            binding.textInputUserNameLogin,
+            binding.editTextUserNameLogin,
+            getString(R.string.username)
+        )
+        setFocusAndHint(
+            binding.textInputPasswordLogin,
+            binding.editTextPasswordLogin,
+            getString(R.string.password)
+        )
 
+        with(binding) {
+            buttonLogin.setOnClickListener {
+                val username = binding.editTextUserNameLogin.text.toString().trim()
+                val password = binding.editTextPasswordLogin.text.toString().trim()
+                presenter.login(username, password)
+            }
+            textViewSignUp.setOnClickListener {
+                navigateToSignup()
+            }
+        }
+    }
 
     override fun navigateToHomeScreen() {
         requireActivity().supportFragmentManager.beginTransaction()
@@ -93,12 +69,5 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginView {
         requireActivity().runOnUiThread {
             Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private fun initPresenter() {
-        val application = requireActivity().application as IdentityRepositoryFactory
-        val identityRepository = application.createAuthRepository()
-        presenter = LoginPresenter(identityRepository)
-        presenter.attachView(this)
     }
 }

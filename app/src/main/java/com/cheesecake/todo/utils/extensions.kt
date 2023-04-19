@@ -2,8 +2,10 @@ package com.cheesecake.todo.utils
 
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.widget.EditText
 import com.cheesecake.todo.data.models.response.BaseResponse
 import com.cheesecake.todo.data.network.ResponseCallback
+import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.*
@@ -16,13 +18,16 @@ fun isNetworkAvailable(connectivityManager: ConnectivityManager): Boolean {
         NetworkCapabilities.TRANSPORT_CELLULAR
     ) || networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))
 }
-
-fun isUsernameValid(username: String) = username.length > 3 && username.isNotBlank()
-
-fun isPasswordValid(password: String) = password.length > 8
-
-fun arePasswordsTheSame(password: String, confirmationPassword: String) =
-    password == confirmationPassword
+fun setFocusAndHint(textInputLayout: TextInputLayout, editText: EditText, hint: String) {
+    textInputLayout.isHintAnimationEnabled = false
+    editText.setOnFocusChangeListener { _, hasFocus ->
+        if (hasFocus) {
+            textInputLayout.hint = ""
+        } else if (editText.text.toString().isEmpty()) {
+            textInputLayout.hint = hint
+        }
+    }
+}
 
 inline fun <reified T> OkHttpClient.makeCall(
     request: Request,

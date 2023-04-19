@@ -11,16 +11,21 @@ import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.data.repository.todos.TodoRepositoryFactory
 import com.cheesecake.todo.databinding.FragmentHomeBinding
 import com.cheesecake.todo.ui.base.BaseFragment
-import com.cheesecake.todo.ui.login.LoginFragment
 import com.cheesecake.todo.ui.taskDetails.TaskDetailsFragment
 import com.cheesecake.todo.ui.viewall.ViewAllTodoItemsFragment
 
-class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView, OnQueryTextListener {
+class HomeFragment : BaseFragment<FragmentHomeBinding, HomePresenter>(), HomeView,
+    OnQueryTextListener {
 
     override val bindingInflater: (LayoutInflater) -> FragmentHomeBinding =
         FragmentHomeBinding::inflate
 
-    private lateinit var presenter: HomePresenter
+    override val presenter by lazy {
+        val todoFactory = requireActivity().application as TodoRepositoryFactory
+        val todoRepository = todoFactory.createTodoRepository()
+        HomePresenter(todoRepository, this)
+    }
+
     private lateinit var homeAdapter: HomeAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,9 +39,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView, OnQueryTextL
     }
 
     private fun setUp() {
-        val todoFactory = requireActivity().application as TodoRepositoryFactory
-        presenter = HomePresenter(todoFactory.createTodoRepository())
-        presenter.attachView(this)
         presenter.initTodos()
         homeAdapter = HomeAdapter(::loadDetailsFragment, ::loadViewAllFragment)
         binding.recyclerViewHome.adapter = homeAdapter
@@ -49,18 +51,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView, OnQueryTextL
                     DataItem.Header(
                         (homeList[0] as DataItem.TagItem).tag.todos,
                         (homeList[1] as DataItem.TagItem).tag.todos
-                    ),
-                    homeList[0],
-                    homeList[1]
+                    ), homeList[0], homeList[1]
                 )
             } else {
                 listOf(
                     DataItem.Header(
                         (homeList[1] as DataItem.TagItem).tag.todos,
                         (homeList[0] as DataItem.TagItem).tag.todos
-                    ),
-                    homeList[1],
-                    homeList[0]
+                    ), homeList[1], homeList[0]
                 )
             }
             homeAdapter.submitList(todosList)
@@ -78,8 +76,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView, OnQueryTextL
         val isPersonal = todoTitle.contains("Personal")
         requireActivity().supportFragmentManager.beginTransaction().apply {
             replace(
-                R.id.fragment_container_activity,
-                ViewAllTodoItemsFragment.newInstance(isPersonal)
+                R.id.fragment_container_activity, ViewAllTodoItemsFragment.newInstance(isPersonal)
             )
             addToBackStack(null)
             commit()
@@ -101,21 +98,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView, OnQueryTextL
         loadLoginFragment()
     }
 
-    private fun loadLoginFragment() {
-        requireActivity().supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragment_container_activity, LoginFragment())
-            commit()
-        }
-    }
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        presenter.detachView()
-    }
 
     override fun onQueryTextSubmit(p0: String?): Boolean {
-
         return false
     }
 

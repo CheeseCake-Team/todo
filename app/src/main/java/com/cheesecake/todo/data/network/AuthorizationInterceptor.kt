@@ -8,10 +8,12 @@ class AuthorizationInterceptor(private val preferencesService: SharedPreferences
     Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val bearerToken = "Bearer ${preferencesService.getToken()}"
-        val request = chain.request().newBuilder()
-            .addHeader(AUTHORIZATION_HEADER, bearerToken)
-            .build()
-        return chain.proceed(request)
+        val requestBuilder = chain.request().newBuilder()
+        val token = preferencesService.getToken()
+        if (token != "") {
+            requestBuilder.addHeader(AUTHORIZATION_HEADER, bearerToken)
+        }
+        return chain.proceed(requestBuilder.build())
     }
 
     companion object {
