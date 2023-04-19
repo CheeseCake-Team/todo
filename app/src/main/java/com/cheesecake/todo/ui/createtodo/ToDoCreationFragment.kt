@@ -12,20 +12,24 @@ import com.cheesecake.todo.R
 import com.cheesecake.todo.data.repository.todos.TodoRepositoryFactory
 import com.cheesecake.todo.databinding.FragmentCreateToDoBinding
 import com.cheesecake.todo.ui.base.BaseFragment
-import com.cheesecake.todo.ui.viewall.ViewAllTodoItemsFragment
 import com.cheesecake.todo.utils.makeGone
 import com.cheesecake.todo.utils.makeVisible
 import kotlin.properties.Delegates
 
 private const val IS_PERSONAL_KEY = "is_personal_key"
 
-class ToDoCreationFragment : BaseFragment<FragmentCreateToDoBinding>(), CreateView {
+class ToDoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreationPresenter>(),
+    ToDoCreationView {
     override val bindingInflater: (LayoutInflater) -> FragmentCreateToDoBinding =
         FragmentCreateToDoBinding::inflate
 
+    override val presenter by lazy {
+        val todoFactory = requireActivity().application as TodoRepositoryFactory
+        TodoCreationPresenter(todoFactory.createTodoRepository(), this)
+    }
+
     private lateinit var title: String
     private lateinit var description: String
-    private lateinit var presenter: CreateTodoPresenter
     private var person by Delegates.notNull<Boolean>()
 
 
@@ -34,7 +38,6 @@ class ToDoCreationFragment : BaseFragment<FragmentCreateToDoBinding>(), CreateVi
         arguments?.let {
             person = it.getBoolean(IS_PERSONAL_KEY)
         }
-        setUp()
         checkPersonalOrTeam()
         hasBackButtonOrNot()
         setActionBarTitle()
@@ -56,13 +59,6 @@ class ToDoCreationFragment : BaseFragment<FragmentCreateToDoBinding>(), CreateVi
                 makeRequest()
             }
         }
-    }
-
-    private fun setUp() {
-        val todoFactory = requireActivity().application as TodoRepositoryFactory
-        presenter = CreateTodoPresenter(todoFactory.createTodoRepository())
-        presenter.attachView(this)
-
     }
 
     private fun makeRequest() {
@@ -110,7 +106,6 @@ class ToDoCreationFragment : BaseFragment<FragmentCreateToDoBinding>(), CreateVi
     }
 
 
-
     override fun showError(message: String) {
         requireActivity().runOnUiThread {
             Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
@@ -138,20 +133,17 @@ class ToDoCreationFragment : BaseFragment<FragmentCreateToDoBinding>(), CreateVi
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        presenter.detachView()
-    }
-
-    private fun lol(){
-        when(person){
-            true->{  checkChip(
-                personal = true,
-                team = false,
-                colorPersonal = R.color.blue,
-                colorTeam = R.color.white,
-            )
-              binding.assigned.visibility = View.GONE}
+    private fun lol() {
+        when (person) {
+            true -> {
+                checkChip(
+                    personal = true,
+                    team = false,
+                    colorPersonal = R.color.blue,
+                    colorTeam = R.color.white,
+                )
+                binding.assigned.visibility = View.GONE
+            }
             else -> {
                 checkChip(
                     personal = false,
@@ -164,6 +156,7 @@ class ToDoCreationFragment : BaseFragment<FragmentCreateToDoBinding>(), CreateVi
         }
 
     }
+
     private fun checkChip(
         personal: Boolean, team: Boolean,
         colorPersonal: Int, colorTeam: Int
@@ -243,6 +236,7 @@ class ToDoCreationFragment : BaseFragment<FragmentCreateToDoBinding>(), CreateVi
         }
         return person
     }
+
     companion object {
 
         fun newInstance(isPersonal: Boolean) =

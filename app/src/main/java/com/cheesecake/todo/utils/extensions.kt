@@ -3,8 +3,10 @@ package com.cheesecake.todo.utils
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.view.View
+import android.widget.EditText
 import com.cheesecake.todo.data.models.response.BaseResponse
 import com.cheesecake.todo.data.network.ResponseCallback
+import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.*
@@ -46,12 +48,23 @@ inline fun <reified T> Gson.parseResponse(response: String?): BaseResponse<T> =
     this.fromJson(response, object : TypeToken<BaseResponse<T>>() {}.type)
 
 
-
-fun View.makeGone(){
-    this.visibility=View.GONE
+fun setFocusAndHint(textInputLayout: TextInputLayout, editText: EditText, hint: String) {
+    textInputLayout.isHintAnimationEnabled = false
+    editText.setOnFocusChangeListener { _, hasFocus ->
+        if (hasFocus) {
+            textInputLayout.hint = ""
+        } else if (editText.text.toString().isEmpty()) {
+            textInputLayout.hint = hint
+        }
+    }
 }
-fun View.makeVisible(){
-    this.visibility=View.VISIBLE
+
+fun View.makeGone() {
+    this.visibility = View.GONE
+}
+
+fun View.makeVisible() {
+    this.visibility = View.VISIBLE
 }
 
 

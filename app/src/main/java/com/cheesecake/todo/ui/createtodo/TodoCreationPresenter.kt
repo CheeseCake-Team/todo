@@ -3,12 +3,15 @@ package com.cheesecake.todo.ui.createtodo
 import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.data.repository.todos.TodoCallback
 import com.cheesecake.todo.data.repository.todos.TodoRepository
-import com.cheesecake.todo.ui.home.HomeView
+import com.cheesecake.todo.ui.base.BasePresenter
 
 
-class CreateTodoPresenter(private val todoRepository: TodoRepository) : TodoCallback {
+class TodoCreationPresenter(
+    private val todoRepository: TodoRepository,
+    private val toDoCreationView: ToDoCreationFragment
+) : BasePresenter<TodoRepository, ToDoCreationFragment>(todoRepository, toDoCreationView),
+    TodoCallback {
 
-    var createView:CreateView ?= null
 
 
     fun toDoForPersonal(
@@ -16,7 +19,7 @@ class CreateTodoPresenter(private val todoRepository: TodoRepository) : TodoCall
         description: String,
         assignee: String,
     ) {
-        todoRepository.createTeamTodo(title,description,assignee,this)
+        todoRepository.createTeamTodo(title, description, assignee, this)
 
     }
 
@@ -25,28 +28,21 @@ class CreateTodoPresenter(private val todoRepository: TodoRepository) : TodoCall
         description: String,
         assignee: String,
     ) {
-        todoRepository.createTeamTodo(title,description,assignee,this)
+        todoRepository.createTeamTodo(title, description, assignee, this)
     }
 
-    fun attachView(view: CreateView) {
-        createView = view
-    }
-
-    fun detachView() {
-        createView = null
-    }
 
     override fun onSuccessTeamTodo(todos: List<TodoItem>?) {
-        createView?.showDialog()
+        toDoCreationView.showDialog()
 
     }
 
     override fun onSuccessPersonalTodo(todos: List<TodoItem>?) {
-        createView?.showDialog()
+        toDoCreationView.showDialog()
     }
 
     override fun onError(error: String) {
-        createView?.showError(error)
+        toDoCreationView.showError(error)
     }
 
 

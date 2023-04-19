@@ -10,6 +10,7 @@ import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.data.repository.todos.TodoRepositoryFactory
 import com.cheesecake.todo.databinding.FragmentViewAllTodoItemsBinding
 import com.cheesecake.todo.ui.base.BaseFragment
+import com.cheesecake.todo.ui.createtodo.ToDoCreationFragment
 import com.cheesecake.todo.ui.home.TodoItemAdapter
 import com.cheesecake.todo.ui.login.LoginFragment
 import com.cheesecake.todo.ui.taskDetails.TaskDetailsFragment
@@ -42,16 +43,13 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding, V
         presenter.requestAllTodos()
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
         addCallbacks()
-        initView()
         createTodo()
     }
+
     private fun initView() {
         adapter = TodoItemAdapter(::loadDetailsFragment)
         binding.toggleButtonTodo.performClick()
@@ -76,8 +74,7 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding, V
             }
         }
 
-
-
+    }
 
     companion object {
         private const val IS_PERSONAL_KEY = "is_personal_key"
@@ -116,21 +113,22 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding, V
 
     override fun navigateToLoginScreen() {
         requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container_activity, LoginFragment())
-            .commit()
+            .replace(R.id.fragment_container_activity, LoginFragment()).commit()
     }
 
     override fun toggleSelected(position: Int) {
         presenter.onToggleSelected(position)
     }
-    private fun createTodo(){
-        binding.fabAddNote.setOnClickListener{
-                requireActivity().supportFragmentManager.beginTransaction().apply {
-                    replace(   R.id.fragment_container_activity,
-                    ToDoCreationFragment.newInstance(false))
-                    addToBackStack(null)
-                    commit()
-                }
+
+    private fun createTodo() {
+        binding.fabAddNote.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(
+                    R.id.fragment_container_activity, ToDoCreationFragment.newInstance(false)
+                )
+                addToBackStack(null)
+                commit()
+            }
 
         }
     }
