@@ -1,5 +1,6 @@
 package com.cheesecake.todo.ui.login
 
+import android.util.Log
 import com.cheesecake.todo.data.models.response.LoginValue
 import com.cheesecake.todo.data.repository.identity.IdentityRepository
 import com.cheesecake.todo.data.repository.identity.LoginCallback
@@ -18,8 +19,9 @@ class LoginPresenter(private val identityRepository: IdentityRepository) : Login
         identityRepository.login(username, password, this)
     }
 
-    override fun onLoginComplete(loginValue: LoginValue) {
+    override fun onLoginSuccess(loginValue: LoginValue) {
         identityRepository.saveTokenAndExpireDate(loginValue.token, loginValue.expireAt)
+        Log.d("TAG", "onLoginComplete:${loginValue.token}  ")
         loginView?.navigateToHomeScreen()
     }
 

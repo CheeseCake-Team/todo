@@ -33,12 +33,16 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding>()
         setupPresenter()
     }
 
+    override fun onResume() {
+        super.onResume()
+        setupPresenter()
+
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
         addCallbacks()
     }
-
     private fun initView() {
         adapter = TodoItemAdapter(::loadDetailsFragment)
         binding.toggleButtonTodo.performClick()
@@ -46,7 +50,7 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding>()
     }
 
     private fun addCallbacks() {
-        binding.toggleButtonGroup.addOnButtonCheckedListener { toggleButton, checkedId, isChecked ->
+        binding.toggleButtonGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
             when (checkedId) {
                 R.id.toggle_button_todo -> if (isChecked) toggleSelected(0)
                 R.id.toggle_button_progress -> if (isChecked) toggleSelected(1)

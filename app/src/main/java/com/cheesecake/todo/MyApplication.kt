@@ -32,7 +32,7 @@ class MyApplication : Application(), IdentityRepositoryFactory, TodoRepositoryFa
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             })
-            .addInterceptor(AuthorizationInterceptor(sharedPreferencesService.getToken()!!))
+            .addInterceptor(AuthorizationInterceptor(sharedPreferencesService))
             .build()
     }
 

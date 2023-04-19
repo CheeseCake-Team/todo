@@ -12,7 +12,7 @@ class SignUpPresenter(private val identityRepository: IdentityRepository) : Sign
 
     private var signUpView: SignUpView? = null
 
-    override fun onSignUpComplete() {
+    override fun onSignUpSuccess() {
         signUpView?.navigateToLoginScreen()
     }
 
@@ -27,8 +27,7 @@ class SignUpPresenter(private val identityRepository: IdentityRepository) : Sign
             !isUsernameValid(username) -> signUpView?.showError("Invalid username!")
             !isPasswordValid(password) -> signUpView?.showError("Invalid password!")
             !arePasswordsTheSame(
-                password,
-                confirmationPassword
+                password, confirmationPassword
             ) -> signUpView?.showError("Passwords are not matched!")
             else -> identityRepository.signUp(username, password, BuildConfig.teamId, this)
         }
