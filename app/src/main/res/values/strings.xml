@@ -76,4 +76,5 @@
     <string name="invalid_credentials">Invalid username or password</string>
     <string name="recently_personal">Recently Personal</string>
     <string name="view_all">View all</string>
+    <string name="assignee">Assignee</string>
 </resources>
