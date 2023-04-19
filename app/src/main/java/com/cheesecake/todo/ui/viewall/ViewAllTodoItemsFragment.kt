@@ -42,19 +42,23 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding, V
         presenter.requestAllTodos()
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()
         addCallbacks()
         initView()
+        createTodo()
     }
-
     private fun initView() {
         adapter = TodoItemAdapter(::loadDetailsFragment)
+        binding.toggleButtonTodo.performClick()
         binding.recyclerViewAllTodos.adapter = adapter
     }
 
     private fun addCallbacks() {
-
         binding.toggleButtonGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (isChecked) {
                 when (checkedId) {
@@ -72,7 +76,7 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding, V
             }
         }
 
-    }
+
 
 
     companion object {
@@ -112,11 +116,23 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding, V
 
     override fun navigateToLoginScreen() {
         requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container_activity, LoginFragment()).commit()
+            .replace(R.id.fragment_container_activity, LoginFragment())
+            .commit()
     }
 
     override fun toggleSelected(position: Int) {
         presenter.onToggleSelected(position)
+    }
+    private fun createTodo(){
+        binding.fabAddNote.setOnClickListener{
+                requireActivity().supportFragmentManager.beginTransaction().apply {
+                    replace(   R.id.fragment_container_activity,
+                    ToDoCreationFragment.newInstance(false))
+                    addToBackStack(null)
+                    commit()
+                }
+
+        }
     }
 
 }

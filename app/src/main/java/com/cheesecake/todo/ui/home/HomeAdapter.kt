@@ -131,12 +131,12 @@ class HomeAdapter(
             listener: (item: String) -> Unit
         ) {
             binding.apply {
-                textRecently.text = tag.title
+                textViewRecently.text = tag.title
                 textViewAll.setOnClickListener { listener(tag.title) }
             }
             val adapter = TodoItemAdapter(todoItemListener)
             adapter.submitList(tag.todos)
-            binding.recyclerView.adapter = adapter
+            binding.recyclerViewRecently.adapter = adapter
         }
 
     }
