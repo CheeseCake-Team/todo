@@ -8,30 +8,30 @@
     android:paddingTop="@dimen/margin_large_24">
 
     <TextView
-        android:id="@+id/text_recently"
+        android:id="@+id/text_view_recently"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Recently Personal"
+        android:text="@string/recently_personal"
         style="@style/CardTitle"
         android:layout_marginStart="@dimen/margin_medium_16"
-        app:layout_constraintStart_toStartOf="@id/recycler_view"
+        app:layout_constraintStart_toStartOf="@id/recycler_view_recently"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/text_view_all"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="View all"
+        android:text="@string/view_all"
         style="@style/TextHint"
         android:layout_marginEnd="@dimen/margin_medium_16"
         android:drawablePadding="@dimen/margin_small_4"
         app:drawableEndCompat="@drawable/ic_baseline_arrow_forward_24"
-        app:layout_constraintEnd_toEndOf="@+id/recycler_view"
-        app:layout_constraintTop_toTopOf="@id/text_recently" />
+        app:layout_constraintEnd_toEndOf="@+id/recycler_view_recently"
+        app:layout_constraintTop_toTopOf="@id/text_view_recently" />
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/recycler_view_recently"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
@@ -40,6 +40,6 @@
         android:layout_marginTop="@dimen/margin_small_8"
         tools:listitem="@layout/item_todo"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@+id/text_recently" />
+        app:layout_constraintTop_toBottomOf="@+id/text_view_recently" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
