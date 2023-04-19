@@ -1,18 +1,21 @@
 package com.cheesecake.todo.data.network
 
-import android.util.Log
-import com.cheesecake.todo.utils.Constants.AUTHORIZATION_HEADER
+import com.cheesecake.todo.data.local.SharedPreferencesService
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class AuthorizationInterceptor(private val token: String) : Interceptor {
+class AuthorizationInterceptor(private val preferencesService: SharedPreferencesService) :
+    Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val bearerToken = "Bearer $token"
+        val bearerToken = "Bearer ${preferencesService.getToken()}"
         val request = chain.request().newBuilder()
             .addHeader(AUTHORIZATION_HEADER, bearerToken)
             .build()
-        Log.d("TAG", "intercept: $token")
         return chain.proceed(request)
+    }
+
+    companion object {
+        const val AUTHORIZATION_HEADER = "Authorization"
     }
 
 }

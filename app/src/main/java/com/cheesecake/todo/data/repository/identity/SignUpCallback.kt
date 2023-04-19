@@ -2,7 +2,7 @@ package com.cheesecake.todo.data.repository.identity
 
 interface SignUpCallback {
 
-    fun onSignUpComplete()
+    fun onSignUpSuccess()
 
     fun onSignUpFail(error: String)
 }

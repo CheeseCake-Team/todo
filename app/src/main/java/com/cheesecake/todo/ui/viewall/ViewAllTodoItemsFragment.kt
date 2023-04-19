@@ -10,6 +10,7 @@ import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.data.repository.todos.TodoRepositoryFactory
 import com.cheesecake.todo.databinding.FragmentViewAllTodoItemsBinding
 import com.cheesecake.todo.ui.base.BaseFragment
+import com.cheesecake.todo.ui.createtodo.ToDoCreationFragment
 import com.cheesecake.todo.ui.home.TodoItemAdapter
 import com.cheesecake.todo.ui.login.LoginFragment
 import com.cheesecake.todo.ui.taskDetails.TaskDetailsFragment
@@ -33,12 +34,17 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding>()
         setupPresenter()
     }
 
+    override fun onResume() {
+        super.onResume()
+        setupPresenter()
+
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
         addCallbacks()
+        createTodo()
     }
-
     private fun initView() {
         adapter = TodoItemAdapter(::loadDetailsFragment)
         binding.toggleButtonTodo.performClick()
@@ -46,7 +52,7 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding>()
     }
 
     private fun addCallbacks() {
-        binding.toggleButtonGroup.addOnButtonCheckedListener { toggleButton, checkedId, isChecked ->
+        binding.toggleButtonGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
             when (checkedId) {
                 R.id.toggle_button_todo -> if (isChecked) toggleSelected(0)
                 R.id.toggle_button_progress -> if (isChecked) toggleSelected(1)
@@ -111,6 +117,17 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding>()
 
     override fun toggleSelected(position: Int) {
         presenter.onToggleSelected(position)
+    }
+    private fun createTodo(){
+        binding.fabAddNote.setOnClickListener{
+                requireActivity().supportFragmentManager.beginTransaction().apply {
+                    replace(   R.id.fragment_container_activity,
+                    ToDoCreationFragment.newInstance(false))
+                    addToBackStack(null)
+                    commit()
+                }
+
+        }
     }
 
 }

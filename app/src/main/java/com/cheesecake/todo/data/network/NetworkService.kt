@@ -1,35 +1,32 @@
 package com.cheesecake.todo.data.network
 
 import com.cheesecake.todo.data.models.request.TodoPersonalRequest
-import com.cheesecake.todo.data.models.request.TodoStatus
+import com.cheesecake.todo.data.models.request.TodoStatusRequest
 import com.cheesecake.todo.data.models.request.TodoTeamRequest
-import com.cheesecake.todo.data.repository.identity.LoginCallback
-import com.cheesecake.todo.data.repository.identity.SignUpCallback
-import com.cheesecake.todo.data.repository.todos.TodoCallback
 
 interface NetworkService {
-    fun getPersonalTodos(todoCallback: TodoCallback)
-    fun getTeamTodos(todoCallback: TodoCallback)
+    fun getPersonalTodos(responseCallback: ResponseCallback)
+    fun getTeamTodos(responseCallback: ResponseCallback)
 
     fun createPersonalTodo(
-        todoPersonalRequest: TodoPersonalRequest,
-        todoCallback: TodoCallback
+        todoPersonalRequest: TodoPersonalRequest, responseCallback: ResponseCallback
     )
 
     fun createTeamTodo(
-        todoPersonalRequest: TodoTeamRequest,
-        todoCallback: TodoCallback
+        todoPersonalRequest: TodoTeamRequest, responseCallback: ResponseCallback
     )
 
-    fun changePersonalTodoStatus(todoStatus: TodoStatus, todoCallback: TodoCallback)
-    fun changeTeamTodoStatus(todoStatus: TodoStatus, todoCallback: TodoCallback)
+    fun updatePersonalTodoStatus(
+        todoStatusRequest: TodoStatusRequest, responseCallback: ResponseCallback
+    )
 
-    fun login(username: String, password: String, loginCallback: LoginCallback)
+    fun updateTeamTodoStatus(
+        todoStatusRequest: TodoStatusRequest, responseCallback: ResponseCallback
+    )
+
+    fun login(username: String, password: String, responseCallback: ResponseCallback)
 
     fun signUp(
-        username: String,
-        password: String,
-        teamId: String,
-        signUpCallback: SignUpCallback
+        username: String, password: String, teamId: String, responseCallback: ResponseCallback
     )
 }

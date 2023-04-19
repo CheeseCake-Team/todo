@@ -12,7 +12,6 @@ import com.cheesecake.todo.data.repository.identity.IdentityRepositoryImpl
 import com.cheesecake.todo.data.repository.todos.TodoRepository
 import com.cheesecake.todo.data.repository.todos.TodoRepositoryFactory
 import com.cheesecake.todo.data.repository.todos.TodoRepositoryImpl
-import com.cheesecake.todo.utils.Constants.PREFS_NAME
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
@@ -33,7 +32,7 @@ class MyApplication : Application(), IdentityRepositoryFactory, TodoRepositoryFa
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             })
-            .addInterceptor(AuthorizationInterceptor(sharedPreferencesService.getToken()!!))
+            .addInterceptor(AuthorizationInterceptor(sharedPreferencesService))
             .build()
     }
 
@@ -62,5 +61,9 @@ class MyApplication : Application(), IdentityRepositoryFactory, TodoRepositoryFa
 
     override fun createTodoRepository(): TodoRepository {
         return todoRepository
+    }
+
+    companion object {
+        const val PREFS_NAME = "Shared Preference"
     }
 }

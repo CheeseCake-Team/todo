@@ -9,9 +9,9 @@ interface TodoRepository {
 
     fun createPersonalTodo(title: String, description: String, todoCallback: TodoCallback)
 
-    fun changePersonalTodoStatus(todoId: String, newStatus: TodoState, todoCallback: TodoCallback)
+    fun updatePersonalTodoStatus(todoId: String, newStatus: TodoState, todoCallback: TodoCallback)
 
-    fun changeTeamTodoStatus(todoId: String, newStatus: TodoState, todoCallback: TodoCallback)
+    fun updateTeamTodoStatus(todoId: String, newStatus: TodoState, todoCallback: TodoCallback)
 
     fun isTokenValid(): Boolean
     fun formattedTime(expiry: String): Long
