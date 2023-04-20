@@ -23,4 +23,5 @@
     <dimen name="margin_medium_18">18dp</dimen>
     <dimen name="margin_small_6">6dp</dimen>
     <dimen name="margin_medium_20">20dp</dimen>
+    <dimen name="margin_veryLarge_56dp">56dp</dimen>
 </resources>
