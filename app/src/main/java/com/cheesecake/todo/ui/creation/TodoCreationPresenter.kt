@@ -1,4 +1,4 @@
-package com.cheesecake.todo.ui.createtodo
+package com.cheesecake.todo.ui.creation
 
 import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.data.repository.todos.TodoCallback
