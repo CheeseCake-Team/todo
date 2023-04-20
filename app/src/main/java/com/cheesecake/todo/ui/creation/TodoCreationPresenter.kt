@@ -8,8 +8,8 @@ import com.cheesecake.todo.ui.base.BasePresenter
 
 class TodoCreationPresenter(
     private val todoRepository: TodoRepository,
-    private val toDoCreationView: ToDoCreationFragment
-) : BasePresenter<TodoRepository, ToDoCreationFragment>(todoRepository, toDoCreationView),
+    private val toDoCreationView: TodoCreationFragment
+) : BasePresenter<TodoRepository, TodoCreationFragment>(todoRepository, toDoCreationView),
     TodoCallback {
 
 

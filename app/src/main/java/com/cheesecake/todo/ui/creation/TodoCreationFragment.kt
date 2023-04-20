@@ -13,8 +13,8 @@ import com.cheesecake.todo.databinding.FragmentCreateToDoBinding
 import com.cheesecake.todo.ui.base.BaseFragment
 import kotlin.properties.Delegates
 
-class ToDoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreationPresenter>(),
-    ToDoCreationView {
+class TodoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreationPresenter>(),
+    TodoCreationView {
     override val bindingInflater: (LayoutInflater) -> FragmentCreateToDoBinding =
         FragmentCreateToDoBinding::inflate
 
@@ -35,19 +35,53 @@ class ToDoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreatio
         }
         onScreenInit()
         initCallbacks()
-        createToDo()
-
     }
 
-    private fun createToDo() {
-        binding.buttonCreate.setOnClickListener {
-            title = binding.editTextTitle.text.toString()
-            description = binding.editTextDescription.text.toString()
-            if (checkEmptyField(title, description)) {
-                makeRequest()
+    private fun onScreenInit() {
+        with(binding) {
+            if (isPersonal) {
+                chipPersonalTodo.apply {
+                    isChecked = true
+                    isEnabled = false
+                }
+            } else {
+                chipTeamTodo.apply {
+                    isChecked = true
+                    isEnabled = false
+                }
+                assigned.visibility = View.VISIBLE
             }
         }
     }
+
+    private fun initCallbacks() {
+        binding.apply {
+            chipPersonalTodo.setOnClickListener {
+                chipTeamTodo.isChecked = false
+                assigned.visibility = View.INVISIBLE
+                isPersonal = true
+                chipPersonalTodo.isEnabled = false
+                chipTeamTodo.isEnabled = true
+
+            }
+            chipTeamTodo.setOnClickListener {
+                chipPersonalTodo.isChecked = false
+                assigned.visibility = View.VISIBLE
+                isPersonal = false
+                chipPersonalTodo.isEnabled = true
+                chipTeamTodo.isEnabled = false
+            }
+
+            buttonCreate.setOnClickListener {
+                title = binding.editTextTitle.text.toString()
+                description = binding.editTextDescription.text.toString()
+                if (checkEmptyField(title, description)) {
+                    makeRequest()
+                }
+            }
+        }
+    }
+
 
     private fun makeRequest() {
         when (isPersonal) {
@@ -68,15 +102,13 @@ class ToDoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreatio
         when {
             title.trim().isEmpty() -> {
                 Toast.makeText(
-                    requireContext(),
-                    "Please fill title field", Toast.LENGTH_SHORT
+                    requireContext(), "Please fill title field", Toast.LENGTH_SHORT
                 ).show()
                 return false
             }
             description.trim().isEmpty() -> {
                 Toast.makeText(
-                    requireContext(),
-                    "Please fill description field", Toast.LENGTH_SHORT
+                    requireContext(), "Please fill description field", Toast.LENGTH_SHORT
                 ).show()
                 return false
             }
@@ -97,8 +129,7 @@ class ToDoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreatio
             val dialog = Dialog(requireContext())
             dialog.setContentView(R.layout.confirmationdialog)
             dialog.window?.setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
             )
             dialog.setCancelable(false)
             dialog.window?.attributes?.windowAnimations = R.style.animationDialog
@@ -112,52 +143,13 @@ class ToDoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreatio
         }
     }
 
-    private fun onScreenInit() {
-        if (isPersonal) {
-            binding.chipPersonalTodo.apply {
-                isChecked = true
-                isEnabled = false
-            }
-        } else {
-            binding.apply {
-                binding.chipTeamTodo.apply {
-                    isChecked = true
-                    isEnabled = false
-                }
-                assigned.visibility = View.VISIBLE
-            }
-        }
-    }
-
-
-    private fun initCallbacks() {
-        binding.apply {
-            chipPersonalTodo.setOnClickListener {
-                chipTeamTodo.isChecked = false
-                assigned.visibility = View.INVISIBLE
-                isPersonal = true
-                chipPersonalTodo.isEnabled = false
-                chipTeamTodo.isEnabled = true
-
-            }
-            chipTeamTodo.setOnClickListener {
-                chipPersonalTodo.isChecked = false
-                assigned.visibility = View.VISIBLE
-                isPersonal = false
-                chipPersonalTodo.isEnabled = true
-                chipTeamTodo.isEnabled = false
-            }
-        }
-    }
-
     companion object {
         private const val IS_PERSONAL_KEY = "is_personal_key"
-        fun newInstance(isPersonal: Boolean) =
-            ToDoCreationFragment().apply {
-                arguments = Bundle().apply {
-                    putBoolean(IS_PERSONAL_KEY, isPersonal)
-                }
+        fun newInstance(isPersonal: Boolean) = TodoCreationFragment().apply {
+            arguments = Bundle().apply {
+                putBoolean(IS_PERSONAL_KEY, isPersonal)
             }
+        }
     }
 
 }

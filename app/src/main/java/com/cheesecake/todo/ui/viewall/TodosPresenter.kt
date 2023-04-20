@@ -6,13 +6,13 @@ import com.cheesecake.todo.data.repository.todos.TodoRepository
 import com.cheesecake.todo.ui.base.BasePresenter
 
 
-class ViewAllPresenter(
+class TodosPresenter(
     private val todoRepository: TodoRepository,
-    private val ViewAllTodosView: ViewAllContract.IView,
+    private val ViewAllTodosView: TodosContract.IView,
     private val _isPersonal: Boolean
 ) :
-    ViewAllContract.IPresenter,
-    BasePresenter<TodoRepository, ViewAllContract.IView>(todoRepository, ViewAllTodosView),
+    TodosContract.IPresenter,
+    BasePresenter<TodoRepository, TodosContract.IView>(todoRepository, ViewAllTodosView),
     TodoCallback {
 
 

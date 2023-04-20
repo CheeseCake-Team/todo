@@ -12,7 +12,7 @@ import com.cheesecake.todo.data.repository.todos.TodoRepositoryFactory
 import com.cheesecake.todo.databinding.FragmentHomeBinding
 import com.cheesecake.todo.ui.base.BaseFragment
 import com.cheesecake.todo.ui.taskDetails.TaskDetailsFragment
-import com.cheesecake.todo.ui.viewall.ViewAllTodoItemsFragment
+import com.cheesecake.todo.ui.viewall.TodosFragment
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomePresenter>(), HomeView,
     OnQueryTextListener {
@@ -70,7 +70,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePresenter>(), HomeVie
         val isPersonal = todoTitle.contains("Personal")
         requireActivity().supportFragmentManager.beginTransaction().apply {
             replace(
-                R.id.fragment_container_activity, ViewAllTodoItemsFragment.newInstance(isPersonal)
+                R.id.fragment_container_activity, TodosFragment.newInstance(isPersonal)
             )
             addToBackStack(null)
             commit()

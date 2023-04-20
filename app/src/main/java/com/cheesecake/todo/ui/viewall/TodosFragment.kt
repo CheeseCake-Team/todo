@@ -10,21 +10,21 @@ import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.data.repository.todos.TodoRepositoryFactory
 import com.cheesecake.todo.databinding.FragmentViewAllTodoItemsBinding
 import com.cheesecake.todo.ui.base.BaseFragment
-import com.cheesecake.todo.ui.creation.ToDoCreationFragment
+import com.cheesecake.todo.ui.creation.TodoCreationFragment
 import com.cheesecake.todo.ui.home.TodoItemAdapter
 import com.cheesecake.todo.ui.login.LoginFragment
 import com.cheesecake.todo.ui.taskDetails.TaskDetailsFragment
 
 
-class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding, ViewAllPresenter>(),
-    ViewAllContract.IView {
+class TodosFragment : BaseFragment<FragmentViewAllTodoItemsBinding, TodosPresenter>(),
+    TodosContract.IView {
 
     override val bindingInflater: (LayoutInflater) -> FragmentViewAllTodoItemsBinding =
         FragmentViewAllTodoItemsBinding::inflate
 
     override val presenter by lazy {
         val todoFactory = requireActivity().application as TodoRepositoryFactory
-        ViewAllPresenter(
+        TodosPresenter(
             todoFactory.createTodoRepository(),
             this,
             _isPersonalStatus
@@ -84,7 +84,7 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding, V
     companion object {
         private const val IS_PERSONAL_KEY = "is_personal_key"
 
-        fun newInstance(isPersonal: Boolean) = ViewAllTodoItemsFragment().apply {
+        fun newInstance(isPersonal: Boolean) = TodosFragment().apply {
             arguments = Bundle().apply {
                 putBoolean(IS_PERSONAL_KEY, isPersonal)
             }
@@ -129,7 +129,7 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding, V
         requireActivity().supportFragmentManager.beginTransaction().apply {
             replace(
                 R.id.fragment_container_activity,
-                ToDoCreationFragment.newInstance(_isPersonalStatus!!)
+                TodoCreationFragment.newInstance(_isPersonalStatus!!)
             )
             addToBackStack(null)
             commit()
