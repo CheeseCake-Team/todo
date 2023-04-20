@@ -114,10 +114,16 @@ class ToDoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreatio
 
     private fun onScreenInit() {
         if (isPersonal) {
-            binding.chipPersonalTodo.isChecked = true
+            binding.chipPersonalTodo.apply {
+                isChecked = true
+                isEnabled = false
+            }
         } else {
             binding.apply {
-                binding.chipTeamTodo.isChecked = true
+                binding.chipTeamTodo.apply {
+                    isChecked = true
+                    isEnabled = false
+                }
                 assigned.visibility = View.VISIBLE
             }
         }
@@ -130,11 +136,16 @@ class ToDoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreatio
                 chipTeamTodo.isChecked = false
                 assigned.visibility = View.INVISIBLE
                 isPersonal = true
+                chipPersonalTodo.isEnabled = false
+                chipTeamTodo.isEnabled = true
+
             }
             chipTeamTodo.setOnClickListener {
                 chipPersonalTodo.isChecked = false
                 assigned.visibility = View.VISIBLE
                 isPersonal = false
+                chipPersonalTodo.isEnabled = true
+                chipTeamTodo.isEnabled = false
             }
         }
     }
