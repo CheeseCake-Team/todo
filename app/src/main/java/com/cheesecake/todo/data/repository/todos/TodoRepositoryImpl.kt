@@ -35,7 +35,7 @@ class TodoRepositoryImpl(
         networkDataSource.getPersonalTodos(object : ResponseCallback {
             override fun <T> onSuccess(response: BaseResponse<T>) {
                 if (response.isSuccess) {
-                    todoCallback.onSuccessTeamTodo(response.value as List<TodoItem>)
+                    todoCallback.onSuccessPersonalTodo(response.value as List<TodoItem>)
                 } else todoCallback.onError(response.message)
             }
 
