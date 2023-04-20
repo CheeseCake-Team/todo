@@ -3,7 +3,10 @@ package com.cheesecake.todo.ui.taskDetails
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
+import com.cheesecake.todo.R
 import com.cheesecake.todo.data.models.TodoItem
+import com.cheesecake.todo.data.models.TodoState
 import com.cheesecake.todo.data.repository.todos.TodoRepositoryFactory
 import com.cheesecake.todo.databinding.FragmentTaskDetailsBinding
 import com.cheesecake.todo.ui.base.BaseFragment
@@ -49,6 +52,22 @@ class TaskDetailsFragment : BaseFragment<FragmentTaskDetailsBinding, TaskDetails
             binding.textViewUserName.visibility = View.VISIBLE
             binding.imageViewUserIcon.visibility = View.VISIBLE
         }
+        binding.apply {
+            toggleButtonGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
+                if (isChecked) {
+                    when (checkedId) {
+                        R.id.task_details_toggle_button_todo -> updateState(TodoState.TODO)
+                        R.id.task_details_toggle_button_progress -> updateState(TodoState.IN_PROGRESS)
+                        else -> updateState(TodoState.DONE)
+                    }
+                }
+            }
+            when(toDo?.status){
+                TodoState.TODO -> taskDetailsToggleButtonTodo.performClick()
+                TodoState.IN_PROGRESS -> taskDetailsToggleButtonProgress.performClick()
+                else -> taskDetailsToggleButtonDone.performClick()
+            }
+        }
     }
 
 
@@ -61,15 +80,15 @@ class TaskDetailsFragment : BaseFragment<FragmentTaskDetailsBinding, TaskDetails
         }
     }
 
-    override fun updateState(position: Int) {
-        TODO("Not yet implemented")
+    override fun updateState(todoState: TodoState) =
+        presenter.updateState(toDo!!, isPersonal!!, todoState)
+
+
+    override fun showError(errorMessage: String) {
+        requireActivity().runOnUiThread {
+            Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+        }
     }
 
-    override fun attachView(taskDetailsView: TaskDetailsView) {
-        TODO("Not yet implemented")
-    }
 
-    override fun detachView() {
-        TODO("Not yet implemented")
-    }
 }
