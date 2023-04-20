@@ -153,17 +153,21 @@ class DataItemDiffCallback : DiffUtil.ItemCallback<DataItem>() {
     }
 }
 
-
-sealed class DataItem {
+sealed class DataItem() {
     data class TagItem(val tag: Tag) : DataItem() {
         override val id = tag.id
+        override val rank: Int
+            get() = tag.rank
     }
 
     data class Header(val personalTodoItems: List<TodoItem>, val teamTodoItems: List<TodoItem>) :
         DataItem() {
         override val id: Int
             get() = Int.MAX_VALUE
+        override val rank: Int
+            get() = 0
     }
 
     abstract val id: Int
+    abstract val rank: Int
 }

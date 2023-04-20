@@ -130,21 +130,21 @@
             app:singleSelection="true">
 
             <Button
-                android:id="@+id/toggle_button_todo"
+                android:id="@+id/task_details_toggle_button_todo"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/todo" />
 
-            <Button android:id="@+id/toggle_button_progress"
+            <Button android:id="@+id/task_details_toggle_button_progress"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/progress" />
 
-            <Button android:id="@+id/toggle_button_done"
+            <Button android:id="@+id/task_details_toggle_button_done"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

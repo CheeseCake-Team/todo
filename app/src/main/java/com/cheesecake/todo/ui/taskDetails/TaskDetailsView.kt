@@ -1,10 +1,10 @@
 package com.cheesecake.todo.ui.taskDetails
 
+import com.cheesecake.todo.data.models.TodoState
+
 interface TaskDetailsView {
 
-    fun updateState(position: Int)
+    fun updateState(todoState: TodoState)
 
-    fun attachView(taskDetailsView: TaskDetailsView)
-
-    fun detachView()
+    fun showError(errorMessage: String)
 }
