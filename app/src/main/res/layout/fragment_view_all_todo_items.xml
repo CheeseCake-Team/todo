@@ -14,12 +14,12 @@
         android:layout_marginEnd="@dimen/margin_medium_16"
         android:layout_marginBottom="@dimen/margin_medium_8"
         android:weightSum="3"
-        app:selectionRequired="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
+        app:selectionRequired="true"
         app:singleSelection="true">
 
         <Button
@@ -62,16 +62,16 @@
         tools:listitem="@layout/item_todo" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add_note"
-        android:layout_margin="@dimen/margin_medium_16"
-        android:backgroundTint="@color/md_theme_light_primary"
+        android:id="@+id/fab_add_todo"
         style="?attr/floatingActionButtonSmallStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_medium_16"
+        android:backgroundTint="@color/md_theme_light_primary"
+        android:contentDescription="@string/fab"
         android:src="@drawable/add"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="@string/fab" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
