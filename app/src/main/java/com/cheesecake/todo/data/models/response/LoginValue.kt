@@ -1,14 +1,9 @@
 package com.cheesecake.todo.data.models.response
 
+import com.google.gson.annotations.SerializedName
 
 data class LoginValue(
-    val token: String,
-    val expireAt: String
-)
-
-data class LoginResponse(
-    val value: LoginValue?,
-    val message: String?,
-    val isSuccess: Boolean
+    @SerializedName("token") val token: String,
+    @SerializedName("expireAt") val expireAt: String
 )
 

@@ -1,6 +1,8 @@
 package com.cheesecake.todo.data.repository.identity
 
-interface IdentityRepository {
+import com.cheesecake.todo.data.repository.BaseRepository
+
+interface IdentityRepository : BaseRepository {
     fun login(username: String, password: String, loginCallback: LoginCallback)
     fun signUp(username: String, password: String, teamId: String, signUpCallback: SignUpCallback)
 

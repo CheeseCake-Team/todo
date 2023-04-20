@@ -4,19 +4,30 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import com.cheesecake.todo.data.models.TodoItem
+import com.cheesecake.todo.data.repository.todos.TodoRepositoryFactory
 import com.cheesecake.todo.databinding.FragmentTaskDetailsBinding
 import com.cheesecake.todo.ui.base.BaseFragment
-import com.cheesecake.todo.ui.viewall.ViewAllTodoItemsFragment
 
 private const val TODO_KEY = "todo"
 private const val IS_PERSONAL_KEY = "is_personal_key"
 
-class TaskDetailsFragment : BaseFragment<FragmentTaskDetailsBinding>() {
-    private var toDo: TodoItem? = null
-    private var isPersonal: Boolean? = null
+class TaskDetailsFragment : BaseFragment<FragmentTaskDetailsBinding, TaskDetailsPresenter>(),
+    TaskDetailsView {
+
+
     override val bindingInflater: (LayoutInflater) -> FragmentTaskDetailsBinding =
         FragmentTaskDetailsBinding::inflate
 
+    override val presenter by lazy {
+        val todoFactory = requireActivity().application as TodoRepositoryFactory
+        TaskDetailsPresenter(
+            todoFactory.createTodoRepository(),
+            this,
+        )
+    }
+
+    private var toDo: TodoItem? = null
+    private var isPersonal: Boolean? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -31,11 +42,10 @@ class TaskDetailsFragment : BaseFragment<FragmentTaskDetailsBinding>() {
         binding.textViewTaskDate.text = toDo?.creationTime.toString().substringBefore("T")
         binding.textViewTaskContent.text = toDo?.description.toString()
         binding.textViewUserName.text = toDo?.assignee.toString()
-        if (isPersonal!!){
+        if (isPersonal!!) {
             binding.textViewUserName.visibility = View.INVISIBLE
             binding.imageViewUserIcon.visibility = View.INVISIBLE
-        }
-        else{
+        } else {
             binding.textViewUserName.visibility = View.VISIBLE
             binding.imageViewUserIcon.visibility = View.VISIBLE
         }
@@ -43,11 +53,23 @@ class TaskDetailsFragment : BaseFragment<FragmentTaskDetailsBinding>() {
 
 
     companion object {
-        fun newInstance(todo: TodoItem,isPersonal: Boolean) = TaskDetailsFragment().apply {
+        fun newInstance(todo: TodoItem, isPersonal: Boolean) = TaskDetailsFragment().apply {
             arguments = Bundle().apply {
                 putParcelable(TODO_KEY, todo)
-                putBoolean(IS_PERSONAL_KEY,isPersonal)
+                putBoolean(IS_PERSONAL_KEY, isPersonal)
             }
         }
+    }
+
+    override fun updateState(position: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun attachView(taskDetailsView: TaskDetailsView) {
+        TODO("Not yet implemented")
+    }
+
+    override fun detachView() {
+        TODO("Not yet implemented")
     }
 }

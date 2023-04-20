@@ -11,8 +11,6 @@ interface ViewAllContract {
     }
 
     interface IPresenter {
-        fun attachView(view: IView,isPersonal: Boolean?)
-        fun detachView()
         fun requestAllTodos()
         fun onToggleSelected(position: Int)
     }

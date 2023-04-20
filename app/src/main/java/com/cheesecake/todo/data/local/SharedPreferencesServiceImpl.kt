@@ -1,13 +1,6 @@
 package com.cheesecake.todo.data.local
 
-import android.content.Context
 import android.content.SharedPreferences
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKey
-import com.cheesecake.todo.utils.Constants.EXPIRY
-import com.cheesecake.todo.utils.Constants.PREFS_NAME
-import com.cheesecake.todo.utils.Constants.TOKEN
-
 
 class SharedPreferencesServiceImpl(
     private var sharedPreferences: SharedPreferences) :
@@ -24,5 +17,10 @@ class SharedPreferencesServiceImpl(
 
     override fun getExpireDate() =
         sharedPreferences.getString(EXPIRY, "")
+
+    private companion object {
+        const val TOKEN = "token"
+        const val EXPIRY = "expiry"
+    }
 
 }
