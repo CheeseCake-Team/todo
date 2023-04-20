@@ -66,26 +66,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/text_view_task_date" />
 
-        <TextView android:id="@+id/text_view_task_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_medium_16"
-            android:text="@string/task_time"
-            android:textColor="@color/black_hint"
-            android:textSize="@dimen/font_size_12"
-            app:layout_constraintBottom_toBottomOf="@+id/text_view_task_date"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/text_view_task_date" />
-
-        <ImageView android:id="@+id/image_view_time_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_small_6"
-            android:src="@drawable/time_icon"
-            app:layout_constraintBottom_toBottomOf="@+id/text_view_task_time"
-            app:layout_constraintEnd_toStartOf="@+id/text_view_task_time"
-            app:layout_constraintTop_toTopOf="@+id/text_view_task_time" />
-
         <androidx.core.widget.NestedScrollView android:id="@+id/nested_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

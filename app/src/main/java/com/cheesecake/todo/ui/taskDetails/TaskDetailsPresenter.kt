@@ -11,13 +11,11 @@ class TaskDetailsPresenter(
 ) : BasePresenter<TodoRepository, TaskDetailsView>(todoRepository, taskDetailsView), TodoCallback {
 
 
-
-
     fun updateState(todo: TodoItem, isPersonal: Boolean, newState: TodoState) {
         if (isPersonal) {
-            todoRepository.updatePersonalTodoStatus(todo.id, newState, this )
+            todoRepository.updatePersonalTodoStatus(todo.id, newState, this)
         } else {
-            todoRepository.updateTeamTodoStatus(todo.id, newState, this )
+            todoRepository.updateTeamTodoStatus(todo.id, newState, this)
         }
     }
 
