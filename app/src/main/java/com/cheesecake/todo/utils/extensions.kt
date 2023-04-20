@@ -27,18 +27,13 @@ inline fun <reified T> OkHttpClient.makeCall(
 
     this.newCall(request).enqueue(object : Callback {
         override fun onFailure(call: Call, e: IOException) {
-            responseCallback.onFail(e.message ?: "Unknown error")
+            responseCallback.onFail(e.toString())
         }
 
         override fun onResponse(call: Call, response: Response) {
             val body = response.body?.string()
-            if (response.isSuccessful) {
-                val parsedResponse = Gson().parseResponse<T>(body ?: "")
-                responseCallback.onSuccess(parsedResponse)
-            } else {
-                responseCallback.onFail(body ?: "")
-
-            }
+            val parsedResponse = Gson().parseResponse<T>(body ?: "")
+            responseCallback.onSuccess(parsedResponse)
         }
     })
 }
