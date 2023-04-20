@@ -46,21 +46,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePresenter>(), HomeVie
 
     override fun initHomeList(homeList: MutableList<DataItem>) {
         requireActivity().runOnUiThread {
-            val todosList = if ((homeList[0] as DataItem.TagItem).tag.title.contains("Personal")) {
-                listOf(
+            val todosList = listOf(
                     DataItem.Header(
                         (homeList[0] as DataItem.TagItem).tag.todos,
-                        (homeList[1] as DataItem.TagItem).tag.todos
-                    ), homeList[0], homeList[1]
-                )
-            } else {
-                listOf(
-                    DataItem.Header(
                         (homeList[1] as DataItem.TagItem).tag.todos,
-                        (homeList[0] as DataItem.TagItem).tag.todos
-                    ), homeList[1], homeList[0]
-                )
-            }
+                    ), homeList[0], homeList[1]
+                ).sortedBy { it.rank }
+            Log.d("initHomeList: ", todosList.toString())
+            Log.d("initHomeList: ", (homeList[0] as DataItem.TagItem).tag.toString())
+            Log.d("initHomeList: ", (homeList[1] as DataItem.TagItem).tag.toString())
             homeAdapter.submitList(todosList)
         }
     }
@@ -98,15 +92,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePresenter>(), HomeVie
         loadLoginFragment()
     }
 
-
     override fun onQueryTextSubmit(p0: String?): Boolean {
         return false
     }
 
-    override fun onQueryTextChange(p0: String?): Boolean {
-        val list = presenter.search(p0.toString())
+    override fun onQueryTextChange(text: String?): Boolean {
+        val list = presenter.search(text.toString())
         Log.d("onQueryTextChange: ", list.toString())
-        if (list.isEmpty() || p0!!.isEmpty()) {
+        if (list.isEmpty() || text!!.isEmpty()) {
             binding.recyclerViewHome.adapter = homeAdapter
         } else {
             val adapter = TodoItemAdapter(::loadDetailsFragment)
@@ -115,6 +108,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePresenter>(), HomeVie
         }
         return false
     }
-
 
 }
