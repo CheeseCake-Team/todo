@@ -1,4 +1,4 @@
-package com.cheesecake.todo.ui.createtodo
+package com.cheesecake.todo.ui.creation
 
 interface ToDoCreationView {
 
