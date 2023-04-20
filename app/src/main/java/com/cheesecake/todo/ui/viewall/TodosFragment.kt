@@ -12,7 +12,6 @@ import com.cheesecake.todo.databinding.FragmentViewAllTodoItemsBinding
 import com.cheesecake.todo.ui.base.BaseFragment
 import com.cheesecake.todo.ui.creation.TodoCreationFragment
 import com.cheesecake.todo.ui.home.TodoItemAdapter
-import com.cheesecake.todo.ui.login.LoginFragment
 import com.cheesecake.todo.ui.taskDetails.TaskDetailsFragment
 
 
@@ -40,19 +39,25 @@ class TodosFragment : BaseFragment<FragmentViewAllTodoItemsBinding, TodosPresent
         arguments?.let {
             _isPersonalStatus = it.getBoolean(IS_PERSONAL_KEY)
         }
-        presenter.requestAllTodos()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        presenter.requestAllTodos()
         initView()
         addCallbacks()
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.toggleButtonGroup.clearChecked()
+        adapter.submitList(listOf())
+    }
+
     private fun initView() {
         adapter = TodoItemAdapter(::loadDetailsFragment)
-        binding.toggleButtonTodo.performClick()
+        binding.toggleButtonGroup.clearChecked()
         binding.recyclerViewAllTodos.adapter = adapter
     }
 
@@ -117,8 +122,7 @@ class TodosFragment : BaseFragment<FragmentViewAllTodoItemsBinding, TodosPresent
     }
 
     override fun navigateToLoginScreen() {
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container_activity, LoginFragment()).commit()
+        loadLoginFragment()
     }
 
     override fun toggleSelected(position: Int) {

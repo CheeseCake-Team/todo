@@ -30,21 +30,17 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginPresenter>(), Logi
     }
 
     private fun addCallBacks() {
-        setFocusAndHint(
-            binding.textInputUserNameLogin,
-            binding.editTextUserNameLogin,
-            getString(R.string.username)
-        )
-        setFocusAndHint(
-            binding.textInputPasswordLogin,
-            binding.editTextPasswordLogin,
-            getString(R.string.password)
-        )
 
         with(binding) {
+            textInputUserNameLogin.setFocusAndHint(
+                editTextUserNameLogin, getString(R.string.username)
+            )
+            textInputUserNameLogin.setFocusAndHint(
+                editTextPasswordLogin, getString(R.string.password)
+            )
             buttonLogin.setOnClickListener {
-                val username = binding.editTextUserNameLogin.text.toString().trim()
-                val password = binding.editTextPasswordLogin.text.toString().trim()
+                val username = editTextUserNameLogin.text.toString().trim()
+                val password = editTextPasswordLogin.text.toString().trim()
                 presenter.login(username, password)
             }
             textViewSignUp.setOnClickListener {

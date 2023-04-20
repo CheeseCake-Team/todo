@@ -27,23 +27,16 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpPresenter>(), S
 
     private fun addCallBacks() {
 
-        val usernameLayout = binding.textInputUserNameSignUp
-        val passwordLayout = binding.textInputPasswordSignUp
-        val confirmPasswordLayout = binding.textInputConfirmPasswordSignUp
-
-        setFocusAndHint(
-            usernameLayout, binding.editTextUserNameSignUp, getString(R.string.username)
-        )
-        setFocusAndHint(
-            passwordLayout, binding.editTextPasswordSignUp, getString(R.string.password)
-        )
-        setFocusAndHint(
-            confirmPasswordLayout,
-            binding.editTextConfirmPasswordSignUp,
-            getString(R.string.confirm_password)
-        )
-
         with(binding) {
+            textInputUserNameSignUp.setFocusAndHint(
+                binding.editTextUserNameSignUp, getString(R.string.username)
+            )
+            textInputPasswordSignUp.setFocusAndHint(
+                binding.editTextPasswordSignUp, getString(R.string.password)
+            )
+            textInputConfirmPasswordSignUp.setFocusAndHint(
+                binding.editTextConfirmPasswordSignUp, getString(R.string.confirm_password)
+            )
             buttonSignUp.setOnClickListener {
                 presenter.signUp(
                     editTextUserNameSignUp.text.toString(),

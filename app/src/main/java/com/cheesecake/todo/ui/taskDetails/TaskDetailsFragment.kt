@@ -79,6 +79,9 @@ class TaskDetailsFragment : BaseFragment<FragmentTaskDetailsBinding, TaskDetails
             }
         }
     }
+    override fun navigateToLoginScreen() {
+        loadLoginFragment()
+    }
 
     override fun updateState(todoState: TodoState) =
         presenter.updateState(toDo!!, isPersonal!!, todoState)

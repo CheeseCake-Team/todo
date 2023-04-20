@@ -19,17 +19,20 @@ class TodosPresenter(
     private lateinit var currentList: List<TodoItem>
 
     override fun requestAllTodos() {
-        when (_isPersonal) {
-            true -> todoRepository.getPersonalTodos(this)
-            false -> todoRepository.getTeamTodos(this)
-        }
+        if (repository.isTokenValid()) {
+            when (_isPersonal) {
+                true -> todoRepository.getPersonalTodos(this)
+                false -> todoRepository.getTeamTodos(this)
+            }
+        } else view.navigateToLoginScreen()
+
     }
 
     override fun onSuccessTeamTodo(todos: List<TodoItem>?) {
         if (todos != null) {
             currentList = todos
         }
-        todos?.let { ViewAllTodosView.showTodos(it) }
+//        todos?.let { ViewAllTodosView.showTodos(it) }
 
 
     }
@@ -38,7 +41,7 @@ class TodosPresenter(
         if (todos != null) {
             currentList = todos
         }
-        todos?.let { ViewAllTodosView.showTodos(it) }
+//        todos?.let { ViewAllTodosView.showTodos(it) }
 
     }
 

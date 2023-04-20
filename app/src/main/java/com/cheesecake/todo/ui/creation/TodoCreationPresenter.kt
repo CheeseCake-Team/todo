@@ -13,13 +13,16 @@ class TodoCreationPresenter(
     TodoCallback {
 
 
-
     fun toDoForPersonal(
         title: String,
         description: String,
         assignee: String,
     ) {
-        todoRepository.createTeamTodo(title, description, assignee, this)
+        if (repository.isTokenValid()) {
+            todoRepository.createTeamTodo(title, description, assignee, this)
+        }
+        else
+            view.navigateToLoginScreen()
 
     }
 

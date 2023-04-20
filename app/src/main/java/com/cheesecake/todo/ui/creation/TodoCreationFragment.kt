@@ -123,6 +123,10 @@ class TodoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreatio
         }
     }
 
+    override fun navigateToLoginScreen() {
+        loadLoginFragment()
+    }
+
     override fun showDialog() {
         requireActivity().runOnUiThread {
 
