@@ -47,7 +47,7 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding, V
         super.onViewCreated(view, savedInstanceState)
         initView()
         addCallbacks()
-        createTodo()
+
     }
 
     private fun initView() {
@@ -57,23 +57,28 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding, V
     }
 
     private fun addCallbacks() {
-        binding.toggleButtonGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
-            if (isChecked) {
-                when (checkedId) {
-                    R.id.toggle_button_todo -> {
-                        Log.d("TAG", "addCallbacks:todo selected ")
-                        toggleSelected(0)
-                    }
-                    R.id.toggle_button_progress -> {
-                        toggleSelected(1)
-                    }
-                    R.id.toggle_button_done -> {
-                        toggleSelected(2)
+        binding.apply {
+            toggleButtonGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
+                if (isChecked) {
+                    when (checkedId) {
+                        R.id.toggle_button_todo -> {
+                            Log.d("TAG", "addCallbacks:todo selected ")
+                            toggleSelected(0)
+                        }
+                        R.id.toggle_button_progress -> {
+                            toggleSelected(1)
+                        }
+                        R.id.toggle_button_done -> {
+                            toggleSelected(2)
+                        }
                     }
                 }
             }
-        }
+            fabAddTodo.setOnClickListener {
+                createTodo()
+            }
 
+        }
     }
 
     companion object {
@@ -121,16 +126,13 @@ class ViewAllTodoItemsFragment : BaseFragment<FragmentViewAllTodoItemsBinding, V
     }
 
     private fun createTodo() {
-        binding.fabAddNote.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction().apply {
-                replace(
-                    R.id.fragment_container_activity, ToDoCreationFragment.newInstance(false)
-                )
-                addToBackStack(null)
-                commit()
-            }
-
+        requireActivity().supportFragmentManager.beginTransaction().apply {
+            replace(
+                R.id.fragment_container_activity,
+                ToDoCreationFragment.newInstance(_isPersonalStatus!!)
+            )
+            addToBackStack(null)
+            commit()
         }
     }
-
 }

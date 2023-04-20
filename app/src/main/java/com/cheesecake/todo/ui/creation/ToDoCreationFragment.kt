@@ -34,7 +34,7 @@ class ToDoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreatio
             isPersonal = it.getBoolean(IS_PERSONAL_KEY)
         }
         onScreenInit()
-        checkPersonalOrTeam()
+        initCallbacks()
         createToDo()
 
     }
@@ -123,7 +123,8 @@ class ToDoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreatio
         }
     }
 
-    private fun checkPersonalOrTeam() {
+
+    private fun initCallbacks() {
         binding.apply {
             chipPersonalTodo.setOnClickListener {
                 chipTeamTodo.isChecked = false
