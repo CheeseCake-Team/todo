@@ -41,16 +41,22 @@ class TaskDetailsFragment : BaseFragment<FragmentTaskDetailsBinding, TaskDetails
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.textViewTaskName.text = toDo?.title.toString()
-        binding.textViewTaskDate.text = toDo?.creationTime.toString().substringBefore("T")
-        binding.textViewTaskContent.text = toDo?.description.toString()
-        binding.textViewUserName.text = toDo?.assignee.toString()
+        with(binding) {
+            textViewTaskName.text = toDo?.title.toString()
+            textViewTaskDate.text = toDo?.creationTime.toString().substringBefore("T")
+            textViewTaskContent.text = toDo?.description.toString()
+            textViewUserName.text = toDo?.assignee.toString()
+        }
         if (isPersonal!!) {
-            binding.textViewUserName.visibility = View.INVISIBLE
-            binding.imageViewUserIcon.visibility = View.INVISIBLE
+            with(binding) {
+                textViewUserName.visibility = View.INVISIBLE
+                imageViewUserIcon.visibility = View.INVISIBLE
+            }
         } else {
-            binding.textViewUserName.visibility = View.VISIBLE
-            binding.imageViewUserIcon.visibility = View.VISIBLE
+            with(binding) {
+                textViewUserName.visibility = View.VISIBLE
+                imageViewUserIcon.visibility = View.VISIBLE
+            }
         }
         binding.apply {
             toggleButtonGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
@@ -62,7 +68,7 @@ class TaskDetailsFragment : BaseFragment<FragmentTaskDetailsBinding, TaskDetails
                     }
                 }
             }
-            when(toDo?.status){
+            when (toDo?.status) {
                 TodoState.TODO -> taskDetailsToggleButtonTodo.performClick()
                 TodoState.IN_PROGRESS -> taskDetailsToggleButtonProgress.performClick()
                 else -> taskDetailsToggleButtonDone.performClick()
