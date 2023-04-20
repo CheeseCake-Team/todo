@@ -14,16 +14,15 @@ class TodoCreationPresenter(
 
 
 
-    fun toDoForPersonal(
+    fun createPersonalTodo(
         title: String,
         description: String,
-        assignee: String,
     ) {
-        todoRepository.createTeamTodo(title, description, assignee, this)
+        todoRepository.createPersonalTodo(title, description, this)
 
     }
 
-    fun toDoForTeam(
+    fun createTeamTodo(
         title: String,
         description: String,
         assignee: String,

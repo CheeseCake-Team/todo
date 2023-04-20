@@ -86,12 +86,12 @@ class TodoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreatio
     private fun makeRequest() {
         when (isPersonal) {
             isPersonal -> {
-                presenter.toDoForPersonal(
-                    title, description, "person",
+                presenter.createPersonalTodo(
+                    title, description,
                 )
             }
             else -> {
-                presenter.toDoForTeam(
+                presenter.createTeamTodo(
                     title, description, "team",
                 )
             }
