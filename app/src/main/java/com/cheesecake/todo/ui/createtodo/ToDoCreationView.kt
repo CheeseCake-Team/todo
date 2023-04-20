@@ -1,8 +1,6 @@
 package com.cheesecake.todo.ui.createtodo
 
-import android.view.View
-
-interface CreateView {
+interface ToDoCreationView {
 
         fun showError(message: String)
         fun showDialog()

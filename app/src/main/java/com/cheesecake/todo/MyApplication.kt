@@ -5,7 +5,8 @@ import android.content.Context
 import com.cheesecake.todo.data.local.SharedPreferencesService
 import com.cheesecake.todo.data.local.SharedPreferencesServiceImpl
 import com.cheesecake.todo.data.network.AuthorizationInterceptor
-import com.cheesecake.todo.data.network.NetworkServiceImpl
+import com.cheesecake.todo.data.network.identity.IdentityNetworkServiceImpl
+import com.cheesecake.todo.data.network.todos.TodoNetworkServiceImpl
 import com.cheesecake.todo.data.repository.identity.IdentityRepository
 import com.cheesecake.todo.data.repository.identity.IdentityRepositoryFactory
 import com.cheesecake.todo.data.repository.identity.IdentityRepositoryImpl
@@ -26,7 +27,7 @@ class MyApplication : Application(), IdentityRepositoryFactory, TodoRepositoryFa
         )
     }
 
-    private val todosOkHttpClient: OkHttpClient by lazy {
+    private val okHttpClient: OkHttpClient by lazy {
         OkHttpClient
             .Builder()
             .addInterceptor(HttpLoggingInterceptor().apply {
@@ -36,23 +37,15 @@ class MyApplication : Application(), IdentityRepositoryFactory, TodoRepositoryFa
             .build()
     }
 
-    private val identityOkHttpClient: OkHttpClient by lazy {
-        OkHttpClient
-            .Builder()
-            .addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BASIC
-            })
-            .build()
-    }
-
     override fun onCreate() {
         super.onCreate()
-        val networkService = NetworkServiceImpl(todosOkHttpClient)
-        val identityNetworkService = NetworkServiceImpl(identityOkHttpClient)
 
+        val todoNetworkService = TodoNetworkServiceImpl(okHttpClient)
+        todoRepository = TodoRepositoryImpl(todoNetworkService, sharedPreferencesService)
+
+        val identityNetworkService = IdentityNetworkServiceImpl(okHttpClient)
         identityRepository =
             IdentityRepositoryImpl(identityNetworkService, sharedPreferencesService)
-        todoRepository = TodoRepositoryImpl(networkService, sharedPreferencesService)
     }
 
     override fun createAuthRepository(): IdentityRepository {
