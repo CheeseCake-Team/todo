@@ -3,6 +3,7 @@ package com.cheesecake.todo.ui.signup
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import com.cheesecake.todo.R
 import com.cheesecake.todo.data.repository.identity.IdentityRepositoryFactory
@@ -22,28 +23,22 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpPresenter>(), S
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         addCallBacks()
     }
 
     private fun addCallBacks() {
 
-        val usernameLayout = binding.textInputUserNameSignUp
-        val passwordLayout = binding.textInputPasswordSignUp
-        val confirmPasswordLayout = binding.textInputConfirmPasswordSignUp
-
-        setFocusAndHint(
-            usernameLayout, binding.editTextUserNameSignUp, getString(R.string.username)
-        )
-        setFocusAndHint(
-            passwordLayout, binding.editTextPasswordSignUp, getString(R.string.password)
-        )
-        setFocusAndHint(
-            confirmPasswordLayout,
-            binding.editTextConfirmPasswordSignUp,
-            getString(R.string.confirm_password)
-        )
-
         with(binding) {
+            textInputUserNameSignUp.setFocusAndHint(
+                binding.editTextUserNameSignUp, getString(R.string.username)
+            )
+            textInputPasswordSignUp.setFocusAndHint(
+                binding.editTextPasswordSignUp, getString(R.string.password)
+            )
+            textInputConfirmPasswordSignUp.setFocusAndHint(
+                binding.editTextConfirmPasswordSignUp, getString(R.string.confirm_password)
+            )
             buttonSignUp.setOnClickListener {
                 presenter.signUp(
                     editTextUserNameSignUp.text.toString(),

@@ -11,30 +11,37 @@ class HomePresenter(
     todoRepository: TodoRepository,
     homeView: HomeView
 ) : BasePresenter<TodoRepository, HomeView>(todoRepository, homeView), TodoCallback {
-    private val homeList = mutableListOf<DataItem>()
+    private lateinit var homeList: MutableList<DataItem>
     override fun onSuccessTeamTodo(todos: List<TodoItem>?) {
-        val tag = DataItem.TagItem(Tag(2, "Recently Team", todos!!))
+        val tag = DataItem.TagItem(Tag(2, 2, "Recently Team", todos!!))
         homeList.add(tag)
+        homeList = homeList.sortedBy { it.rank }.toMutableList()
         if (homeList.size == 2)
             view.initHomeList(homeList)
     }
+
     override fun onSuccessPersonalTodo(todos: List<TodoItem>?) {
-        val tag = DataItem.TagItem(Tag(1, "Recently Personal", todos!!))
+        val tag = DataItem.TagItem(Tag(1, 1, "Recently Personal", todos!!))
         homeList.add(tag)
+        homeList = homeList.sortedBy { it.rank }.toMutableList()
         if (homeList.size == 2)
             view.initHomeList(homeList)
     }
+
     override fun onError(error: String) {
         view.showError(error)
     }
+
     fun initTodos() {
         if (repository.isTokenValid()) {
+            homeList = mutableListOf()
             repository.getPersonalTodos(this)
             repository.getTeamTodos(this)
         } else view.navigateToLoginScreen()
     }
+
     fun search(text: String): List<TodoItem> {
-        return if (homeList.size > 2) {
+        return if (homeList.size == 2) {
             val firstSearchResult = (homeList[0] as DataItem.TagItem).tag.todos.filter {
                 it.title.contains(text) || it.description.contains(text)
             }

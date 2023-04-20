@@ -3,6 +3,7 @@ package com.cheesecake.todo.ui.login
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import com.cheesecake.todo.R
 import com.cheesecake.todo.data.repository.identity.IdentityRepositoryFactory
@@ -26,25 +27,23 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginPresenter>(), Logi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+
         addCallBacks()
     }
 
     private fun addCallBacks() {
-        setFocusAndHint(
-            binding.textInputUserNameLogin,
-            binding.editTextUserNameLogin,
-            getString(R.string.username)
-        )
-        setFocusAndHint(
-            binding.textInputPasswordLogin,
-            binding.editTextPasswordLogin,
-            getString(R.string.password)
-        )
 
         with(binding) {
+            textInputUserNameLogin.setFocusAndHint(
+                editTextUserNameLogin, getString(R.string.username)
+            )
+            textInputUserNameLogin.setFocusAndHint(
+                editTextPasswordLogin, getString(R.string.password)
+            )
             buttonLogin.setOnClickListener {
-                val username = binding.editTextUserNameLogin.text.toString().trim()
-                val password = binding.editTextPasswordLogin.text.toString().trim()
+                val username = editTextUserNameLogin.text.toString().trim()
+                val password = editTextPasswordLogin.text.toString().trim()
                 presenter.login(username, password)
             }
             textViewSignUp.setOnClickListener {

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.cheesecake.todo.R
 import com.cheesecake.todo.data.models.Tag
 import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.databinding.ItemHomeHeaderBinding
@@ -65,38 +66,47 @@ class HomeAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(header: DataItem.Header) {
+            val personalMax = if (header.personalTodoItems.isEmpty())
+                1f
+            else
+                header.personalTodoItems.size.toFloat()
+            val teamMax = if (header.teamTodoItems.isEmpty())
+                1f
+            else
+                header.teamTodoItems.size.toFloat()
             val personalProgressTodoItem = header.personalTodoItems.count { it.status.value == 1 }.toFloat()
             val personalDoneTodoItem = header.personalTodoItems.count { it.status.value == 2 }.toFloat()
             val teamDoneTodoItem = header.teamTodoItems.count { it.status.value == 2 }.toFloat()
-            setPersonalProgress(header, personalDoneTodoItem)
-            setTeamProgress(header, teamDoneTodoItem)
+            setPersonalProgress(personalMax, personalDoneTodoItem)
+            setTeamProgress(teamMax, teamDoneTodoItem)
             setupPieChart(
-                header.personalTodoItems.size.toFloat(),
+                personalMax,
                 personalDoneTodoItem,
                 personalProgressTodoItem
             )
         }
 
-        private fun setPersonalProgress(header: DataItem.Header, personalDoneTodoItem: Float) {
+        private fun setPersonalProgress(personalMax: Float, personalDoneTodoItem: Float) {
             binding.apply {
-                personTodoProgressBar.max = header.personalTodoItems.size.toFloat()
+                personTodoProgressBar.max = personalMax
                 personTodoProgressBar.progress = personalDoneTodoItem
-                textViewFixedPersonalProgress.text =
-                    ((personalDoneTodoItem * 100) / header.personalTodoItems.size).toString()
+                textViewFixedPersonalProgress.text = root.context.getString(R.string.text_percentage,
+                    ((personalDoneTodoItem * 100) / personalMax).toInt().toString())
             }
         }
 
-        private fun setTeamProgress(header: DataItem.Header, teamDoneTodoItem: Float) {
+        private fun setTeamProgress(teamMax: Float, teamDoneTodoItem: Float) {
             binding.apply {
-                teamTodoProgressBar.max = header.teamTodoItems.size.toFloat()
+                teamTodoProgressBar.max = teamMax
                 teamTodoProgressBar.progress = teamDoneTodoItem
-                textViewFixedTeamProgress.text =
-                    ((teamDoneTodoItem * 100) / header.teamTodoItems.size).toString()
+                textViewFixedTeamProgress.text = root.context.getString(R.string.text_percentage,
+                    ((teamDoneTodoItem * 100) / teamMax).toInt().toString())
             }
         }
 
         private fun setupPieChart(max: Float, personalDoneTodoItem: Float,
                                   personalProgressTodoItem: Float) {
+
             val todo = SeriesItem.Builder(Color.argb(92, 225, 225, 225))
                 .setRange(0f, max, max)
                 .setInitialVisibility(true)
@@ -113,8 +123,8 @@ class HomeAdapter(
                 .setLineWidth(12f)
                 .build()
 
-            binding.textViewDonePercentage.text =
-                ((personalDoneTodoItem * 100) / max).toString()
+            binding.textViewDonePercentage.text = binding.root.context.getString(R.string.text_percentage,
+                ((personalDoneTodoItem * 100) / max).toInt().toString())
 
 
             binding.pieChart.addSeries(todo)
@@ -153,17 +163,21 @@ class DataItemDiffCallback : DiffUtil.ItemCallback<DataItem>() {
     }
 }
 
-
-sealed class DataItem {
+sealed class DataItem() {
     data class TagItem(val tag: Tag) : DataItem() {
         override val id = tag.id
+        override val rank: Int
+            get() = tag.rank
     }
 
     data class Header(val personalTodoItems: List<TodoItem>, val teamTodoItems: List<TodoItem>) :
         DataItem() {
         override val id: Int
             get() = Int.MAX_VALUE
+        override val rank: Int
+            get() = 0
     }
 
     abstract val id: Int
+    abstract val rank: Int
 }

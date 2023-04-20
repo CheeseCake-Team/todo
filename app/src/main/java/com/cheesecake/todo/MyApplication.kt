@@ -5,6 +5,7 @@ import android.content.Context
 import com.cheesecake.todo.data.local.SharedPreferencesService
 import com.cheesecake.todo.data.local.SharedPreferencesServiceImpl
 import com.cheesecake.todo.data.network.AuthorizationInterceptor
+import com.cheesecake.todo.data.network.NetworkInterceptor
 import com.cheesecake.todo.data.network.identity.IdentityNetworkServiceImpl
 import com.cheesecake.todo.data.network.todos.TodoNetworkServiceImpl
 import com.cheesecake.todo.data.repository.identity.IdentityRepository
@@ -34,6 +35,7 @@ class MyApplication : Application(), IdentityRepositoryFactory, TodoRepositoryFa
                 level = HttpLoggingInterceptor.Level.BODY
             })
             .addInterceptor(AuthorizationInterceptor(sharedPreferencesService))
+            .addInterceptor(NetworkInterceptor(applicationContext))
             .build()
     }
 

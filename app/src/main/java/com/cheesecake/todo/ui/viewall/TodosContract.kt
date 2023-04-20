@@ -2,7 +2,7 @@ package com.cheesecake.todo.ui.viewall
 
 import com.cheesecake.todo.data.models.TodoItem
 
-interface ViewAllContract {
+interface TodosContract {
     interface IView {
         fun showTodos(todos: List<TodoItem>)
         fun showError(message: String)

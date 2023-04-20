@@ -1,4 +1,4 @@
-package com.cheesecake.todo.ui.createtodo
+package com.cheesecake.todo.ui.creation
 
 import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.data.repository.todos.TodoCallback
@@ -8,27 +8,32 @@ import com.cheesecake.todo.ui.base.BasePresenter
 
 class TodoCreationPresenter(
     private val todoRepository: TodoRepository,
-    private val toDoCreationView: ToDoCreationFragment
-) : BasePresenter<TodoRepository, ToDoCreationFragment>(todoRepository, toDoCreationView),
+    private val toDoCreationView: TodoCreationFragment
+) : BasePresenter<TodoRepository, TodoCreationFragment>(todoRepository, toDoCreationView),
     TodoCallback {
 
 
-
-    fun toDoForPersonal(
+    fun createPersonalTodo(
         title: String,
         description: String,
-        assignee: String,
     ) {
-        todoRepository.createTeamTodo(title, description, assignee, this)
+        if (repository.isTokenValid()) {
+            todoRepository.createPersonalTodo(title, description, this)
+        } else
+            view.navigateToLoginScreen()
 
     }
 
-    fun toDoForTeam(
+    fun createTeamTodo(
         title: String,
         description: String,
         assignee: String,
     ) {
-        todoRepository.createTeamTodo(title, description, assignee, this)
+        if (repository.isTokenValid()) {
+            todoRepository.createTeamTodo(title, description, assignee, this)
+        } else
+            view.navigateToLoginScreen()
+
     }
 
 
