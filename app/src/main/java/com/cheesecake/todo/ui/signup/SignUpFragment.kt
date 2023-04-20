@@ -3,6 +3,7 @@ package com.cheesecake.todo.ui.signup
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import com.cheesecake.todo.R
 import com.cheesecake.todo.data.repository.identity.IdentityRepositoryFactory
@@ -22,6 +23,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpPresenter>(), S
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         addCallBacks()
     }
 

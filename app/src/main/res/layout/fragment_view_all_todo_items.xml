@@ -70,6 +70,7 @@
         android:backgroundTint="@color/md_theme_light_primary"
         android:contentDescription="@string/fab"
         android:src="@drawable/add"
+        app:fabCustomSize="@dimen/margin_veryLarge_56dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

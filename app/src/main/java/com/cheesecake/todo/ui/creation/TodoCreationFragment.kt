@@ -25,6 +25,7 @@ class TodoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreatio
 
     private lateinit var title: String
     private lateinit var description: String
+    private lateinit var assignee: String
     private var isPersonal by Delegates.notNull<Boolean>()
 
 
@@ -49,7 +50,7 @@ class TodoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreatio
                     isChecked = true
                     isEnabled = false
                 }
-                assigned.visibility = View.VISIBLE
+                editTextAssignee.visibility = View.VISIBLE
             }
         }
     }
@@ -58,7 +59,7 @@ class TodoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreatio
         binding.apply {
             chipPersonalTodo.setOnClickListener {
                 chipTeamTodo.isChecked = false
-                assigned.visibility = View.INVISIBLE
+                editTextAssignee.visibility = View.INVISIBLE
                 isPersonal = true
                 chipPersonalTodo.isEnabled = false
                 chipTeamTodo.isEnabled = true
@@ -66,7 +67,7 @@ class TodoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreatio
             }
             chipTeamTodo.setOnClickListener {
                 chipPersonalTodo.isChecked = false
-                assigned.visibility = View.VISIBLE
+                editTextAssignee.visibility = View.VISIBLE
                 isPersonal = false
                 chipPersonalTodo.isEnabled = true
                 chipTeamTodo.isEnabled = false
@@ -75,7 +76,8 @@ class TodoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreatio
             buttonCreate.setOnClickListener {
                 title = binding.editTextTitle.text.toString()
                 description = binding.editTextDescription.text.toString()
-                if (checkEmptyField(title, description)) {
+                assignee = binding.editTextAssignee.text.toString()
+                if (checkEmptyField(title, description,assignee)) {
                     makeRequest()
                 }
             }
@@ -86,19 +88,19 @@ class TodoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreatio
     private fun makeRequest() {
         when (isPersonal) {
             isPersonal -> {
-                presenter.toDoForPersonal(
-                    title, description, "person",
+                presenter.createPersonalTodo(
+                    title, description,
                 )
             }
             else -> {
-                presenter.toDoForTeam(
-                    title, description, "team",
+                presenter.createTeamTodo(
+                    title, description, assignee,
                 )
             }
         }
     }
 
-    private fun checkEmptyField(title: String, description: String): Boolean {
+    private fun checkEmptyField(title: String, description: String,assignee: String): Boolean {
         when {
             title.trim().isEmpty() -> {
                 Toast.makeText(
@@ -109,6 +111,12 @@ class TodoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreatio
             description.trim().isEmpty() -> {
                 Toast.makeText(
                     requireContext(), "Please fill description field", Toast.LENGTH_SHORT
+                ).show()
+                return false
+            }
+            assignee.trim().isEmpty() && !isPersonal-> {
+                Toast.makeText(
+                    requireContext(), "Please fill assignee field", Toast.LENGTH_SHORT
                 ).show()
                 return false
             }
@@ -135,7 +143,6 @@ class TodoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreatio
             dialog.window?.setLayout(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
             )
-            dialog.setCancelable(false)
             dialog.window?.attributes?.windowAnimations = R.style.animationDialog
 
             val cancel = dialog.findViewById<TextView>(R.id.text_view_cancel_text_button)
