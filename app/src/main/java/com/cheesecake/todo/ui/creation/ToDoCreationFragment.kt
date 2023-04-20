@@ -13,8 +13,6 @@ import com.cheesecake.todo.databinding.FragmentCreateToDoBinding
 import com.cheesecake.todo.ui.base.BaseFragment
 import kotlin.properties.Delegates
 
-private const val IS_PERSONAL_KEY = "is_personal_key"
-
 class ToDoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreationPresenter>(),
     ToDoCreationView {
     override val bindingInflater: (LayoutInflater) -> FragmentCreateToDoBinding =
@@ -116,10 +114,10 @@ class ToDoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreatio
 
     private fun onScreenInit() {
         if (isPersonal) {
-            binding.chipPersonalTodo.performClick()
+            binding.chipPersonalTodo.isChecked = true
         } else {
             binding.apply {
-                chipTeamTodo.performClick()
+                binding.chipTeamTodo.isChecked = true
                 assigned.visibility = View.VISIBLE
             }
         }
@@ -138,10 +136,10 @@ class ToDoCreationFragment : BaseFragment<FragmentCreateToDoBinding, TodoCreatio
                 isPersonal = false
             }
         }
-
     }
 
     companion object {
+        private const val IS_PERSONAL_KEY = "is_personal_key"
         fun newInstance(isPersonal: Boolean) =
             ToDoCreationFragment().apply {
                 arguments = Bundle().apply {
