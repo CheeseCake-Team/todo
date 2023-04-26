@@ -33,7 +33,9 @@ class HomePresenter(
     }
 
     fun initTodos() {
-        if (repository.isTokenValid()) {
+        val b =  repository.isTokenValid()
+        Log.d("TAG", "initTodos: b = $b")
+        if (b) {
             homeList = mutableListOf()
             repository.getPersonalTodos(this)
             repository.getTeamTodos(this)

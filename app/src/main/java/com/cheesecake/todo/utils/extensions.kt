@@ -7,6 +7,7 @@ import com.cheesecake.todo.data.network.ResponseCallback
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import io.reactivex.rxjava3.core.Single
 import okhttp3.*
 import java.io.IOException
 
@@ -33,6 +34,38 @@ inline fun <reified T> OkHttpClient.makeCall(
 }
 
 
+inline fun <reified T : Any> OkHttpClient.makeObservable(request: Request): Single<BaseResponse<T>> {
+    return Single.create { emitter ->
+
+        val call = this.newCall(request)
+
+        call.enqueue(object : Callback {
+
+            override fun onFailure(call: Call, e: IOException) {
+                if (e is NetworkInterceptor.NoInternetException) {
+                    // Do nothing here because the dialog has already been shown
+                } else {
+                    emitter.onError(e)
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                val parsedResponse = Gson().parseResponse<T>(body ?: "")
+
+                if (response.isSuccessful) {
+                    emitter.onSuccess(parsedResponse)
+                } else {
+                    emitter.onError(Exception(parsedResponse.message))
+                }
+            }
+        })
+
+        emitter.setCancellable { call.cancel() }
+    }
+}
+
+
 inline fun <reified T> Gson.parseResponse(response: String?): BaseResponse<T> =
     this.fromJson(response, object : TypeToken<BaseResponse<T>>() {}.type)
 
@@ -47,9 +80,3 @@ fun TextInputLayout.setFocusAndHint(editText: EditText, hint: String) {
         }
     }
 }
-
-
-
-
-
-
