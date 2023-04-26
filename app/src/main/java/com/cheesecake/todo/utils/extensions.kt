@@ -1,5 +1,6 @@
 package com.cheesecake.todo.utils
 
+import android.util.Log
 import android.widget.EditText
 import com.cheesecake.todo.data.models.response.BaseResponse
 import com.cheesecake.todo.data.network.NetworkInterceptor
@@ -10,6 +11,7 @@ import com.google.gson.reflect.TypeToken
 import io.reactivex.rxjava3.core.Single
 import okhttp3.*
 import java.io.IOException
+import java.lang.reflect.Type
 
 
 inline fun <reified T> OkHttpClient.makeCall(
@@ -34,13 +36,11 @@ inline fun <reified T> OkHttpClient.makeCall(
 }
 
 
-inline fun <reified T : Any> OkHttpClient.makeObservable(request: Request): Single<BaseResponse<T>> {
+inline fun <reified T> OkHttpClient.makeObservable(request: Request, type: Type): Single<BaseResponse<T>> {
     return Single.create { emitter ->
-
         val call = this.newCall(request)
 
         call.enqueue(object : Callback {
-
             override fun onFailure(call: Call, e: IOException) {
                 if (e is NetworkInterceptor.NoInternetException) {
                     // Do nothing here because the dialog has already been shown
@@ -51,7 +51,7 @@ inline fun <reified T : Any> OkHttpClient.makeObservable(request: Request): Sing
 
             override fun onResponse(call: Call, response: Response) {
                 val body = response.body?.string()
-                val parsedResponse = Gson().parseResponse<T>(body ?: "")
+                val parsedResponse = Gson().parseResponse<T>(body ?: "",type)
 
                 if (response.isSuccessful) {
                     emitter.onSuccess(parsedResponse)
@@ -64,10 +64,15 @@ inline fun <reified T : Any> OkHttpClient.makeObservable(request: Request): Sing
         emitter.setCancellable { call.cancel() }
     }
 }
+inline fun <reified T> Gson.parseResponse(response: String?, type: Type): BaseResponse<T> {
+    Log.d("TAG", "parseResponse: $type")
+    return this.fromJson(response, type)
+}
 
-
-inline fun <reified T> Gson.parseResponse(response: String?): BaseResponse<T> =
-    this.fromJson(response, object : TypeToken<BaseResponse<T>>() {}.type)
+inline fun <reified T> Gson.parseResponse(response: String?): BaseResponse<T> {
+    Log.d("TAG", "parseResponse: ${object : TypeToken<BaseResponse<T>>() {}.type}")
+    return this.fromJson(response, object : TypeToken<BaseResponse<T>>() {}.type)
+}
 
 
 fun TextInputLayout.setFocusAndHint(editText: EditText, hint: String) {

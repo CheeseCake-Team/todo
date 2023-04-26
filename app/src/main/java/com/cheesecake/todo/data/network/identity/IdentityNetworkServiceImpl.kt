@@ -5,7 +5,7 @@ import com.cheesecake.todo.data.models.response.LoginValue
 import com.cheesecake.todo.data.models.response.SignUpValue
 import com.cheesecake.todo.data.network.AuthorizationInterceptor
 import com.cheesecake.todo.utils.makeObservable
-import io.reactivex.rxjava3.core.Observable
+import com.google.gson.reflect.TypeToken
 import io.reactivex.rxjava3.core.Single
 import okhttp3.Credentials
 import okhttp3.FormBody
@@ -52,30 +52,23 @@ class IdentityNetworkServiceImpl(private val okHttpClient: OkHttpClient) : Ident
     override fun login(username: String, password: String): Single<BaseResponse<LoginValue>> {
         val credentials = Credentials.basic(username, password)
 
-        val request = Request.Builder()
-            .url(LOGIN_ENDPOINT)
-            .addHeader(AuthorizationInterceptor.AUTHORIZATION_HEADER, credentials)
-            .build()
-        return okHttpClient.makeObservable(request)
+        val request = Request.Builder().url(LOGIN_ENDPOINT)
+            .addHeader(AuthorizationInterceptor.AUTHORIZATION_HEADER, credentials).build()
+
+        val type = object : TypeToken<BaseResponse<LoginValue>>() {}.type
+        return okHttpClient.makeObservable(request, type)
     }
 
     override fun signUp(
-        username: String,
-        password: String,
-        teamId: String
+        username: String, password: String, teamId: String
     ): Single<BaseResponse<SignUpValue>> {
-        val formBody = FormBody.Builder()
-            .add("username", username)
-            .add("password", password)
-            .add("teamId", teamId)
-            .build()
+        val formBody = FormBody.Builder().add("username", username).add("password", password)
+            .add("teamId", teamId).build()
 
-        val request = Request.Builder()
-            .url(SIGNUP_ENDPOINT)
-            .post(formBody)
-            .build()
+        val request = Request.Builder().url(SIGNUP_ENDPOINT).post(formBody).build()
+        val type = object : TypeToken<BaseResponse<SignUpValue>>() {}.type
 
-        return okHttpClient.makeObservable(request)
+        return okHttpClient.makeObservable(request,type)
     }
 
     private companion object {
