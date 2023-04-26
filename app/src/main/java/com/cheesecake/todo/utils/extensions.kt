@@ -42,9 +42,7 @@ inline fun <reified T> OkHttpClient.makeObservable(request: Request, type: Type)
 
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                if (e is NetworkInterceptor.NoInternetException) {
-                    // Do nothing here because the dialog has already been shown
-                } else {
+                if (e !is NetworkInterceptor.NoInternetException) {
                     emitter.onError(e)
                 }
             }
@@ -68,11 +66,11 @@ inline fun <reified T> Gson.parseResponse(response: String?, type: Type): BaseRe
     Log.d("TAG", "parseResponse: $type")
     return this.fromJson(response, type)
 }
-//
-//inline fun <reified T> Gson.parseResponse(response: String?): BaseResponse<T> {
-//    Log.d("TAG", "parseResponse: ${object : TypeToken<BaseResponse<T>>() {}.type}")
-//    return this.fromJson(response, object : TypeToken<BaseResponse<T>>() {}.type)
-//}
+
+inline fun <reified T> Gson.parseResponse(response: String?): BaseResponse<T> {
+    Log.d("TAG", "parseResponse: ${object : TypeToken<BaseResponse<T>>() {}.type}")
+    return this.fromJson(response, object : TypeToken<BaseResponse<T>>() {}.type)
+}
 
 
 fun TextInputLayout.setFocusAndHint(editText: EditText, hint: String) {
