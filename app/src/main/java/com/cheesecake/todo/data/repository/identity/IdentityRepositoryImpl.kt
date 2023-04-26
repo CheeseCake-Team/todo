@@ -23,8 +23,6 @@ class IdentityRepositoryImpl(
     ) {
 
         identityNetworkService.login(username, password)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(observer)
     }
 
@@ -35,8 +33,6 @@ class IdentityRepositoryImpl(
         observer: SingleObserver<BaseResponse<SignUpValue>>
     ) {
         identityNetworkService.signUp(username, password, teamId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(observer)
     }
 
