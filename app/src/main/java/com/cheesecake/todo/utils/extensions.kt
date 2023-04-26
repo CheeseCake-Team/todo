@@ -4,11 +4,12 @@ import android.util.Log
 import android.widget.EditText
 import com.cheesecake.todo.data.models.response.BaseResponse
 import com.cheesecake.todo.data.network.NetworkInterceptor
-import com.cheesecake.todo.data.network.ResponseCallback
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
 import okhttp3.*
 import java.io.IOException
 import java.lang.reflect.Type
@@ -60,7 +61,9 @@ inline fun <reified T> OkHttpClient.makeObservable(request: Request, type: Type)
         })
 
         emitter.setCancellable { call.cancel() }
-    }
+
+    }.subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
 }
 inline fun <reified T> Gson.parseResponse(response: String?, type: Type): BaseResponse<T> {
     Log.d("TAG", "parseResponse: $type")

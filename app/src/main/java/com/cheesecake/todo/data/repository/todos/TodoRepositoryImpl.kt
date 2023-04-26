@@ -1,7 +1,6 @@
 package com.cheesecake.todo.data.repository.todos
 
 import com.cheesecake.todo.data.local.SharedPreferencesService
-import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.data.models.TodoState
 import com.cheesecake.todo.data.models.request.TodoPersonalRequest
 import com.cheesecake.todo.data.models.request.TodoStatusRequest
@@ -9,8 +8,6 @@ import com.cheesecake.todo.data.models.request.TodoTeamRequest
 import com.cheesecake.todo.data.models.response.BaseResponse
 import com.cheesecake.todo.data.network.ResponseCallback
 import com.cheesecake.todo.data.network.todos.TodoNetworkService
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.schedulers.Schedulers
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -22,8 +19,6 @@ class TodoRepositoryImpl(
     override fun getTeamTodos(todoCallback: TodoCallback) {
         networkDataSource
             .getTeamTodos()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { response ->
                     if (response.isSuccess) {
@@ -41,8 +36,6 @@ class TodoRepositoryImpl(
     override fun getPersonalTodos(todoCallback: TodoCallback) {
         networkDataSource
             .getPersonalTodos()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { response ->
                     if (response.isSuccess) {
@@ -74,8 +67,6 @@ class TodoRepositoryImpl(
         }
         networkDataSource
             .createTeamTodo(todoTeamRequest)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { response ->
                     if (response.isSuccess) {
@@ -96,8 +87,6 @@ class TodoRepositoryImpl(
         val todoPersonalRequest = TodoPersonalRequest(title, description)
         networkDataSource
             .createPersonalTodo(todoPersonalRequest)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { response ->
                     if (response.isSuccess) {
@@ -119,8 +108,6 @@ class TodoRepositoryImpl(
 
         networkDataSource
             .updateTeamTodoStatus(todoStatusRequest)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { response ->
                     if (response.isSuccess) {
@@ -141,8 +128,6 @@ class TodoRepositoryImpl(
         val todoStatusRequest = TodoStatusRequest(todoId, newStatus)
         networkDataSource
             .updatePersonalTodoStatus(todoStatusRequest)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { response ->
                     if (response.isSuccess) {
