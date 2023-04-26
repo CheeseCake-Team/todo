@@ -17,14 +17,14 @@ class TodoNetworkServiceImpl(private val okHttpClient: OkHttpClient) : TodoNetwo
     override fun getPersonalTodos(): Single<BaseResponse<List<TodoItem>>> {
         val request = Request.Builder().url(PERSONAL_ENDPOINT).build()
 
-        val type = object : TypeToken<BaseResponse<LoginValue>>() {}.type
+        val type = object : TypeToken<BaseResponse<List<TodoItem>>>() {}.type
         return okHttpClient.makeObservable(request, type)
     }
 
     override fun getTeamTodos(): Single<BaseResponse<List<TodoItem>>> {
         val request = Request.Builder().url(TEAM_ENDPOINT).build()
 
-        val type = object : TypeToken<BaseResponse<LoginValue>>() {}.type
+        val type = object : TypeToken<BaseResponse<List<TodoItem>>>() {}.type
         return okHttpClient.makeObservable(request, type)
     }
 
@@ -34,7 +34,7 @@ class TodoNetworkServiceImpl(private val okHttpClient: OkHttpClient) : TodoNetwo
             .add("description", todoPersonalRequest.description).build()
         val request = Request.Builder().url(PERSONAL_ENDPOINT).post(requestBody).build()
 
-        val type = object : TypeToken<BaseResponse<LoginValue>>() {}.type
+        val type = object : TypeToken<BaseResponse<TodoItem>>() {}.type
         return okHttpClient.makeObservable(request, type)
     }
 
@@ -45,7 +45,7 @@ class TodoNetworkServiceImpl(private val okHttpClient: OkHttpClient) : TodoNetwo
 
         val request = Request.Builder().url(TEAM_ENDPOINT).post(requestBody).build()
 
-        val type = object : TypeToken<BaseResponse<LoginValue>>() {}.type
+        val type = object : TypeToken<BaseResponse<TodoItem>>() {}.type
         return okHttpClient.makeObservable(request, type)
     }
 
@@ -56,7 +56,7 @@ class TodoNetworkServiceImpl(private val okHttpClient: OkHttpClient) : TodoNetwo
 
         val request = Request.Builder().url(PERSONAL_ENDPOINT).put(requestBody).build()
 
-        val type = object : TypeToken<BaseResponse<LoginValue>>() {}.type
+        val type = object : TypeToken<BaseResponse<String>>() {}.type
         return okHttpClient.makeObservable(request, type)
     }
 
@@ -66,7 +66,7 @@ class TodoNetworkServiceImpl(private val okHttpClient: OkHttpClient) : TodoNetwo
 
         val request = Request.Builder().url(TEAM_ENDPOINT).put(requestBody).build()
 
-        val type = object : TypeToken<BaseResponse<LoginValue>>() {}.type
+        val type = object : TypeToken<BaseResponse<String>>() {}.type
         return okHttpClient.makeObservable(request, type)
     }
 
