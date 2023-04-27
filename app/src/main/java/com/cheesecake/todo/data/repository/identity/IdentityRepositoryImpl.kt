@@ -5,35 +5,46 @@ import com.cheesecake.todo.data.models.response.BaseResponse
 import com.cheesecake.todo.data.models.response.LoginValue
 import com.cheesecake.todo.data.models.response.SignUpValue
 import com.cheesecake.todo.data.network.identity.IdentityNetworkService
+import com.cheesecake.todo.data.repository.BaseRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observer
-import io.reactivex.rxjava3.core.SingleObserver
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.kotlin.addTo
+import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 
 class IdentityRepositoryImpl(
     private val identityNetworkService: IdentityNetworkService,
     private val sharedPreferencesService: SharedPreferencesService
-) : IdentityRepository {
+) : IdentityRepository, BaseRepository() {
 
     override fun login(
         username: String,
         password: String,
-        observer: SingleObserver<BaseResponse<LoginValue>>
+        onSuccess: (BaseResponse<LoginValue>) -> Unit,
+        onError: (e: Throwable) -> Unit
     ) {
-
         identityNetworkService.login(username, password)
-            .subscribe(observer)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(onSuccess = onSuccess, onError = onError)
+            .addTo(compositeDisposable)
+
     }
 
     override fun signUp(
         username: String,
         password: String,
         teamId: String,
-        observer: SingleObserver<BaseResponse<SignUpValue>>
+        onSuccess: (BaseResponse<SignUpValue>) -> Unit,
+        onError: (e: Throwable) -> Unit
     ) {
         identityNetworkService.signUp(username, password, teamId)
-            .subscribe(observer)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(onSuccess = onSuccess, onError = onError)
+            .addTo(compositeDisposable)
+
     }
 
     override fun saveTokenAndExpireDate(token: String, expireDate: String) {

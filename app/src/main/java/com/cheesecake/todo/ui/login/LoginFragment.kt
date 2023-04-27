@@ -7,6 +7,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import com.cheesecake.todo.R
 import com.cheesecake.todo.data.repository.identity.IdentityRepositoryFactory
+import com.cheesecake.todo.data.repository.identity.IdentityRepositoryImpl
 import com.cheesecake.todo.databinding.FragmentLoginBinding
 import com.cheesecake.todo.ui.base.BaseFragment
 import com.cheesecake.todo.ui.home.HomeFragment
@@ -21,7 +22,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginPresenter>(), Logi
 
     override val presenter by lazy {
         val identityRepositoryFactory = requireActivity().application as IdentityRepositoryFactory
-        val identityRepository = identityRepositoryFactory.createAuthRepository()
+        val identityRepository =
+            identityRepositoryFactory.createAuthRepository() as IdentityRepositoryImpl
         LoginPresenter(identityRepository, this)
     }
 
@@ -50,6 +52,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginPresenter>(), Logi
                 navigateToSignup()
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onDestroy()
     }
 
     override fun navigateToHomeScreen() {

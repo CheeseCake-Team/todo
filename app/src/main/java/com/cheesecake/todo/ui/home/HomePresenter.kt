@@ -3,42 +3,43 @@ package com.cheesecake.todo.ui.home
 import android.util.Log
 import com.cheesecake.todo.data.models.Tag
 import com.cheesecake.todo.data.models.TodoItem
-import com.cheesecake.todo.data.repository.todos.TodoCallback
-import com.cheesecake.todo.data.repository.todos.TodoRepository
+import com.cheesecake.todo.data.models.response.BaseResponse
+import com.cheesecake.todo.data.repository.todos.TodoRepositoryImpl
 import com.cheesecake.todo.ui.base.BasePresenter
 
 class HomePresenter(
-    todoRepository: TodoRepository,
-    homeView: HomeView
-) : BasePresenter<TodoRepository, HomeView>(todoRepository, homeView), TodoCallback {
+    private val todoRepository: TodoRepositoryImpl, homeView: HomeView
+) : BasePresenter<HomeView>(todoRepository, homeView) {
     private lateinit var homeList: MutableList<DataItem>
-    override fun onSuccessTeamTodo(todos: List<TodoItem>?) {
-        val tag = DataItem.TagItem(Tag(2, 2, "Recently Team", todos!!))
-        homeList.add(tag)
-        homeList = homeList.sortedBy { it.rank }.toMutableList()
-        if (homeList.size == 2)
-            view.initHomeList(homeList)
+    private fun onSuccessPersonalTodo(response: BaseResponse<List<TodoItem>>) {
+        if (response.isSuccess) {
+            val tag = DataItem.TagItem(Tag(1, 1, "Recently Personal", response.value))
+            homeList.add(tag)
+            homeList = homeList.sortedBy { it.rank }.toMutableList()
+            if (homeList.size == 2) view.initHomeList(homeList)
+
+        } else view.showError(response.message)
     }
 
-    override fun onSuccessPersonalTodo(todos: List<TodoItem>?) {
-        val tag = DataItem.TagItem(Tag(1, 1, "Recently Personal", todos!!))
-        homeList.add(tag)
-        homeList = homeList.sortedBy { it.rank }.toMutableList()
-        if (homeList.size == 2)
-            view.initHomeList(homeList)
+    private fun onSuccessTeamTodo(response: BaseResponse<List<TodoItem>>) {
+        if (response.isSuccess) {
+            val tag = DataItem.TagItem(Tag(2, 2, "Recently Team", response.value))
+            homeList.add(tag)
+            homeList = homeList.sortedBy { it.rank }.toMutableList()
+            if (homeList.size == 2) view.initHomeList(homeList)
+
+        } else view.showError(response.message)
     }
 
-    override fun onError(error: String) {
-        view.showError(error)
+    private fun onError(e: Throwable) {
+        view.showError(e.toString())
     }
 
     fun initTodos() {
-        val b =  repository.isTokenValid()
-        Log.d("TAG", "initTodos: b = $b")
-        if (b) {
+        if (todoRepository.isTokenValid()) {
             homeList = mutableListOf()
-            repository.getPersonalTodos(this)
-            repository.getTeamTodos(this)
+            todoRepository.getPersonalTodos(::onSuccessPersonalTodo, ::onError)
+            todoRepository.getTeamTodos(::onSuccessTeamTodo, ::onError)
         } else view.navigateToLoginScreen()
     }
 

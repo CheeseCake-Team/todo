@@ -7,6 +7,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import com.cheesecake.todo.R
 import com.cheesecake.todo.data.repository.identity.IdentityRepositoryFactory
+import com.cheesecake.todo.data.repository.identity.IdentityRepositoryImpl
 import com.cheesecake.todo.databinding.FragmentSignUpBinding
 import com.cheesecake.todo.ui.base.BaseFragment
 import com.cheesecake.todo.utils.setFocusAndHint
@@ -17,7 +18,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpPresenter>(), S
 
     override val presenter by lazy {
         val identityRepositoryFactory = requireActivity().application as IdentityRepositoryFactory
-        val identityRepository = identityRepositoryFactory.createAuthRepository()
+        val identityRepository =
+            identityRepositoryFactory.createAuthRepository() as IdentityRepositoryImpl
         SignUpPresenter(identityRepository, this)
     }
 

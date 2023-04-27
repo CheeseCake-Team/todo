@@ -1,145 +1,100 @@
 package com.cheesecake.todo.data.repository.todos
 
 import com.cheesecake.todo.data.local.SharedPreferencesService
+import com.cheesecake.todo.data.models.TodoItem
 import com.cheesecake.todo.data.models.TodoState
 import com.cheesecake.todo.data.models.request.TodoPersonalRequest
 import com.cheesecake.todo.data.models.request.TodoStatusRequest
 import com.cheesecake.todo.data.models.request.TodoTeamRequest
 import com.cheesecake.todo.data.models.response.BaseResponse
-import com.cheesecake.todo.data.network.ResponseCallback
 import com.cheesecake.todo.data.network.todos.TodoNetworkService
+import com.cheesecake.todo.data.repository.BaseRepository
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.kotlin.addTo
+import io.reactivex.rxjava3.kotlin.subscribeBy
+import io.reactivex.rxjava3.schedulers.Schedulers
 import java.text.SimpleDateFormat
 import java.util.*
 
 class TodoRepositoryImpl(
     private val networkDataSource: TodoNetworkService,
     private val sharedPreferencesService: SharedPreferencesService
-) : TodoRepository {
+) : TodoRepository, BaseRepository() {
 
-    override fun getTeamTodos(todoCallback: TodoCallback) {
-        networkDataSource
-            .getTeamTodos()
-            .subscribe(
-                { response ->
-                    if (response.isSuccess) {
-                        todoCallback.onSuccessTeamTodo(response.value)
-                    } else {
-                        todoCallback.onError(response.message)
-                    }
-                },
-                { error ->
-                    todoCallback.onError(error.message ?: "Unknown error")
-                }
-            )
+    override fun getTeamTodos(
+        onSuccess: (BaseResponse<List<TodoItem>>) -> Unit,
+        onError: (e: Throwable) -> Unit
+    ) {
+        networkDataSource.getTeamTodos()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(onSuccess = onSuccess, onError = onError)
+            .addTo(compositeDisposable)
     }
 
-    override fun getPersonalTodos(todoCallback: TodoCallback) {
-        networkDataSource
-            .getPersonalTodos()
-            .subscribe(
-                { response ->
-                    if (response.isSuccess) {
-                        todoCallback.onSuccessPersonalTodo(response.value)
-                    } else {
-                        todoCallback.onError(response.message)
-                    }
-                },
-                { error ->
-                    todoCallback.onError(error.message ?: "Unknown error")
-                }
-            )
+    override fun getPersonalTodos(
+        onSuccess: (BaseResponse<List<TodoItem>>) -> Unit,
+        onError: (e: Throwable) -> Unit
+    ) {
+        networkDataSource.getPersonalTodos()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(onSuccess = onSuccess, onError = onError)
+            .addTo(compositeDisposable)
     }
 
     override fun createTeamTodo(
-        title: String, description: String, assignee: String, todoCallback: TodoCallback
+        title: String, description: String, assignee: String,
+        onSuccess: (BaseResponse<TodoItem>) -> Unit,
+        onError: (e: Throwable) -> Unit
     ) {
         val todoTeamRequest = TodoTeamRequest(title, description, assignee)
-         object : ResponseCallback {
-            override fun <T> onSuccess(response: BaseResponse<T>) {
-                if (response.isSuccess) {
-                    todoCallback.onSuccessTeamTodo()
-                } else todoCallback.onError(response.message)
-            }
 
-            override fun onFail(error: String) {
-                todoCallback.onError(error)
-            }
-        }
-        networkDataSource
-            .createTeamTodo(todoTeamRequest)
-            .subscribe(
-                { response ->
-                    if (response.isSuccess) {
-                        todoCallback.onSuccessTeamTodo()
-                    } else {
-                        todoCallback.onError(response.message)
-                    }
-                },
-                { error ->
-                    todoCallback.onError(error.message ?: "Unknown error")
-                }
-            )
+        networkDataSource.createTeamTodo(todoTeamRequest)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(onSuccess = onSuccess, onError = onError)
+            .addTo(compositeDisposable)
     }
 
     override fun createPersonalTodo(
-        title: String, description: String, todoCallback: TodoCallback
+        title: String, description: String,
+        onSuccess: (BaseResponse<TodoItem>) -> Unit,
+        onError: (e: Throwable) -> Unit
     ) {
         val todoPersonalRequest = TodoPersonalRequest(title, description)
-        networkDataSource
-            .createPersonalTodo(todoPersonalRequest)
-            .subscribe(
-                { response ->
-                    if (response.isSuccess) {
-                        todoCallback.onSuccessPersonalTodo()
-                    } else {
-                        todoCallback.onError(response.message)
-                    }
-                },
-                { error ->
-                    todoCallback.onError(error.message ?: "Unknown error")
-                }
-            )
+        networkDataSource.createPersonalTodo(todoPersonalRequest)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(onSuccess = onSuccess, onError = onError)
+            .addTo(compositeDisposable)
     }
 
     override fun updateTeamTodoStatus(
-        todoId: String, newStatus: TodoState, todoCallback: TodoCallback
+        todoId: String, newStatus: TodoState,
+        onSuccess: (BaseResponse<String>) -> Unit,
+        onError: (e: Throwable) -> Unit
     ) {
         val todoStatusRequest = TodoStatusRequest(todoId, newStatus)
 
-        networkDataSource
-            .updateTeamTodoStatus(todoStatusRequest)
-            .subscribe(
-                { response ->
-                    if (response.isSuccess) {
-                        todoCallback.onSuccessTeamTodo()
-                    } else {
-                        todoCallback.onError(response.message)
-                    }
-                },
-                { error ->
-                    todoCallback.onError(error.message ?: "Unknown error")
-                }
-            )
+        networkDataSource.updateTeamTodoStatus(todoStatusRequest)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(onSuccess = onSuccess, onError = onError)
+            .addTo(compositeDisposable)
     }
 
     override fun updatePersonalTodoStatus(
-        todoId: String, newStatus: TodoState, todoCallback: TodoCallback
+        todoId: String, newStatus: TodoState,
+        onSuccess: (BaseResponse<String>) -> Unit,
+        onError: (e: Throwable) -> Unit
     ) {
         val todoStatusRequest = TodoStatusRequest(todoId, newStatus)
-        networkDataSource
-            .updatePersonalTodoStatus(todoStatusRequest)
-            .subscribe(
-                { response ->
-                    if (response.isSuccess) {
-                        todoCallback.onSuccessPersonalTodo()
-                    } else {
-                        todoCallback.onError(response.message)
-                    }
-                },
-                { error ->
-                    todoCallback.onError(error.message ?: "Unknown error")
-                }
-            )
+        networkDataSource.updatePersonalTodoStatus(todoStatusRequest)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(onSuccess = onSuccess, onError = onError)
+            .addTo(compositeDisposable)
     }
 
     override fun isTokenValid(): Boolean {

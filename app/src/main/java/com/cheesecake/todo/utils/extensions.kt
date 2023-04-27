@@ -14,29 +14,6 @@ import okhttp3.*
 import java.io.IOException
 import java.lang.reflect.Type
 
-
-//inline fun <reified T> OkHttpClient.makeCall(
-//    request: Request,
-//    responseCallback: ResponseCallback,
-//) {
-//    this.newCall(request).enqueue(object : Callback {
-//        override fun onFailure(call: Call, e: IOException) {
-//            if (e is NetworkInterceptor.NoInternetException) {
-//                // Do nothing here because the dialog has already been shown
-//            } else {
-//                responseCallback.onFail(e.toString())
-//            }
-//        }
-//
-//        override fun onResponse(call: Call, response: Response) {
-//            val body = response.body?.string()
-//            val parsedResponse = Gson().parseResponse<T>(body ?: "")
-//            responseCallback.onSuccess(parsedResponse)
-//        }
-//    })
-//}
-
-
 inline fun <reified T> OkHttpClient.makeObservable(request: Request, type: Type): Single<BaseResponse<T>> {
     return Single.create { emitter ->
         val call = this.newCall(request)
@@ -62,11 +39,9 @@ inline fun <reified T> OkHttpClient.makeObservable(request: Request, type: Type)
 
         emitter.setCancellable { call.cancel() }
 
-    }.subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+    }
 }
 inline fun <reified T> Gson.parseResponse(response: String?, type: Type): BaseResponse<T> {
-    Log.d("TAG", "parseResponse: $type")
     return this.fromJson(response, type)
 }
 

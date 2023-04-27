@@ -35,7 +35,7 @@ class MyApplication : Application(), IdentityRepositoryFactory, TodoRepositoryFa
                 level = HttpLoggingInterceptor.Level.BODY
             })
             .addInterceptor(AuthorizationInterceptor(sharedPreferencesService))
-            .addInterceptor(NetworkInterceptor(applicationContext))
+//            .addInterceptor(NetworkInterceptor(applicationContext))
             .build()
     }
 

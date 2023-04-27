@@ -4,20 +4,21 @@ import com.cheesecake.todo.data.models.response.BaseResponse
 import com.cheesecake.todo.data.models.response.LoginValue
 import com.cheesecake.todo.data.models.response.SignUpValue
 import com.cheesecake.todo.data.repository.BaseRepository
-import io.reactivex.rxjava3.core.SingleObserver
 
-interface IdentityRepository : BaseRepository {
+interface IdentityRepository {
     fun login(
         username: String,
         password: String,
-        observer: SingleObserver<BaseResponse<LoginValue>>
+        onSuccess: (BaseResponse<LoginValue>) -> Unit,
+        onError: (e: Throwable) -> Unit,
     )
 
     fun signUp(
         username: String,
         password: String,
         teamId: String,
-        observer: SingleObserver<BaseResponse<SignUpValue>>
+        onSuccess: (BaseResponse<SignUpValue>) -> Unit,
+        onError: (e: Throwable) -> Unit,
     )
 
     fun saveTokenAndExpireDate(token: String, expireDate: String)
